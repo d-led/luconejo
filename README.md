@@ -30,6 +30,13 @@ If not valid, the object ignores commands.
 
 The exception text is sent to `stderr`.
 
+building
+--------
+
+ - generate your makefiles or project files using premake
+
+motivation: [Recursive Make Considered Harmful](http://miller.emu.id.au/pmiller/books/rmch/)
+
 status
 ------
 
