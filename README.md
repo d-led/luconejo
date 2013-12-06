@@ -1,12 +1,17 @@
+luconejo
+========
+
+a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient
+
 api
 ---
 
 | api | description | source |
 | --- | ----------- | ------ |
 | `luconejo.version` | luconejo version string | binding |
-| `luconejo.client_version` | SimpleAmqpClient version |
+| `luconejo.client_version` | SimpleAmqpClient version | binding |
 | `luconejo.amqp_version()` | rabbitmq-c version string | rabbitmq-c |
-| `connection = luconejo.Channel.Create( host )` | create a connection (simple api) |
+| `connection = luconejo.Channel.Create( host )` | create a connection (simple api) | binding |
 
 exception mechanisms
 --------------------
@@ -20,4 +25,20 @@ The exception text is sent to `stderr`.
 status
 ------
 
-work in process
+ - work in process
+ - no SSL support yet, will be configurable in the future
+
+dependencies
+------------
+
+all dependent libraries are built from source
+
+ - rabbitmq-c
+ - SimpleAmqpClient
+ - LuaBridge
+ - Premake for generating makefiles and solutions
+
+license
+-------
+
+[MIT License](http://opensource.org/licenses/MIT)
