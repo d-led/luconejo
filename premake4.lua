@@ -25,6 +25,7 @@ make_solution 'luconejo'
 
 includedirs { 
 	'./rabbitmq-c/librabbitmq',
+	'./SimpleAmqpClient/src',
 	'./LuaBridge-1.0.2'
 }
 
@@ -47,6 +48,15 @@ excludes {
 
 language "C"
 
+--------------------------
+make_static_lib( 'SimpleAmqpClient',
+	{
+		'./SimpleAmqpClient/src/*.cpp',
+		'./SimpleAmqpClient/src/**.h'
+	}
+)
+language "C++"
+
 ----------------------------
 make_shared_lib( 'luconejo',
 	{
@@ -59,7 +69,11 @@ targetdir '.'
 
 language "C++"
 
-links { 'rabbitmq' , settings.links[OS] }
+links {
+	'rabbitmq',
+	'SimpleAmqpClient',
+	settings.links[OS]
+}
 
 platform_specifics()
 

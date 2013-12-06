@@ -32,14 +32,14 @@ ifeq ($(config),debug)
   TARGETDIR  = ..
   TARGET     = $(TARGETDIR)/luconejo.so
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG -DGTEST_USE_OWN_TR1_TUPLE=1
-  INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../LuaBridge-1.0.2
+  INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g -fPIC -v  -fPIC
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -L.. -L../macosx/bin/Debug -dynamiclib -flat_namespace
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../macosx/bin/Debug/librabbitmq.a -llua
-  LDDEPS    += ../macosx/bin/Debug/librabbitmq.a
+  LIBS      += ../macosx/bin/Debug/librabbitmq.a ../macosx/bin/Debug/libSimpleAmqpClient.a -llua
+  LDDEPS    += ../macosx/bin/Debug/librabbitmq.a ../macosx/bin/Debug/libSimpleAmqpClient.a
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef
@@ -54,14 +54,14 @@ ifeq ($(config),release)
   TARGETDIR  = ..
   TARGET     = $(TARGETDIR)/luconejo.so
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE -DGTEST_USE_OWN_TR1_TUPLE=1
-  INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../LuaBridge-1.0.2
+  INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -fPIC -v  -fPIC
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -L.. -L../macosx/bin/Release -Wl,-x -dynamiclib -flat_namespace
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../macosx/bin/Release/librabbitmq.a -llua
-  LDDEPS    += ../macosx/bin/Release/librabbitmq.a
+  LIBS      += ../macosx/bin/Release/librabbitmq.a ../macosx/bin/Release/libSimpleAmqpClient.a -llua
+  LDDEPS    += ../macosx/bin/Release/librabbitmq.a ../macosx/bin/Release/libSimpleAmqpClient.a
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef

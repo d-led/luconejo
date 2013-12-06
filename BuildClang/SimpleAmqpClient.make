@@ -28,9 +28,9 @@ ifndef RESCOMP
 endif
 
 ifeq ($(config),debug)
-  OBJDIR     = Debug/obj/Debug/rabbitmq
+  OBJDIR     = Debug/obj/Debug/SimpleAmqpClient
   TARGETDIR  = ../macosx/bin/Debug
-  TARGET     = $(TARGETDIR)/librabbitmq.a
+  TARGET     = $(TARGETDIR)/libSimpleAmqpClient.a
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG -DGTEST_USE_OWN_TR1_TUPLE=1
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -50,9 +50,9 @@ ifeq ($(config),debug)
 endif
 
 ifeq ($(config),release)
-  OBJDIR     = Release/obj/Release/rabbitmq
+  OBJDIR     = Release/obj/Release/SimpleAmqpClient
   TARGETDIR  = ../macosx/bin/Release
-  TARGET     = $(TARGETDIR)/librabbitmq.a
+  TARGET     = $(TARGETDIR)/libSimpleAmqpClient.a
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE -DGTEST_USE_OWN_TR1_TUPLE=1
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -72,16 +72,15 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/amqp_api.o \
-	$(OBJDIR)/amqp_connection.o \
-	$(OBJDIR)/amqp_consumer.o \
-	$(OBJDIR)/amqp_framing.o \
-	$(OBJDIR)/amqp_mem.o \
-	$(OBJDIR)/amqp_socket.o \
-	$(OBJDIR)/amqp_table.o \
-	$(OBJDIR)/amqp_tcp_socket.o \
-	$(OBJDIR)/amqp_timer.o \
-	$(OBJDIR)/amqp_url.o \
+	$(OBJDIR)/AmqpException.o \
+	$(OBJDIR)/AmqpResponseLibraryException.o \
+	$(OBJDIR)/BasicMessage.o \
+	$(OBJDIR)/Channel.o \
+	$(OBJDIR)/ChannelImpl.o \
+	$(OBJDIR)/Envelope.o \
+	$(OBJDIR)/MessageReturnedException.o \
+	$(OBJDIR)/Table.o \
+	$(OBJDIR)/TableImpl.o \
 
 RESOURCES := \
 
@@ -99,7 +98,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking rabbitmq
+	@echo Linking SimpleAmqpClient
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -120,7 +119,7 @@ else
 endif
 
 clean:
-	@echo Cleaning rabbitmq
+	@echo Cleaning SimpleAmqpClient
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -143,38 +142,35 @@ ifeq (posix,$(SHELLTYPE))
 else
 	$(SILENT) xcopy /D /Y /Q "$(subst /,\,$<)" "$(subst /,\,$(OBJDIR))" 1>nul
 endif
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
-$(OBJDIR)/amqp_api.o: ../rabbitmq-c/librabbitmq/amqp_api.c
+$(OBJDIR)/AmqpException.o: ../SimpleAmqpClient/src/AmqpException.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/amqp_connection.o: ../rabbitmq-c/librabbitmq/amqp_connection.c
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/AmqpResponseLibraryException.o: ../SimpleAmqpClient/src/AmqpResponseLibraryException.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/amqp_consumer.o: ../rabbitmq-c/librabbitmq/amqp_consumer.c
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/BasicMessage.o: ../SimpleAmqpClient/src/BasicMessage.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/amqp_framing.o: ../rabbitmq-c/librabbitmq/amqp_framing.c
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/Channel.o: ../SimpleAmqpClient/src/Channel.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/amqp_mem.o: ../rabbitmq-c/librabbitmq/amqp_mem.c
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/ChannelImpl.o: ../SimpleAmqpClient/src/ChannelImpl.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/amqp_socket.o: ../rabbitmq-c/librabbitmq/amqp_socket.c
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/Envelope.o: ../SimpleAmqpClient/src/Envelope.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/amqp_table.o: ../rabbitmq-c/librabbitmq/amqp_table.c
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/MessageReturnedException.o: ../SimpleAmqpClient/src/MessageReturnedException.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/amqp_tcp_socket.o: ../rabbitmq-c/librabbitmq/amqp_tcp_socket.c
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/Table.o: ../SimpleAmqpClient/src/Table.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/amqp_timer.o: ../rabbitmq-c/librabbitmq/amqp_timer.c
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/TableImpl.o: ../SimpleAmqpClient/src/TableImpl.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/amqp_url.o: ../rabbitmq-c/librabbitmq/amqp_url.c
-	@echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 -include $(OBJECTS:%.o=%.d)

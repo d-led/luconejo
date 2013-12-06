@@ -1,10 +1,10 @@
 api
 ---
 
-| api | description |
-| --- | ----------- |
-| `luconejo.version` | luconejo version string |
-| `luconejo.amqp_version()` | rabbitmq-c version string |
+| api | description | source |
+| --- | ----------- | ------ |
+| `luconejo.version` | luconejo version string | binding |
+| `luconejo.amqp_version()` | rabbitmq-c version string | rabbitmq-c |
 
 status
 ------
