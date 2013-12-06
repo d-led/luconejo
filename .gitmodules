@@ -1,0 +1,6 @@
+[submodule "premake"]
+	path = premake
+	url = https://github.com/d-led/premake-meta-cpp.git
+[submodule "SimpleAmqpClient"]
+	path = SimpleAmqpClient
+	url = https://github.com/woldan/SimpleAmqpClient.git
