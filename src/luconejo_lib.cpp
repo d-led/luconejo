@@ -29,6 +29,7 @@
 #include <RefCountedPtr.h>
 #include <string>
 #include <cstdio>
+#include <amqp.h>
 
 namespace luconejo {
 
@@ -37,7 +38,8 @@ namespace luconejo {
 void register_luconejo (lua_State* L) {
 	luabridge::getGlobalNamespace(L)
 		.beginNamespace("luconejo")
-			.addVariable("VERSION",&luconejo_version,false)
+			.addVariable("version",&luconejo_version,false)
+			.addFunction("amqp_version",&amqp_version)
 		.endNamespace()
 		;
 }

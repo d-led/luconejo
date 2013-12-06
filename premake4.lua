@@ -23,8 +23,6 @@ end
 make_solution 'luconejo'
 ------------------------
 
-targetdir '.'
-
 includedirs { 
 	'./rabbitmq-c/librabbitmq',
 	'./LuaBridge-1.0.2'
@@ -56,6 +54,9 @@ make_shared_lib( 'luconejo',
 		'./src/*.cpp'
 	}
 )
+
+targetdir '.'
+
 language "C++"
 
 links { 'rabbitmq' , settings.links[OS] }

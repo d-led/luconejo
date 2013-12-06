@@ -29,7 +29,7 @@ endif
 
 ifeq ($(config),debug)
   OBJDIR     = Debug/obj/Debug/luconejo
-  TARGETDIR  = ../macosx/bin/Debug
+  TARGETDIR  = ..
   TARGET     = $(TARGETDIR)/luconejo.so
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG -DGTEST_USE_OWN_TR1_TUPLE=1
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../LuaBridge-1.0.2
@@ -51,7 +51,7 @@ endif
 
 ifeq ($(config),release)
   OBJDIR     = Release/obj/Release/luconejo
-  TARGETDIR  = ../macosx/bin/Release
+  TARGETDIR  = ..
   TARGET     = $(TARGETDIR)/luconejo.so
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE -DGTEST_USE_OWN_TR1_TUPLE=1
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../LuaBridge-1.0.2
