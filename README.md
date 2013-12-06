@@ -1,14 +1,15 @@
+- [luconejo](#luconejo)
+	- [api](#api)
+	- [exception mechanisms](#exception-mechanisms)
+	- [building](#building)
+	- [status](#status)
+	- [dependencies](#dependencies)
+	- [license](#license)
+
 luconejo
 ========
 
 a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient
-
-- [luconejo](#luconejo)
-	- [api](#api)
-	- [exception mechanisms](#exception-mechanisms)
-	- [status](#status)
-	- [dependencies](#dependencies)
-	- [license](#license)
 
 api
 ---
