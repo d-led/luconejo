@@ -6,17 +6,22 @@ ifndef config
 endif
 export config
 
-PROJECTS := luconejo
+PROJECTS := rabbitmq luconejo
 
 .PHONY: all clean help $(PROJECTS)
 
 all: $(PROJECTS)
 
-luconejo: 
+rabbitmq: 
+	@echo "==== Building rabbitmq ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f rabbitmq.make
+
+luconejo: rabbitmq
 	@echo "==== Building luconejo ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f luconejo.make
 
 clean:
+	@${MAKE} --no-print-directory -C . -f rabbitmq.make clean
 	@${MAKE} --no-print-directory -C . -f luconejo.make clean
 
 help:
@@ -29,6 +34,7 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
+	@echo "   rabbitmq"
 	@echo "   luconejo"
 	@echo ""
 	@echo "For more information, see http://industriousone.com/premake/quick-start"

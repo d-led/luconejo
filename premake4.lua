@@ -23,12 +23,31 @@ end
 make_solution 'luconejo'
 ------------------------
 
+targetdir '.'
+
 includedirs { 
-	'./rlutil',
+	'./rabbitmq-c/librabbitmq',
 	'./LuaBridge-1.0.2'
 }
 
 defines { 'BOOST_NO_VARIADIC_TEMPLATES' }
+
+--------------------------
+make_static_lib( 'rabbitmq',
+	{
+		'./rabbitmq-c/librabbitmq/*.h',
+		'./rabbitmq-c/librabbitmq/*.c'
+	}
+)
+
+excludes {
+	'./rabbitmq-c/librabbitmq/amqp_cyassl.c',
+	'./rabbitmq-c/librabbitmq/amqp_openssl.c',
+	'./rabbitmq-c/librabbitmq/amqp_polarssl.c',
+	'./rabbitmq-c/librabbitmq/amqp_gnutls.c'
+}
+
+language "C"
 
 ----------------------------
 make_shared_lib( 'luconejo',
@@ -37,9 +56,9 @@ make_shared_lib( 'luconejo',
 		'./src/*.cpp'
 	}
 )
-targetdir '.'
+language "C++"
 
-links { settings.links[OS] }
+links { 'rabbitmq' , settings.links[OS] }
 
 platform_specifics()
 

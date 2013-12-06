@@ -28,19 +28,19 @@ ifndef RESCOMP
 endif
 
 ifeq ($(config),debug)
-  OBJDIR     = Debug/obj/Debug/luconejo
+  OBJDIR     = Debug/obj/Debug/rabbitmq
   TARGETDIR  = ../macosx/bin/Debug
-  TARGET     = $(TARGETDIR)/luconejo.so
+  TARGET     = $(TARGETDIR)/librabbitmq.a
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG -DGTEST_USE_OWN_TR1_TUPLE=1
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../LuaBridge-1.0.2
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -fPIC -v  -fPIC
+  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -v  -fPIC
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -L.. -L../macosx/bin/Debug -dynamiclib -flat_namespace
+  LDFLAGS   += -L..
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../macosx/bin/Debug/librabbitmq.a -llua
-  LDDEPS    += ../macosx/bin/Debug/librabbitmq.a
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LIBS      += 
+  LDDEPS    += 
+  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -50,19 +50,19 @@ ifeq ($(config),debug)
 endif
 
 ifeq ($(config),release)
-  OBJDIR     = Release/obj/Release/luconejo
+  OBJDIR     = Release/obj/Release/rabbitmq
   TARGETDIR  = ../macosx/bin/Release
-  TARGET     = $(TARGETDIR)/luconejo.so
+  TARGET     = $(TARGETDIR)/librabbitmq.a
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE -DGTEST_USE_OWN_TR1_TUPLE=1
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../LuaBridge-1.0.2
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -fPIC -v  -fPIC
+  CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -v  -fPIC
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -L.. -L../macosx/bin/Release -Wl,-x -dynamiclib -flat_namespace
+  LDFLAGS   += -L.. -Wl,-x
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../macosx/bin/Release/librabbitmq.a -llua
-  LDDEPS    += ../macosx/bin/Release/librabbitmq.a
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LIBS      += 
+  LDDEPS    += 
+  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -72,8 +72,16 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/luconejo.o \
-	$(OBJDIR)/luconejo_lib.o \
+	$(OBJDIR)/amqp_api.o \
+	$(OBJDIR)/amqp_connection.o \
+	$(OBJDIR)/amqp_consumer.o \
+	$(OBJDIR)/amqp_framing.o \
+	$(OBJDIR)/amqp_mem.o \
+	$(OBJDIR)/amqp_socket.o \
+	$(OBJDIR)/amqp_table.o \
+	$(OBJDIR)/amqp_tcp_socket.o \
+	$(OBJDIR)/amqp_timer.o \
+	$(OBJDIR)/amqp_url.o \
 
 RESOURCES := \
 
@@ -91,7 +99,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking luconejo
+	@echo Linking rabbitmq
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -112,7 +120,7 @@ else
 endif
 
 clean:
-	@echo Cleaning luconejo
+	@echo Cleaning rabbitmq
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -135,14 +143,38 @@ ifeq (posix,$(SHELLTYPE))
 else
 	$(SILENT) xcopy /D /Y /Q "$(subst /,\,$<)" "$(subst /,\,$(OBJDIR))" 1>nul
 endif
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
-$(OBJDIR)/luconejo.o: ../src/luconejo.cpp
+$(OBJDIR)/amqp_api.o: ../rabbitmq-c/librabbitmq/amqp_api.c
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/luconejo_lib.o: ../src/luconejo_lib.cpp
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/amqp_connection.o: ../rabbitmq-c/librabbitmq/amqp_connection.c
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/amqp_consumer.o: ../rabbitmq-c/librabbitmq/amqp_consumer.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/amqp_framing.o: ../rabbitmq-c/librabbitmq/amqp_framing.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/amqp_mem.o: ../rabbitmq-c/librabbitmq/amqp_mem.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/amqp_socket.o: ../rabbitmq-c/librabbitmq/amqp_socket.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/amqp_table.o: ../rabbitmq-c/librabbitmq/amqp_table.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/amqp_tcp_socket.o: ../rabbitmq-c/librabbitmq/amqp_tcp_socket.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/amqp_timer.o: ../rabbitmq-c/librabbitmq/amqp_timer.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/amqp_url.o: ../rabbitmq-c/librabbitmq/amqp_url.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(CFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 -include $(OBJECTS:%.o=%.d)
