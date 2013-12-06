@@ -30,15 +30,21 @@
 #include <string>
 #include <cstdio>
 #include <amqp.h>
+#include <SimpleAmqpClient/SimpleAmqpClient.h>
+
+#define xstr(s) str(s)
+#define str(s) #s
 
 namespace luconejo {
 
-	static const char* luconejo_version = "LuConejo 0.0.1";
+	static const char* luconejo_version = "0.0.1";
+	static const char* luconejo_SimpleAmqpClient_version = xstr(SIMPLEAMQPCLIENT_VERSION_MAJOR)"."xstr(SIMPLEAMQPCLIENT_VERSION_MINOR)"."xstr(SIMPLEAMQPCLIENT_VERSION_PATCH);
 
 void register_luconejo (lua_State* L) {
 	luabridge::getGlobalNamespace(L)
 		.beginNamespace("luconejo")
 			.addVariable("version",&luconejo_version,false)
+			.addVariable("client_version",&luconejo_SimpleAmqpClient_version,false)
 			.addFunction("amqp_version",&amqp_version)
 		.endNamespace()
 		;
