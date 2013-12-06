@@ -19,6 +19,7 @@ api
 | `luconejo.client_version` | SimpleAmqpClient version | binding |
 | `luconejo.amqp_version()` | rabbitmq-c version string | rabbitmq-c |
 | `connection = luconejo.Channel.Create( host )` | create a connection (simple api) | binding |
+| `connection.Valid` | check if connection succeeded | binding |
 
 exception mechanisms
 --------------------
