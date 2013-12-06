@@ -1,11 +1,3 @@
-- [luconejo](#luconejo)
-	- [api](#api)
-	- [exception mechanisms](#exception-mechanisms)
-	- [building](#building)
-	- [status](#status)
-	- [dependencies](#dependencies)
-	- [license](#license)
-
 luconejo
 ========
 
