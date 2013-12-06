@@ -7,7 +7,7 @@ local settings = {
 	links = {
 		linux = { 'lua' },
 		windows = { 'lua5.1' },
-		macosx = { 'lua' }
+		macosx = { 'lua' , 'boost_chrono-mt'}
 	}
 }
 

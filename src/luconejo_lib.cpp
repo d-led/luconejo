@@ -29,11 +29,45 @@
 #include <RefCountedPtr.h>
 #include <string>
 #include <cstdio>
+#include <iostream>
+#include <stdexcept>
 #include <amqp.h>
 #include <SimpleAmqpClient/SimpleAmqpClient.h>
 
 #define xstr(s) str(s)
 #define str(s) #s
+
+namespace luconejo {
+	namespace wrappers {
+
+
+		////////////////////////////////////
+		void Error(std::string const& err) {
+			std::cerr << "luconejo exception: " << err << std::endl;
+		}
+
+		////////////////
+		struct Channel {
+			AmqpClient::Channel::ptr_t connection;
+
+			static RefCountedPtr<Channel> Create(
+					std::string const& host) {
+				RefCountedPtr<Channel> res(new Channel);
+				try {
+					res->connection = AmqpClient::Channel::Create(host);
+				} catch (std::exception const& e) {
+					Error(e.what());
+				}
+				return res;
+			}
+
+			bool Valid() const {
+				return connection;
+			}
+		};
+
+	}
+}
 
 namespace luconejo {
 
@@ -43,9 +77,17 @@ namespace luconejo {
 void register_luconejo (lua_State* L) {
 	luabridge::getGlobalNamespace(L)
 		.beginNamespace("luconejo")
+
 			.addVariable("version",&luconejo_version,false)
 			.addVariable("client_version",&luconejo_SimpleAmqpClient_version,false)
 			.addFunction("amqp_version",&amqp_version)
+		
+			.beginClass<wrappers::Channel>("Channel")
+				.addStaticFunction("Create",wrappers::Channel::Create)
+				.addProperty("Valid",&wrappers::Channel::Valid)
+			.endClass()
+
+
 		.endNamespace()
 		;
 }

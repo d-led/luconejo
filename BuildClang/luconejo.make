@@ -38,7 +38,7 @@ ifeq ($(config),debug)
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -L.. -L../macosx/bin/Debug -dynamiclib -flat_namespace
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../macosx/bin/Debug/librabbitmq.a ../macosx/bin/Debug/libSimpleAmqpClient.a -llua
+  LIBS      += ../macosx/bin/Debug/librabbitmq.a ../macosx/bin/Debug/libSimpleAmqpClient.a -llua -lboost_chrono-mt
   LDDEPS    += ../macosx/bin/Debug/librabbitmq.a ../macosx/bin/Debug/libSimpleAmqpClient.a
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
@@ -60,7 +60,7 @@ ifeq ($(config),release)
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -L.. -L../macosx/bin/Release -Wl,-x -dynamiclib -flat_namespace
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../macosx/bin/Release/librabbitmq.a ../macosx/bin/Release/libSimpleAmqpClient.a -llua
+  LIBS      += ../macosx/bin/Release/librabbitmq.a ../macosx/bin/Release/libSimpleAmqpClient.a -llua -lboost_chrono-mt
   LDDEPS    += ../macosx/bin/Release/librabbitmq.a ../macosx/bin/Release/libSimpleAmqpClient.a
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
