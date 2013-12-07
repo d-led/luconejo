@@ -9,7 +9,9 @@ local test_hostname = 'localhost'
 ------------------------------------------------------------------------------------
 
 describe("library is loaded correctly", function()
-  assert.are.equal( type(luconejo) , "table" )
+	it("should be a table", function ()
+		assert.are.equal( type(luconejo) , "table" )
+	end)
 end)
 
 ------------------------------------------------------------------------------------

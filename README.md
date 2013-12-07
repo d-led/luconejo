@@ -13,8 +13,15 @@ api
 | `luconejo.amqp_version()` | rabbitmq-c version string | rabbitmq-c |
 | `connection = luconejo.Channel.Create( host )` | create a connection (simple api) | binding |
 | `connection = luconejo.Channel.CreateWithParameters( host, port, username, password, vhost, frame_max)` | create a connection | binding |
+| `connection = luconejo.Channel.CreateFromUri( host_uri )` | connect with an AMQP URI | binding |
 | `connection.Valid` | check if connection succeeded | binding |
 | `connection:Disconnect()` | disconnect | binding |
+| `connection.DeclareExchange( exchange_name, exchange_type, passive, durable, auto_delete )` | declare an exchange | binding |
+| `connection.DeleteExchange( exchange_name ) | delete an exchange | binding |
+| `connection.DeleteExchangeIfUnused( exchange_name ) | delete an exchange if unused | binding |
+| `luconejo.Channel.EXCHANGE_TYPE_DIRECT` | constant | binding |
+| `luconejo.Channel.EXCHANGE_TYPE_FANOUT` | constant | binding |
+| `luconejo.Channel.EXCHANGE_TYPE_TOPIC` | constant | binding |
 
 exception mechanisms
 --------------------

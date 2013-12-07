@@ -81,6 +81,7 @@ newaction {
    trigger     = "test",
    description = "run lua test",
    execute     = function ()
-      os.execute("busted test/*.lua")
+      os.execute("busted test/test_connection.lua")
+      os.execute("busted test/test_channels.lua")
    end
 }

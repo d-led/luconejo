@@ -96,6 +96,35 @@ namespace luconejo {
 			bool Valid() const {
 				return connection;
 			}
+
+			void DeclareExchange(const std::string &exchange_name,
+		                         const std::string &exchange_type,
+		                         bool passive = false,
+		                         bool durable = false,
+		                         bool auto_delete = false) {
+				if (!connection)
+					return;
+
+				connection->DeclareExchange(exchange_name,exchange_type,passive,durable,auto_delete);
+			}
+
+			void DeleteExchange(const std::string &exchange_name) {
+				if (!connection)
+					return;
+
+				connection->DeleteExchange(exchange_name,false);
+			}
+
+			void DeleteExchangeIfUnused(const std::string &exchange_name) {
+				if (!connection)
+					return;
+
+				connection->DeleteExchange(exchange_name,true);
+			}
+
+			static std::string EXCHANGE_TYPE_DIRECT() { return AmqpClient::Channel::EXCHANGE_TYPE_DIRECT; }
+			static std::string EXCHANGE_TYPE_FANOUT() { return AmqpClient::Channel::EXCHANGE_TYPE_FANOUT; }
+			static std::string EXCHANGE_TYPE_TOPIC() { return AmqpClient::Channel::EXCHANGE_TYPE_TOPIC; }
 		};
 
 	}
@@ -110,16 +139,29 @@ void register_luconejo (lua_State* L) {
 	luabridge::getGlobalNamespace(L)
 		.beginNamespace("luconejo")
 
+			// global constants
 			.addVariable("version",&luconejo_version,false)
 			.addVariable("client_version",&luconejo_SimpleAmqpClient_version,false)
 			.addFunction("amqp_version",&amqp_version)
 		
+			// Channel
 			.beginClass<wrappers::Channel>("Channel")
+				// constants
+				.addStaticProperty("EXCHANGE_TYPE_DIRECT",&wrappers::Channel::EXCHANGE_TYPE_DIRECT)
+				.addStaticProperty("EXCHANGE_TYPE_FANOUT",&wrappers::Channel::EXCHANGE_TYPE_FANOUT)
+				.addStaticProperty("EXCHANGE_TYPE_TOPIC",&wrappers::Channel::EXCHANGE_TYPE_TOPIC)
+		
+				// factories
 				.addStaticFunction("Create",wrappers::Channel::Create)
 				.addStaticFunction("CreateWithParameters",wrappers::Channel::CreateWithParameters)
 				.addStaticFunction("CreateFromUri",wrappers::Channel::CreateFromUri)
+		
+				// class
 				.addProperty("Valid",&wrappers::Channel::Valid)
 				.addFunction("Disconnect",&wrappers::Channel::Disconnect)
+				.addFunction("DeclareExchange",&wrappers::Channel::DeclareExchange)
+				.addFunction("DeleteExchange",&wrappers::Channel::DeleteExchange)
+				.addFunction("DeleteExchangeIfUnused",&wrappers::Channel::DeleteExchangeIfUnused)
 			.endClass()
 
 
