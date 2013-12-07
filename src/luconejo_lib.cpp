@@ -42,8 +42,9 @@ namespace luconejo {
 
 
 		////////////////////////////////////
-		void Error(std::string const& err) {
+		bool Error(std::string const& err) {
 			std::cerr << "luconejo exception: " << err << std::endl;
+			return false;
 		}
 
 		////////////////
@@ -89,37 +90,56 @@ namespace luconejo {
 				return res;
 			}
 
-			void Disconnect() {
+			bool Disconnect() {
+				if (!connection)
+					return false;
+
 				connection.reset();
+				return true;
 			}
 
 			bool Valid() const {
 				return connection;
 			}
 
-			void DeclareExchange(const std::string &exchange_name,
+			bool DeclareExchange(const std::string &exchange_name,
 		                         const std::string &exchange_type,
 		                         bool passive = false,
 		                         bool durable = false,
 		                         bool auto_delete = false) {
 				if (!connection)
-					return;
+					return false;
 
-				connection->DeclareExchange(exchange_name,exchange_type,passive,durable,auto_delete);
+				try {
+					connection->DeclareExchange(exchange_name,exchange_type,passive,durable,auto_delete);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
 			}
 
-			void DeleteExchange(const std::string &exchange_name) {
+			bool DeleteExchange(const std::string &exchange_name) {
 				if (!connection)
-					return;
+					return false;
 
-				connection->DeleteExchange(exchange_name,false);
+				try {
+					connection->DeleteExchange(exchange_name,false);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
 			}
 
-			void DeleteExchangeIfUnused(const std::string &exchange_name) {
+			bool DeleteExchangeIfUnused(const std::string &exchange_name) {
 				if (!connection)
-					return;
+					return false;
 
-				connection->DeleteExchange(exchange_name,true);
+				try {
+					connection->DeleteExchange(exchange_name,true);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
 			}
 
 			static std::string EXCHANGE_TYPE_DIRECT() { return AmqpClient::Channel::EXCHANGE_TYPE_DIRECT; }

@@ -13,7 +13,7 @@ local connected_test = {
 describe("first channel", function()
 	local this = connected_test.create()
 	it("should be able to create and delete exchanges", function ()
-		this.channel:DeclareExchange("test_channel_exchange", luconejo.Channel.EXCHANGE_TYPE_FANOUT, false, false, true)
-		this.channel:DeleteExchange("test_channel_exchange");
+		assert.True( this.channel:DeclareExchange("test_channel_exchange", luconejo.Channel.EXCHANGE_TYPE_FANOUT, false, false, true) )
+		assert.True( this.channel:DeleteExchange("test_channel_exchange") )
 	end)
 end)

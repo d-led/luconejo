@@ -25,7 +25,7 @@ describe("opening and closing a connection", function()
 	end)
 
 	it("should be able to disconnect from the given host",function ()
-		connection:Disconnect()
+		assert.True( connection:Disconnect() )
 		assert.False( connection.Valid )
 	end)
 
