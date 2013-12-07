@@ -61,6 +61,10 @@ namespace luconejo {
 				return res;
 			}
 
+			void Disconnect() {
+				connection.reset();
+			}
+
 			bool Valid() const {
 				return connection;
 			}
@@ -85,6 +89,7 @@ void register_luconejo (lua_State* L) {
 			.beginClass<wrappers::Channel>("Channel")
 				.addStaticFunction("Create",wrappers::Channel::Create)
 				.addProperty("Valid",&wrappers::Channel::Valid)
+				.addFunction("Disconnect",&wrappers::Channel::Disconnect)
 			.endClass()
 
 
