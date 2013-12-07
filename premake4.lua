@@ -5,7 +5,7 @@ assert( require 'premake.quickstart' )
 local OS = os.get()
 local settings = {
 	links = {
-		linux = { 'lua' },
+		linux = { 'lua5.1-c++' , 'boost_chrono' },
 		windows = { 'lua5.1' },
 		macosx = { 'lua' , 'boost_chrono-mt'}
 	}
@@ -19,6 +19,9 @@ local function platform_specifics()
 	configuration 'windows'
 		includedirs { [[C:\Users\Public\lua\LuaRocks\2.1\include]] , os.getenv 'BOOST' }
 		libdirs { [[C:\Users\Public\lua\LuaRocks\2.1]] , path.join(os.getenv'BOOST',[[stage\lib]]) }
+	configuration 'linux'
+		targetprefix ''
+		includedirs { [[/usr/include/lua5.1]] }
 	configuration { '*' }
 end
 

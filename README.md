@@ -87,6 +87,12 @@ all dependent libraries are built from source
  - SimpleAmqpClient
  - LuaBridge
  - Premake for generating makefiles and solutions
+ 
+ testing
+ -------
+ 
+  - start RabbitMQ
+  - premake/premake4 test
 
 license
 -------
