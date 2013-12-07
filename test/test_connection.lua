@@ -29,9 +29,16 @@ describe("opening and closing a connection", function()
 end)
 
 describe("opening an invalid connection", function()
-	it("should fail", function()
+	it("should fail when asking for an unknown host", function()
 		local connection = luconejo.Channel.Create("HostDoesntExist")
+		assert.truthy( connection )
 		assert.False( connection.Valid )
+	end)
+
+	it("should fail when providing bad credentials", function()
+	    local connection = luconejo.Channel.CreateWithParameters(test_hostname, 5672, "baduser", "badpass","/")
+	    assert.truthy( connection )
+	    assert.False ( connection.Valid )
 	end)
 end)
 

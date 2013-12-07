@@ -61,6 +61,23 @@ namespace luconejo {
 				return res;
 			}
 
+
+			static RefCountedPtr<Channel> CreateWithParameters(
+					std::string const& host,
+					int port,
+					std::string const& user,
+					std::string const& password,
+					std::string const& vhost
+					) {
+				RefCountedPtr<Channel> res(new Channel);
+				try {
+					res->connection = AmqpClient::Channel::Create(host,port,user,password,vhost);
+				} catch (std::exception const& e) {
+					Error(e.what());
+				}
+				return res;
+			}
+
 			void Disconnect() {
 				connection.reset();
 			}
@@ -88,6 +105,7 @@ void register_luconejo (lua_State* L) {
 		
 			.beginClass<wrappers::Channel>("Channel")
 				.addStaticFunction("Create",wrappers::Channel::Create)
+				.addStaticFunction("CreateWithParameters",wrappers::Channel::CreateWithParameters)
 				.addProperty("Valid",&wrappers::Channel::Valid)
 				.addFunction("Disconnect",&wrappers::Channel::Disconnect)
 			.endClass()

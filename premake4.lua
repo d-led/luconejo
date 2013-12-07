@@ -81,6 +81,6 @@ newaction {
    trigger     = "test",
    description = "run lua test",
    execute     = function ()
-      os.execute("busted src/*.lua")
+      os.execute("busted test/*.lua")
    end
 }
