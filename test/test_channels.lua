@@ -24,4 +24,11 @@ describe("first channel", function()
 		assert.True( this.channel:DeleteExchange("test_channel_exchange1") )
 		assert.True( this.channel:DeleteExchange("test_channel_exchange2") )
 	end)
+
+	it("should be possible to recover from error",function()
+		assert.False( this.channel:DeclareExchange("test_channel_exchangedoesnotexist", luconejo.Channel.EXCHANGE_TYPE_FANOUT, true, false, true) )
+
+		assert.True( this.channel:DeclareExchange("test_channel_exchange", luconejo.Channel.EXCHANGE_TYPE_FANOUT, false, false, true) )
+		assert.True( this.channel:DeleteExchange("test_channel_exchange") )
+	end)
 end)
