@@ -26,6 +26,12 @@ describe("opening and closing a connection", function()
 		connection:Disconnect()
 		assert.False( connection.Valid )
 	end)
+
+	it("should be able to connect from an uri",function ()
+		local host_uri = "amqp://" .. test_hostname
+    	local channel = luconejo.Channel.CreateFromUri( host_uri )
+		assert.True( channel.Valid )
+	end)
 end)
 
 describe("opening an invalid connection", function()
@@ -36,7 +42,19 @@ describe("opening an invalid connection", function()
 	end)
 
 	it("should fail when providing bad credentials", function()
-	    local connection = luconejo.Channel.CreateWithParameters(test_hostname, 5672, "baduser", "badpass","/")
+	    local connection = luconejo.Channel.CreateWithParameters(test_hostname, 5672, "baduser", "badpass","/",10000)
+	    assert.truthy( connection )
+	    assert.False ( connection.Valid )
+	end)
+
+	it("should fail when a minimum frame size of 4096 is not given", function()
+	    local connection = luconejo.Channel.CreateWithParameters(test_hostname, 5672, "guest", "guest", "/", 400)
+	    assert.truthy( connection )
+	    assert.False ( connection.Valid )
+	end)
+
+	it("should fail when a nonexitant vhost is given", function()
+	    local connection = luconejo.Channel.CreateWithParameters(test_hostname, 5672, "guest", "guest", "nonexitant_vhost", 10000)
 	    assert.truthy( connection )
 	    assert.False ( connection.Valid )
 	end)

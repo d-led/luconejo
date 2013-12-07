@@ -12,7 +12,7 @@ api
 | `luconejo.client_version` | SimpleAmqpClient version | binding |
 | `luconejo.amqp_version()` | rabbitmq-c version string | rabbitmq-c |
 | `connection = luconejo.Channel.Create( host )` | create a connection (simple api) | binding |
-| `connection = luconejo.Channel.CreateWithParameters( host, port, username, password, vhost)` | create a connection | binding |
+| `connection = luconejo.Channel.CreateWithParameters( host, port, username, password, vhost, frame_max)` | create a connection | binding |
 | `connection.Valid` | check if connection succeeded | binding |
 | `connection:Disconnect()` | disconnect | binding |
 
