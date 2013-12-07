@@ -6,9 +6,13 @@ print('amqp version : ' .. luconejo.amqp_version())
 
 local test_hostname = 'localhost'
 
+------------------------------------------------------------------------------------
+
 describe("library is loaded correctly", function()
   assert.are.equal( type(luconejo) , "table" )
 end)
+
+------------------------------------------------------------------------------------
 
 describe("opening and closing a connection", function()
 
@@ -30,3 +34,5 @@ describe("opening an invalid connection", function()
 		assert.False( connection.Valid )
 	end)
 end)
+
+------------------------------------------------------------------------------------
