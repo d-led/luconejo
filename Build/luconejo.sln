@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rabbitmq", "rabbitmq.vcxproj", "{179A97C7-0367-F2D2-2C80-E07A18AC2761}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleAmqpClient", "SimpleAmqpClient.vcxproj", "{DD2FDA1D-C928-F96F-F25A-DEF4DEB2D87B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "luconejo", "luconejo.vcxproj", "{C440DC44-B00D-3750-D926-25F8C5526CDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|native = Debug|native
+		Release|native = Release|native
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{179A97C7-0367-F2D2-2C80-E07A18AC2761}.Debug|native.ActiveCfg = Debug native|Win32
+		{179A97C7-0367-F2D2-2C80-E07A18AC2761}.Debug|native.Build.0 = Debug native|Win32
+		{179A97C7-0367-F2D2-2C80-E07A18AC2761}.Release|native.ActiveCfg = Release native|Win32
+		{179A97C7-0367-F2D2-2C80-E07A18AC2761}.Release|native.Build.0 = Release native|Win32
+		{DD2FDA1D-C928-F96F-F25A-DEF4DEB2D87B}.Debug|native.ActiveCfg = Debug native|Win32
+		{DD2FDA1D-C928-F96F-F25A-DEF4DEB2D87B}.Debug|native.Build.0 = Debug native|Win32
+		{DD2FDA1D-C928-F96F-F25A-DEF4DEB2D87B}.Release|native.ActiveCfg = Release native|Win32
+		{DD2FDA1D-C928-F96F-F25A-DEF4DEB2D87B}.Release|native.Build.0 = Release native|Win32
+		{C440DC44-B00D-3750-D926-25F8C5526CDE}.Debug|native.ActiveCfg = Debug native|Win32
+		{C440DC44-B00D-3750-D926-25F8C5526CDE}.Debug|native.Build.0 = Debug native|Win32
+		{C440DC44-B00D-3750-D926-25F8C5526CDE}.Release|native.ActiveCfg = Release native|Win32
+		{C440DC44-B00D-3750-D926-25F8C5526CDE}.Release|native.Build.0 = Release native|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

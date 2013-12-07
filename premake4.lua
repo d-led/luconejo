@@ -16,6 +16,9 @@ local function platform_specifics()
 	configuration 'macosx'
 		targetprefix ''
 		targetextension '.so'
+	configuration 'windows'
+		includedirs { [[C:\Users\Public\lua\LuaRocks\2.1\include]] , os.getenv 'BOOST' }
+		libdirs { [[C:\Users\Public\lua\LuaRocks\2.1]] , path.join(os.getenv'BOOST',[[stage\lib]]) }
 	configuration { '*' }
 end
 
