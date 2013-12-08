@@ -54,4 +54,14 @@ describe("publishing messages via a channel", function()
 	it("should return mandatory messages sent to an unexistent queue",function ()
 		assert.False( this.channel:BasicPublish("", "test_channel_noqueue", this.message, true, false) )
 	end)
+
+	it("should fail sending to nonexistent exchange", function( )
+		assert.False( this.channel:BasicPublish("test_channel_badexchange", "test_channel_rk", this.message, false, false) )
+	end)
+
+	it("should be able to recover from bad message publish",function()
+		this.channel:BasicPublish("test_channel_badexchange", "test_channel_rk", this.message, false, false)
+
+		assert.True( this.channel:BasicPublish("", "test_channel_rk", this.message, false, false) )
+	end)
 end)
