@@ -3,9 +3,11 @@ assert(require 'luconejo')
 local connected_test = {
 	create = function()
 		local fixture = {
-			channel = luconejo.Channel.Create( "localhost" )
+			channel = luconejo.Channel.Create( "localhost" ),
+			message = luconejo.BasicMessage.Create("Test message")
 		}
 		assert.truthy( fixture.channel )
+		assert.truthy( fixture.message )
 		return fixture
 	end	
 }
@@ -37,21 +39,19 @@ end)
 
 -------------------------------------------------------------------------------
 
-describe("publishing messages", function()
+describe("publishing messages via a channel", function()
 	local this = connected_test.create()
 
 	it("should be possible to send a simple message",function ()
-		local message = luconejo.BasicMessage.Create("Test message")
-		assert.truthy( message )
-		assert.True( message.Valid )
-    	assert.True( this.channel:BasicPublish("", "test_channel_routingkey", message, false, false) )
+    	assert.True( this.channel:BasicPublish("", "test_channel_routingkey", this.message, false, false) )
 	end)
 
 	it("should be possible to publish the same message multiple times",function ()
-		local message = luconejo.BasicMessage.Create("Test message")
-		assert.truthy( message )
-		assert.True( message.Valid )
-    	assert.True( this.channel:BasicPublish("", "test_channel_routingkey", message, false, false) )
-    	assert.True( this.channel:BasicPublish("", "test_channel_routingkey", message, false, false) )
+    	assert.True( this.channel:BasicPublish("", "test_channel_routingkey", this.message, false, false) )
+    	assert.True( this.channel:BasicPublish("", "test_channel_routingkey", this.message, false, false) )
+	end)
+
+	it("should return mandatory messages sent to an unexistent queue",function ()
+		assert.False( this.channel:BasicPublish("", "test_channel_noqueue", this.message, true, false) )
 	end)
 end)
