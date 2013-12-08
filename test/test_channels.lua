@@ -10,6 +10,8 @@ local connected_test = {
 	end	
 }
 
+-------------------------------------------------------------------------------
+
 describe("first channel", function()
 	local this = connected_test.create()
 	
@@ -30,5 +32,26 @@ describe("first channel", function()
 
 		assert.True( this.channel:DeclareExchange("test_channel_exchange", luconejo.Channel.EXCHANGE_TYPE_FANOUT, false, false, true) )
 		assert.True( this.channel:DeleteExchange("test_channel_exchange") )
+	end)
+end)
+
+-------------------------------------------------------------------------------
+
+describe("publishing messages", function()
+	local this = connected_test.create()
+
+	it("should be possible to send a simple message",function ()
+		local message = luconejo.BasicMessage.Create("Test message")
+		assert.truthy( message )
+		assert.True( message.Valid )
+    	assert.True( this.channel:BasicPublish("", "test_channel_routingkey", message, false, false) )
+	end)
+
+	it("should be possible to publish the same message multiple times",function ()
+		local message = luconejo.BasicMessage.Create("Test message")
+		assert.truthy( message )
+		assert.True( message.Valid )
+    	assert.True( this.channel:BasicPublish("", "test_channel_routingkey", message, false, false) )
+    	assert.True( this.channel:BasicPublish("", "test_channel_routingkey", message, false, false) )
 	end)
 end)

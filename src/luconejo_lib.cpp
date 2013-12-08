@@ -47,6 +47,22 @@ namespace luconejo {
 			return false;
 		}
 
+		///////////////////
+		struct BasicMessage
+		{
+			AmqpClient::BasicMessage::ptr_t message;
+
+			static RefCountedPtr<BasicMessage> Create(std::string const& body) {
+				RefCountedPtr<BasicMessage> res(new BasicMessage);
+				res->message = AmqpClient::BasicMessage::Create(body);
+				return res;
+			}
+
+			bool Valid() const {
+				return message;
+			}
+		};
+
 		////////////////
 		struct Channel {
 			AmqpClient::Channel::ptr_t connection;
@@ -142,6 +158,22 @@ namespace luconejo {
 				}
 			}
 
+			bool BasicPublish(std::string const& exchange_name,
+		                      std::string const& routing_key,
+		                      RefCountedPtr<BasicMessage> message,
+		                      bool mandatory,
+		                      bool immediate) {
+				if (!connection || !message.get() || !message->Valid())
+					return false;
+
+				try {
+					connection->BasicPublish(exchange_name,routing_key,message->message,mandatory,immediate);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
+			}
+
 			static std::string EXCHANGE_TYPE_DIRECT() { return AmqpClient::Channel::EXCHANGE_TYPE_DIRECT; }
 			static std::string EXCHANGE_TYPE_FANOUT() { return AmqpClient::Channel::EXCHANGE_TYPE_FANOUT; }
 			static std::string EXCHANGE_TYPE_TOPIC() { return AmqpClient::Channel::EXCHANGE_TYPE_TOPIC; }
@@ -165,6 +197,15 @@ void register_luconejo (lua_State* L) {
 			.addFunction("amqp_version",&amqp_version)
 		
 			// Channel
+			.beginClass<wrappers::BasicMessage>("BasicMessage")
+				// factories
+				.addStaticFunction("Create",wrappers::BasicMessage::Create)
+
+				// class
+				.addProperty("Valid",&wrappers::BasicMessage::Valid)
+			.endClass()
+
+			// Channel
 			.beginClass<wrappers::Channel>("Channel")
 				// constants
 				.addStaticProperty("EXCHANGE_TYPE_DIRECT",&wrappers::Channel::EXCHANGE_TYPE_DIRECT)
@@ -182,6 +223,7 @@ void register_luconejo (lua_State* L) {
 				.addFunction("DeclareExchange",&wrappers::Channel::DeclareExchange)
 				.addFunction("DeleteExchange",&wrappers::Channel::DeleteExchange)
 				.addFunction("DeleteExchangeIfUnused",&wrappers::Channel::DeleteExchangeIfUnused)
+				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
 			.endClass()
 
 

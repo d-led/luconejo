@@ -53,6 +53,16 @@ disconnecting
 
 `connection:Disconnect()`
 
+basic message
+-------------
+
+`message = luconejo.BasicMessage.Create( body )` create a message with a string-body`
+
+publishing a message
+--------------------
+
+`connection:BasicPublish(exchange_name, routing key, message, mandatory, immediate)` message should be a `luconejo.BasicMessage`.
+
 exception mechanisms
 --------------------
 
@@ -63,6 +73,11 @@ If not valid, the object ignores commands.
 The exception text is sent to `stderr`.
 
 `void (...)` methods return `true` if succeeded or `false` if exception thrown.
+
+binding details
+---------------
+
+All parameters are mandatory at the moment. C++ Function signatures with default values or without are mapped onto different Lua functions.
 
 building
 --------
