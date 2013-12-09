@@ -186,6 +186,22 @@ namespace luconejo {
 				}
 			}
 
+			std::string DeclareQueue(	std::string const& queue_name,
+										bool passive = false,
+										bool durable = false,
+										bool exclusive = true,
+										bool auto_delete = true) {
+				if (!Valid())
+					return INVALID_QUEUE_NAME();
+
+				try {
+					return connection->DeclareQueue(queue_name,passive,durable,exclusive,auto_delete);
+				} catch (std::exception const& e) {
+					Error(e.what());
+					return INVALID_QUEUE_NAME();
+				}
+			}
+
 			bool BasicPublish(std::string const& exchange_name,
 		                      std::string const& routing_key,
 		                      RefCountedPtr<BasicMessage> message,
@@ -205,6 +221,7 @@ namespace luconejo {
 			static std::string EXCHANGE_TYPE_DIRECT() { return AmqpClient::Channel::EXCHANGE_TYPE_DIRECT; }
 			static std::string EXCHANGE_TYPE_FANOUT() { return AmqpClient::Channel::EXCHANGE_TYPE_FANOUT; }
 			static std::string EXCHANGE_TYPE_TOPIC() { return AmqpClient::Channel::EXCHANGE_TYPE_TOPIC; }
+			static std::string INVALID_QUEUE_NAME() { return ""; }
 		};
 
 	}
@@ -239,6 +256,7 @@ void register_luconejo (lua_State* L) {
 				.addStaticProperty("EXCHANGE_TYPE_DIRECT",&wrappers::Channel::EXCHANGE_TYPE_DIRECT)
 				.addStaticProperty("EXCHANGE_TYPE_FANOUT",&wrappers::Channel::EXCHANGE_TYPE_FANOUT)
 				.addStaticProperty("EXCHANGE_TYPE_TOPIC",&wrappers::Channel::EXCHANGE_TYPE_TOPIC)
+				.addStaticProperty("INVALID_QUEUE_NAME",&wrappers::Channel::INVALID_QUEUE_NAME)
 		
 				// factories
 				.addStaticFunction("Create",wrappers::Channel::Create)
@@ -252,6 +270,7 @@ void register_luconejo (lua_State* L) {
 				.addFunction("DeleteExchange",&wrappers::Channel::DeleteExchange)
 				.addFunction("DeleteExchangeIfUnused",&wrappers::Channel::DeleteExchangeIfUnused)
 				.addFunction("BindExchange",&wrappers::Channel::BindExchange)
+				.addFunction("UnbindExchange",&wrappers::Channel::UnbindExchange)
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
 			.endClass()
 

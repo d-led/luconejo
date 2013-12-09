@@ -34,9 +34,9 @@ exchanges
 ---------
 ```lua
 
-luconejo.Channel.EXCHANGE_TYPE_DIRECT
-luconejo.Channel.EXCHANGE_TYPE_FANOUT
-luconejo.Channel.EXCHANGE_TYPE_TOPIC
+luconejo.Channel.EXCHANGE_TYPE_DIRECT -- constant
+luconejo.Channel.EXCHANGE_TYPE_FANOUT -- constant
+luconejo.Channel.EXCHANGE_TYPE_TOPIC -- constant
 
 connection:DeclareExchange(
 	exchange_name,
@@ -47,6 +47,20 @@ connection:DeclareExchange(
 connection:DeleteExchange( exchange_name )
 connection:DeleteExchangeIfUnused( exchange_name ) -- delete an exchange if unused
 connection:BindExchange( destination, source, routing key )
+connection:UnbindExchange( destination, source, routing key )
+```
+
+queues
+------
+
+```lua
+local queue_name = connection:DeclareQueue(
+	queue_name,
+	passive,
+	durable,
+	exclusive,
+	auto_delete)
+	-- returns luconejo.Channel.INVALID_QUEUE_NAME if failed
 ```
 
 disconnecting
