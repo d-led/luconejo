@@ -6,6 +6,13 @@ a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient
 api
 ===
 
+reading convention
+------------------
+
+The api is mirroring the c++ api as closely as possible. Some overloads are split into multiple functions.
+To read the full documentation, please refer to the original documentation in [SimpleAmqpClient](https://github.com/woldan/SimpleAmqpClient/tree/master/src).
+The full binding can be seen at a glance in [luconejo_lib.cpp -> register_luconejo](blob/master/src/luconejo_lib.cpp)
+
 
 global constants
 ----------------
@@ -84,6 +91,11 @@ publishing a message
 
 `connection:BasicPublish(exchange_name, routing key, message, mandatory, immediate)` message should be a `luconejo.BasicMessage`.
 
+consuming a message
+-------------------
+
+`connection:BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,prefetch_count)`
+
 exception mechanisms
 --------------------
 
@@ -113,6 +125,8 @@ status
 
  - work in process
  - no SSL support yet, will be configurable in the future
+ - compiles and passes tests with clang on MacOS X only
+ - rabbitmq-c should be built with its own CMake config and linked dynamically
 
 dependencies
 ------------
@@ -128,7 +142,7 @@ all dependent libraries are built from source
  -------
  
   - start RabbitMQ
-  - premake/premake4 test
+  - `> premake/premake4 test`
 
 license
 -------
