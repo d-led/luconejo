@@ -11,7 +11,7 @@ reading convention
 
 The api is mirroring the c++ api as closely as possible. Some overloads are split into multiple functions.
 To read the full documentation, please refer to the original documentation in [SimpleAmqpClient](https://github.com/woldan/SimpleAmqpClient/tree/master/src).
-The full binding can be seen at a glance in [luconejo_lib.cpp -> register_luconejo](blob/master/src/luconejo_lib.cpp)
+The full binding can be seen at a glance in [luconejo_lib.cpp -> register_luconejo](src/luconejo_lib.cpp)
 
 
 global constants
