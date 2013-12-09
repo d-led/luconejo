@@ -202,6 +202,34 @@ namespace luconejo {
 				}
 			}
 
+			bool DeleteQueue(	std::string const& queue_name,
+								bool if_unused = false,
+								bool if_empty = false) {
+				if (!Valid())
+					return false;
+
+				try {
+					connection->DeleteQueue(queue_name,if_unused,if_empty);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
+			}
+
+			bool BindQueue(	std::string const& queue_name,
+							std::string const& exchange_name,
+							std::string const& routing_key = "") {
+				if (Valid())
+					return false;
+
+				try {
+					connection->BindQueue(queue_name,exchange_name,routing_key);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
+			}
+
 			bool BasicPublish(std::string const& exchange_name,
 		                      std::string const& routing_key,
 		                      RefCountedPtr<BasicMessage> message,
@@ -271,6 +299,9 @@ void register_luconejo (lua_State* L) {
 				.addFunction("DeleteExchangeIfUnused",&wrappers::Channel::DeleteExchangeIfUnused)
 				.addFunction("BindExchange",&wrappers::Channel::BindExchange)
 				.addFunction("UnbindExchange",&wrappers::Channel::UnbindExchange)
+				.addFunction("DeclareQueue",&wrappers::Channel::DeclareQueue)
+				.addFunction("DeleteQueue",&wrappers::Channel::DeleteQueue)
+				.addFunction("BindQueue",&wrappers::Channel::BindQueue)
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
 			.endClass()
 
