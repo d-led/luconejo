@@ -94,7 +94,8 @@ publishing a message
 consuming a message
 -------------------
 
-`connection:BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,prefetch_count)`
+`connection:BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,prefetch_count)` returns the consumer tag
+
 
 exception mechanisms
 --------------------

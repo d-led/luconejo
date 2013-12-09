@@ -63,6 +63,14 @@ namespace luconejo {
 			}
 		};
 
+		struct Envelope {
+			AmqpClient::Envelope::ptr_t envelope;
+
+			bool Valid() const {
+				return envelope;
+			}
+		};
+
 		////////////////
 		struct Channel {
 			AmqpClient::Channel::ptr_t connection;
@@ -271,6 +279,21 @@ namespace luconejo {
 				} catch (std::exception const& e) {
 					return Error(e.what());
 				}
+			}
+
+			RefCountedPtr<Envelope> BasicConsumeMessage(std::string const & consumer_tag, int timeout = -1) {
+				RefCountedPtr<Envelope> res;
+
+				if (!Valid())
+					return res;
+
+				AmqpClient::Envelope::ptr_t envelope;
+				if (connection->BasicConsumeMessage(consumer_tag,envelope,timeout)) {
+					res = RefCountedPtr<Envelope>(new Envelope);
+					res->envelope = envelope;
+				}
+
+				return res;
 			}
 
 			bool BasicPublish(std::string const& exchange_name,
