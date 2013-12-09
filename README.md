@@ -95,7 +95,7 @@ consuming a message
 -------------------
 
 `connection:BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,prefetch_count)` returns the consumer tag
-
+`local envelope = connection:BasicConsumeMessage(consumer_tag,timeout)`
 
 exception mechanisms
 --------------------

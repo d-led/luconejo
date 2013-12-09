@@ -344,6 +344,12 @@ void register_luconejo (lua_State* L) {
 				.addProperty("Valid",&wrappers::BasicMessage::Valid)
 			.endClass()
 
+			// Envelope
+			.beginClass<wrappers::Envelope>("Envelope")
+				// class
+				.addProperty("Valid",&wrappers::Envelope::Valid)
+			.endClass()
+
 			// Channel
 			.beginClass<wrappers::Channel>("Channel")
 				// constants
@@ -370,6 +376,8 @@ void register_luconejo (lua_State* L) {
 				.addFunction("BindQueue",&wrappers::Channel::BindQueue)
 				.addFunction("UnbindQueue",&wrappers::Channel::UnbindQueue)
 				.addFunction("PurgeQueue",&wrappers::Channel::PurgeQueue)
+				.addFunction("BasicConsume",&wrappers::Channel::BasicConsume)
+				.addFunction("BasicConsumeMessage",&wrappers::Channel::BasicConsumeMessage)
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
 			.endClass()
 
