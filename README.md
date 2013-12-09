@@ -62,7 +62,9 @@ local queue_name = connection:DeclareQueue(
 	auto_delete)
 	-- returns luconejo.Channel.INVALID_QUEUE_NAME if failed
 
-connection:BindQueue( queue_name, exchange_name, routing_key)
+connection:BindQueue( queue_name, exchange_name, routing_key )
+connection:UnbindQueue( queue_name, exchange_name, routing_key )
+connection:PurgeQueue( queue_name )
 
 connection:DeleteQueue( queue_name, if_unused, if_empty )
 ```
