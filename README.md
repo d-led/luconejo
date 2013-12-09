@@ -25,7 +25,7 @@ connection = luconejo.Channel.CreateWithParameters(
 	username,
 	password,
 	vhost,
-	frame_max) -- create a connection
+	frame_max)
 connection = luconejo.Channel.CreateFromUri( host_uri ) --  connect with an AMQP URI
 connection.Valid -- check if connection succeeded
 ```
@@ -34,18 +34,19 @@ exchanges
 ---------
 ```lua
 
-luconejo.Channel.EXCHANGE_TYPE_DIRECT -- constant
-luconejo.Channel.EXCHANGE_TYPE_FANOUT -- constant
-luconejo.Channel.EXCHANGE_TYPE_TOPIC -- constant
+luconejo.Channel.EXCHANGE_TYPE_DIRECT
+luconejo.Channel.EXCHANGE_TYPE_FANOUT
+luconejo.Channel.EXCHANGE_TYPE_TOPIC
 
 connection:DeclareExchange(
 	exchange_name,
 	exchange_type,
 	passive,
 	durable,
-	auto_delete) -- declare an exchange
-connection:DeleteExchange( exchange_name ) -- delete an exchange
+	auto_delete)
+connection:DeleteExchange( exchange_name )
 connection:DeleteExchangeIfUnused( exchange_name ) -- delete an exchange if unused
+connection:BindExchange( destination, source, routing key )
 ```
 
 disconnecting

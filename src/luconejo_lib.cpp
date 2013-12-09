@@ -107,7 +107,7 @@ namespace luconejo {
 			}
 
 			bool Disconnect() {
-				if (!connection)
+				if (!Valid())
 					return false;
 
 				connection.reset();
@@ -123,7 +123,7 @@ namespace luconejo {
 		                         bool passive = false,
 		                         bool durable = false,
 		                         bool auto_delete = false) {
-				if (!connection)
+				if (!Valid())
 					return false;
 
 				try {
@@ -135,7 +135,7 @@ namespace luconejo {
 			}
 
 			bool DeleteExchange(const std::string &exchange_name) {
-				if (!connection)
+				if (!Valid())
 					return false;
 
 				try {
@@ -147,11 +147,39 @@ namespace luconejo {
 			}
 
 			bool DeleteExchangeIfUnused(const std::string &exchange_name) {
-				if (!connection)
+				if (!Valid())
 					return false;
 
 				try {
 					connection->DeleteExchange(exchange_name,true);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
+			}
+
+			bool BindExchange(	std::string const& destination,
+								std::string const& source,
+								std::string const& routing_key) {
+				if (!Valid())
+					return false;
+
+				try {
+					connection->BindExchange(destination, source, routing_key);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
+			}
+
+			bool UnbindExchange(	std::string const& destination,
+									std::string const& source,
+									std::string const& routing_key) {
+				if (!Valid())
+					return false;
+
+				try {
+					connection->UnbindExchange(destination, source, routing_key);
 					return true;
 				} catch (std::exception const& e) {
 					return Error(e.what());
@@ -163,7 +191,7 @@ namespace luconejo {
 		                      RefCountedPtr<BasicMessage> message,
 		                      bool mandatory,
 		                      bool immediate) {
-				if (!connection || !message.get() || !message->Valid())
+				if (!Valid() || !message.get() || !message->Valid())
 					return false;
 
 				try {
@@ -223,6 +251,7 @@ void register_luconejo (lua_State* L) {
 				.addFunction("DeclareExchange",&wrappers::Channel::DeclareExchange)
 				.addFunction("DeleteExchange",&wrappers::Channel::DeleteExchange)
 				.addFunction("DeleteExchangeIfUnused",&wrappers::Channel::DeleteExchangeIfUnused)
+				.addFunction("BindExchange",&wrappers::Channel::BindExchange)
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
 			.endClass()
 
