@@ -33,6 +33,7 @@
 #include <stdexcept>
 #include <amqp.h>
 #include <SimpleAmqpClient/SimpleAmqpClient.h>
+#include <boost/lexical_cast.hpp>
 
 #define xstr(s) str(s)
 #define str(s) #s
@@ -49,6 +50,7 @@ namespace luconejo {
 		static std::string EXCHANGE_TYPE_TOPIC() { return AmqpClient::Channel::EXCHANGE_TYPE_TOPIC; }
 		static std::string INVALID_QUEUE_NAME() { return ""; }
 		static std::string INVALID_CONSUMER_TAG() { return ""; }
+		static int INVALID_DELIVERY_CHANNEL() { return -1; }
 
 
 		////////////////////////////////////
@@ -101,6 +103,41 @@ namespace luconejo {
 					return INVALID_CONSUMER_TAG();
 
 				return envelope->ConsumerTag();
+			}
+
+			std::string Exchange() const {
+				if (!Valid())
+					return "";
+
+				return envelope->Exchange();
+			}
+
+			bool Redelivered() const {
+				if (!Valid())
+					return false;
+
+				return envelope->Redelivered();
+			}
+
+			std::string RoutingKey() const {
+				if (!Valid())
+					return "";
+
+				return envelope->RoutingKey();
+			}
+
+			int DeliveryChannel() const {
+				if (!Valid())
+					return INVALID_DELIVERY_CHANNEL();
+
+				return static_cast<int>(envelope->DeliveryChannel());	
+			}
+
+			std::string DeliveryTag() const {
+				if (!Valid())
+					return "";
+
+				return boost::lexical_cast<std::string>(envelope->DeliveryTag());
 			}
 		};
 
@@ -388,6 +425,11 @@ void register_luconejo (lua_State* L) {
 				.addProperty("Valid",&wrappers::Envelope::Valid)
 				.addProperty("Message",&wrappers::Envelope::Message)
 				.addProperty("ConsumerTag",&wrappers::Envelope::ConsumerTag)
+				.addProperty("Exchange",&wrappers::Envelope::Exchange)
+				.addProperty("Redelivered",&wrappers::Envelope::Redelivered)
+				.addProperty("RoutingKey",&wrappers::Envelope::RoutingKey)
+				.addProperty("DeliveryChannel",&wrappers::Envelope::DeliveryChannel)
+				.addProperty("DeliveryTag",&wrappers::Envelope::DeliveryTag)
 			.endClass()
 
 			// Channel
@@ -398,6 +440,7 @@ void register_luconejo (lua_State* L) {
 				.addStaticProperty("EXCHANGE_TYPE_TOPIC",&wrappers::EXCHANGE_TYPE_TOPIC)
 				.addStaticProperty("INVALID_QUEUE_NAME",&wrappers::INVALID_QUEUE_NAME)
 				.addStaticProperty("INVALID_CONSUMER_TAG",&wrappers::INVALID_CONSUMER_TAG)
+				.addStaticProperty("INVALID_DELIVERY_CHANNEL",&wrappers::INVALID_DELIVERY_CHANNEL)
 		
 				// factories
 				.addStaticFunction("Create",wrappers::Channel::Create)
