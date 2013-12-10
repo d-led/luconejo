@@ -59,7 +59,7 @@ namespace luconejo {
 			return false;
 		}
 
-		///////////////////
+		/////////////////// todo: wrap the original
 		struct BasicMessage
 		{
 			AmqpClient::BasicMessage::ptr_t message;
@@ -75,10 +75,265 @@ namespace luconejo {
 			}
 
 			std::string Body() const {
-				if (!Valid())
-					return "";
+				return Valid() ? message->Body() : ""
+				;
+			}
 
-				return message->Body();
+			void Body(std::string const& body) {
+				if (Valid())
+					message->Body(body);
+			}
+
+			std::string ContentType() const {
+				return Valid() ? message->ContentType() : "";
+			}
+
+			void ContentType(const std::string &content_type) {
+				if (Valid())
+					message->ContentType(content_type);
+			}
+
+			bool ContentTypeIsSet() const {
+				return Valid() ? message->ContentTypeIsSet() : false;
+			}
+
+			void ContentTypeClear() {
+				if (Valid())
+					message->ContentTypeClear();
+			}
+
+			std::string ContentEncoding() const {
+				return Valid() ? message->ContentEncoding() : "";
+			}
+
+			void ContentEncoding(const std::string &content_encoding) {
+				if (Valid())
+					message->ContentEncoding();
+			}
+
+			bool ContentEncodingIsSet() const {
+				return Valid() ? message->ContentEncodingIsSet() : false;
+			}
+
+			void ContentEncodingClear() {
+				if (Valid())
+					message->ContentEncodingClear();
+			}
+
+			static const int dm_nonpersistent = static_cast<int>(AmqpClient::BasicMessage::dm_nonpersistent);
+			static const int dm_persistent = static_cast<int>(AmqpClient::BasicMessage::dm_persistent);
+
+			int DeliveryMode() const {
+				return Valid() ? static_cast<int>(message->DeliveryMode()) : -1;
+			}
+
+			void DeliveryMode(int delivery_mode) {
+				if (Valid())
+					message->DeliveryMode(static_cast<AmqpClient::BasicMessage::delivery_mode_t>(delivery_mode));
+			}
+
+			bool DeliveryModeIsSet() const {
+				return Valid() ? message->DeliveryModeIsSet() : false;
+			}
+
+			void DeliveryModeClear() {
+				if (Valid())
+					message->DeliveryModeClear();
+			}
+
+			int Priority() const {
+				return Valid() ? static_cast<int>(message->Priority()) : -1;
+			}
+
+			void Priority(int priority) {
+				if (Valid())
+					message->Priority(static_cast<boost::uint8_t>(priority));
+			}
+
+			bool PriorityIsSet() const {
+				return Valid() ? message->PriorityIsSet() : false;
+			}
+
+			void PriorityClear() {
+				if (Valid())
+					message->PriorityClear();
+			}
+
+			std::string CorrelationId() const {
+				return Valid() ? message->CorrelationId() : "";
+			}
+
+			void CorrelationId(const std::string &correlation_id) {
+				if (Valid())
+					message->CorrelationId(correlation_id);
+			}
+
+			bool CorrelationIdIsSet() const {
+				return Valid() ? message->CorrelationIdIsSet() : false;
+			}
+
+			void CorrelationIdClear() {
+				if (Valid())
+					message->CorrelationIdClear();
+			}
+
+			std::string ReplyTo() const {
+				return Valid() ? message->ReplyTo() : "";
+			}
+
+			void ReplyTo(const std::string &reply_to) {
+				if (Valid())
+					message->ReplyTo(reply_to);
+			}
+
+			bool ReplyToIsSet() const {
+				return Valid() ? message->ReplyToIsSet() : false;
+			}
+
+			void ReplyToClear() {
+				if (Valid())
+					message->ReplyToClear();
+			}
+
+			std::string Expiration() const {
+				return Valid() ? message->Expiration() : "";
+			}
+
+			void Expiration(const std::string &expiration) {
+				if (Valid())
+					message->Expiration(expiration);
+			}
+
+			bool ExpirationIsSet() const {
+				return Valid() ? message->ExpirationIsSet() : false;
+			}
+
+			void ExpirationClear() {
+				if (Valid())
+					message->ExpirationClear();
+			}
+
+			std::string MessageId() const {
+				return Valid() ? message->MessageId() : "";
+			}
+
+			void MessageId(const std::string &message_id) {
+				if (Valid())
+					message->MessageId(message_id);
+			}
+
+			bool MessageIdIsSet() const {
+				return Valid() ? message->MessageIdIsSet() : false;
+			}
+
+			void MessageIdClear() {
+				if (Valid())
+					message->MessageIdClear();
+			}
+
+			std::string Timestamp() const {
+				return Valid() ? boost::lexical_cast<std::string>(message->Timestamp()) : "";
+			}
+
+			void Timestamp(std::string timestamp) {
+				if (!Valid())
+					return;
+				try {
+					message->Timestamp(boost::lexical_cast<boost::uint64_t>(timestamp));
+				} catch (std::exception const& e) {
+					Error(e.what());
+					// handling?
+				}
+			}
+
+			bool TimestampIsSet() const {
+				return Valid() ? message->TimestampIsSet() : false;
+			}
+
+			void TimestampClear() {
+				if (Valid())
+					message->TimestampClear();
+			}
+
+			std::string Type() const {
+				return Valid() ? message->Type() : "";
+			}
+
+			void Type(const std::string &type) {
+				if (Valid())
+					message->Type(type);
+			}
+
+			bool TypeIsSet() const {
+				return Valid() ? message->TypeIsSet() : false;
+			}
+
+			void TypeClear() {
+				if (Valid())
+					message->TypeClear();
+			}
+
+			std::string UserId() const {
+				return Valid() ? message->UserId() : "";
+			}
+
+			void UserId(const std::string &user_id) {
+				if (Valid())
+					message->UserId(user_id);
+			}
+
+			bool UserIdIsSet() const {
+				return Valid() ? message->UserIdIsSet() : false;
+			}
+
+			void UserIdClear() {
+				if (Valid())
+					message->UserIdClear();
+			}
+
+			std::string AppId() const {
+				return Valid() ? message->AppId() : "";
+			}
+
+			void AppId(const std::string &app_id) {
+				if (Valid())
+					message->AppId(app_id);
+			}
+
+			bool AppIdIsSet() const {
+				return Valid() ? message->AppIdIsSet() : false;
+			}
+
+			void AppIdClear() {
+				if (Valid())
+					message->AppIdClear();
+			}
+
+			std::string ClusterId() const {
+				return Valid() ? message->ClusterId() : "";
+			}
+
+			void ClusterId(const std::string &cluster_id) {
+				if (Valid())
+					message->ClusterId(cluster_id);
+			}
+
+			bool ClusterIdIsSet() const {
+				return Valid() ? message->ClusterIdIsSet() : false;
+			}
+
+			void ClusterIdClear() {
+				if (Valid())
+					message->ClusterIdClear();
+			}
+
+			bool HeaderTableIsSet() const {
+				return Valid() ? message->HeaderTableIsSet() : false;
+			}
+
+			void HeaderTableClear() {
+				if (Valid())
+					message->HeaderTableClear();
 			}
 		};
 
@@ -416,7 +671,49 @@ void register_luconejo (lua_State* L) {
 
 				// class
 				.addProperty("Valid",&wrappers::BasicMessage::Valid)
-				.addProperty("Body",&wrappers::BasicMessage::Body)
+				.addProperty("Body",&wrappers::BasicMessage::Body,&wrappers::BasicMessage::Body)
+				.addProperty("ContentType",&wrappers::BasicMessage::ContentType,&wrappers::BasicMessage::ContentType)
+				.addProperty("ContentEncoding",&wrappers::BasicMessage::ContentEncoding,&wrappers::BasicMessage::ContentEncoding)
+				.addProperty("DeliveryMode",&wrappers::BasicMessage::DeliveryMode,&wrappers::BasicMessage::DeliveryMode)
+				.addProperty("Priority",&wrappers::BasicMessage::Priority,&wrappers::BasicMessage::Priority)
+				.addProperty("CorrelationId",&wrappers::BasicMessage::CorrelationId,&wrappers::BasicMessage::CorrelationId)
+				.addProperty("ReplyTo",&wrappers::BasicMessage::ReplyTo,&wrappers::BasicMessage::ReplyTo)
+				.addProperty("Expiration",&wrappers::BasicMessage::Expiration,&wrappers::BasicMessage::Expiration)
+				.addProperty("MessageId",&wrappers::BasicMessage::MessageId,&wrappers::BasicMessage::MessageId)
+				.addProperty("Timestamp",&wrappers::BasicMessage::Timestamp,&wrappers::BasicMessage::Timestamp)
+				.addProperty("Type",&wrappers::BasicMessage::Type,&wrappers::BasicMessage::Type)
+				.addProperty("UserId",&wrappers::BasicMessage::UserId,&wrappers::BasicMessage::UserId)
+				.addProperty("AppId",&wrappers::BasicMessage::AppId,&wrappers::BasicMessage::AppId)
+				.addProperty("ClusterId",&wrappers::BasicMessage::ClusterId,&wrappers::BasicMessage::ClusterId)
+
+				.addFunction("ContentTypeIsSet",&wrappers::BasicMessage::ContentTypeIsSet)
+				.addFunction("ContentTypeClear",&wrappers::BasicMessage::ContentTypeClear)
+				.addFunction("ContentEncodingIsSet",&wrappers::BasicMessage::ContentEncodingIsSet)
+				.addFunction("ContentEncodingClear",&wrappers::BasicMessage::ContentEncodingClear)
+				.addFunction("DeliveryModeIsSet",&wrappers::BasicMessage::DeliveryModeIsSet)
+				.addFunction("DeliveryModeClear",&wrappers::BasicMessage::DeliveryModeClear)
+				.addFunction("PriorityIsSet",&wrappers::BasicMessage::PriorityIsSet)
+				.addFunction("PriorityClear",&wrappers::BasicMessage::PriorityClear)
+				.addFunction("CorrelationIdIsSet",&wrappers::BasicMessage::CorrelationIdIsSet)
+				.addFunction("CorrelationIdClear",&wrappers::BasicMessage::CorrelationIdClear)
+				.addFunction("ReplyToIsSet",&wrappers::BasicMessage::ReplyToIsSet)
+				.addFunction("ReplyToClear",&wrappers::BasicMessage::ReplyToClear)
+				.addFunction("ExpirationIsSet",&wrappers::BasicMessage::ExpirationIsSet)
+				.addFunction("ExpirationClear",&wrappers::BasicMessage::ExpirationClear)
+				.addFunction("MessageIdIsSet",&wrappers::BasicMessage::MessageIdIsSet)
+				.addFunction("MessageIdClear",&wrappers::BasicMessage::MessageIdClear)
+				.addFunction("TimestampIsSet",&wrappers::BasicMessage::TimestampIsSet)
+				.addFunction("TimestampClear",&wrappers::BasicMessage::TimestampClear)
+				.addFunction("TypeIsSet",&wrappers::BasicMessage::TypeIsSet)
+				.addFunction("TypeClear",&wrappers::BasicMessage::TypeClear)
+				.addFunction("UserIdIsSet",&wrappers::BasicMessage::UserIdIsSet)
+				.addFunction("UserIdClear",&wrappers::BasicMessage::UserIdClear)
+				.addFunction("AppIdIsSet",&wrappers::BasicMessage::AppIdIsSet)
+				.addFunction("AppIdClear",&wrappers::BasicMessage::AppIdClear)
+				.addFunction("ClusterIdIsSet",&wrappers::BasicMessage::ClusterIdIsSet)
+				.addFunction("ClusterIdClear",&wrappers::BasicMessage::ClusterIdClear)
+				.addFunction("HeaderTableIsSet",&wrappers::BasicMessage::HeaderTableIsSet)
+				.addFunction("HeaderTableClear",&wrappers::BasicMessage::HeaderTableClear)
 			.endClass()
 
 			// Envelope

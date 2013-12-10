@@ -134,6 +134,11 @@ status
  - compiles and passes tests with clang on MacOS X only
  - rabbitmq-c should be built with its own CMake config and linked dynamically
 
+motivation
+----------
+
+By way of writing this binding, partially going the wrong way of wrapping an otherwise simpler-bindable class, I can dive into the API and its details.
+
 dependencies
 ------------
 
