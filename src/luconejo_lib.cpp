@@ -61,6 +61,13 @@ namespace luconejo {
 			bool Valid() const {
 				return message;
 			}
+
+			std::string Body() const {
+				if (!Valid())
+					return "";
+
+				return message->Body();
+			}
 		};
 
 		struct Envelope {
@@ -68,6 +75,15 @@ namespace luconejo {
 
 			bool Valid() const {
 				return envelope;
+			}
+
+			RefCountedPtr<BasicMessage> Message() const {
+				RefCountedPtr<BasicMessage> res(new BasicMessage);
+				if (!Valid())
+					return res;
+
+				res->message = envelope->Message();
+				return res;
 			}
 		};
 
@@ -351,12 +367,14 @@ void register_luconejo (lua_State* L) {
 
 				// class
 				.addProperty("Valid",&wrappers::BasicMessage::Valid)
+				.addProperty("Body",&wrappers::BasicMessage::Body)
 			.endClass()
 
 			// Envelope
 			.beginClass<wrappers::Envelope>("Envelope")
 				// class
 				.addProperty("Valid",&wrappers::Envelope::Valid)
+				.addProperty("Message",&wrappers::Envelope::Message)
 			.endClass()
 
 			// Channel

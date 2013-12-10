@@ -110,5 +110,8 @@ describe("consuming messages",function ()
 
 		local consumed_envelope =  channel:BasicConsumeMessage(consumer, -1)
 		assert.True( consumed_envelope.Valid )
+		local received_message = consumed_envelope.Message
+		assert.True( received_message.Valid )
+		assert.are.equal( message_text , received_message.Body )
 	end)
 end)

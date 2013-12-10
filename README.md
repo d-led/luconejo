@@ -87,6 +87,7 @@ basic message
 -------------
 
 `message = luconejo.BasicMessage.Create( body )` create a message with a string-body`
+`local body = message.Body` get the message text
 
 publishing a message
 --------------------
@@ -99,6 +100,7 @@ consuming a message
 `local consumer_tag = connection:BasicConsume(queue)`
 `local consumer_tag = connection:BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,prefetch_count)` returns the consumer tag
 `local envelope = connection:BasicConsumeMessage(consumer_tag,timeout)`
+`local message = envelope.Message` returns `luconejo.BasicMessage`
 
 error handling
 --------------
