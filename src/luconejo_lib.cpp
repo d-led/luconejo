@@ -38,7 +38,17 @@
 #define str(s) #s
 
 namespace luconejo {
+
+
+
 	namespace wrappers {
+
+
+		static std::string EXCHANGE_TYPE_DIRECT() { return AmqpClient::Channel::EXCHANGE_TYPE_DIRECT; }
+		static std::string EXCHANGE_TYPE_FANOUT() { return AmqpClient::Channel::EXCHANGE_TYPE_FANOUT; }
+		static std::string EXCHANGE_TYPE_TOPIC() { return AmqpClient::Channel::EXCHANGE_TYPE_TOPIC; }
+		static std::string INVALID_QUEUE_NAME() { return ""; }
+		static std::string INVALID_CONSUMER_TAG() { return ""; }
 
 
 		////////////////////////////////////
@@ -84,6 +94,13 @@ namespace luconejo {
 
 				res->message = envelope->Message();
 				return res;
+			}
+
+			std::string ConsumerTag() const {
+				if (!Valid())
+					return INVALID_CONSUMER_TAG();
+
+				return envelope->ConsumerTag();
 			}
 		};
 
@@ -336,11 +353,6 @@ namespace luconejo {
 				}
 			}
 
-			static std::string EXCHANGE_TYPE_DIRECT() { return AmqpClient::Channel::EXCHANGE_TYPE_DIRECT; }
-			static std::string EXCHANGE_TYPE_FANOUT() { return AmqpClient::Channel::EXCHANGE_TYPE_FANOUT; }
-			static std::string EXCHANGE_TYPE_TOPIC() { return AmqpClient::Channel::EXCHANGE_TYPE_TOPIC; }
-			static std::string INVALID_QUEUE_NAME() { return ""; }
-			static std::string INVALID_CONSUMER_TAG() { return ""; }
 		};
 
 	}
@@ -375,16 +387,17 @@ void register_luconejo (lua_State* L) {
 				// class
 				.addProperty("Valid",&wrappers::Envelope::Valid)
 				.addProperty("Message",&wrappers::Envelope::Message)
+				.addProperty("ConsumerTag",&wrappers::Envelope::ConsumerTag)
 			.endClass()
 
 			// Channel
 			.beginClass<wrappers::Channel>("Channel")
 				// constants
-				.addStaticProperty("EXCHANGE_TYPE_DIRECT",&wrappers::Channel::EXCHANGE_TYPE_DIRECT)
-				.addStaticProperty("EXCHANGE_TYPE_FANOUT",&wrappers::Channel::EXCHANGE_TYPE_FANOUT)
-				.addStaticProperty("EXCHANGE_TYPE_TOPIC",&wrappers::Channel::EXCHANGE_TYPE_TOPIC)
-				.addStaticProperty("INVALID_QUEUE_NAME",&wrappers::Channel::INVALID_QUEUE_NAME)
-				.addStaticProperty("INVALID_CONSUMER_TAG",&wrappers::Channel::INVALID_CONSUMER_TAG)
+				.addStaticProperty("EXCHANGE_TYPE_DIRECT",&wrappers::EXCHANGE_TYPE_DIRECT)
+				.addStaticProperty("EXCHANGE_TYPE_FANOUT",&wrappers::EXCHANGE_TYPE_FANOUT)
+				.addStaticProperty("EXCHANGE_TYPE_TOPIC",&wrappers::EXCHANGE_TYPE_TOPIC)
+				.addStaticProperty("INVALID_QUEUE_NAME",&wrappers::INVALID_QUEUE_NAME)
+				.addStaticProperty("INVALID_CONSUMER_TAG",&wrappers::INVALID_CONSUMER_TAG)
 		
 				// factories
 				.addStaticFunction("Create",wrappers::Channel::Create)
