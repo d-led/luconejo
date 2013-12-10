@@ -210,6 +210,10 @@ namespace luconejo {
 				}
 			}
 
+			std::string SimpleDeclareQueue( std::string const& queue_name ) {
+				return DeclareQueue(queue_name);
+			}
+
 			bool DeleteQueue(	std::string const& queue_name,
 								bool if_unused = false,
 								bool if_empty = false) {
@@ -265,11 +269,11 @@ namespace luconejo {
 			}
 
 			std::string BasicConsume(std::string const& queue,
-		                      std::string const& consumer_tag,
-		                      bool no_local,
-		                      bool no_ack,
-		                      bool exclusive,
-		                      int prefetch_count) {
+		                      std::string const& consumer_tag = "",
+		                      bool no_local = true,
+		                      bool no_ack = true,
+		                      bool exclusive = true,
+		                      int prefetch_count = 1) {
 				if (!Valid())
 					return INVALID_CONSUMER_TAG();
 
@@ -279,6 +283,10 @@ namespace luconejo {
 					Error(e.what());
 					return INVALID_CONSUMER_TAG();
 				}
+			}
+
+			std::string SimpleBasicConsume(std::string const& queue) {
+				return BasicConsume(queue);
 			}
 
 			RefCountedPtr<Envelope> BasicConsumeMessage(std::string const & consumer_tag, int timeout = -1) {
@@ -299,8 +307,8 @@ namespace luconejo {
 			bool BasicPublish(std::string const& exchange_name,
 		                      std::string const& routing_key,
 		                      RefCountedPtr<BasicMessage> message,
-		                      bool mandatory,
-		                      bool immediate) {
+		                      bool mandatory = false,
+		                      bool immediate = false) {
 				if (!Valid() || !message.get() || !message->Valid())
 					return false;
 
@@ -373,12 +381,14 @@ void register_luconejo (lua_State* L) {
 				.addFunction("DeleteExchangeIfUnused",&wrappers::Channel::DeleteExchangeIfUnused)
 				.addFunction("BindExchange",&wrappers::Channel::BindExchange)
 				.addFunction("UnbindExchange",&wrappers::Channel::UnbindExchange)
+				.addFunction("SimpleDeclareQueue",&wrappers::Channel::SimpleDeclareQueue)
 				.addFunction("DeclareQueue",&wrappers::Channel::DeclareQueue)
 				.addFunction("DeleteQueue",&wrappers::Channel::DeleteQueue)
 				.addFunction("BindQueue",&wrappers::Channel::BindQueue)
 				.addFunction("UnbindQueue",&wrappers::Channel::UnbindQueue)
 				.addFunction("PurgeQueue",&wrappers::Channel::PurgeQueue)
 				.addFunction("BasicConsume",&wrappers::Channel::BasicConsume)
+				.addFunction("SimpleBasicConsume",&wrappers::Channel::SimpleBasicConsume)
 				.addFunction("BasicConsumeMessage",&wrappers::Channel::BasicConsumeMessage)
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
 			.endClass()

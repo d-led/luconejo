@@ -2,8 +2,10 @@ assert(require 'luconejo')
 
 local connected_test = {
 	create = function()
+		local test_host = 'localhost'
 		local fixture = {
-			channel = luconejo.Channel.Create( "localhost" ),
+			host = test_host,
+			channel = luconejo.Channel.Create( test_host ),
 			message = luconejo.BasicMessage.Create("Test message")
 		}
 		assert.truthy( fixture.channel )
@@ -76,6 +78,37 @@ describe("consuming messages",function ()
 		this.channel:BasicPublish("", queue, this.message,false,false)
 
 		local consumed_envelope = this.channel:BasicConsumeMessage(consumer, 1)
+		assert.True( consumed_envelope.Valid )
+	end)
+
+	local function repeated_string(count, contents)
+		local message_table = {}
+		for i = 1, count do message_table[#message_table+1] = contents end
+		return table.concat(message_table)
+	end
+
+	it("should be possible to send large messages", function()
+		-- another channel here
+		local channel = luconejo.Channel.CreateWithParameters( this.host, 5672, "guest", "guest", "/", 4096)
+		assert.True( channel.Valid )
+
+		-- create message
+		local message_length = 4099
+		local message_text = repeated_string(message_length, 'a')
+		assert.are.equal( #message_text , message_length )
+		local message = luconejo.BasicMessage.Create( message_text )
+		assert.True( message.Valid )
+
+		-- declare queue
+		local queue = channel:SimpleDeclareQueue("")
+		assert.are.not_equal ( queue , luconejo.Channel.INVALID_QUEUE_NAME )
+
+		local consumer = channel:SimpleBasicConsume( queue )
+		assert.are.not_equal ( consumer , luconejo.Channel.INVALID_CONSUMER_TAG )
+
+		assert.True( channel:BasicPublish("", queue, message, false, false) )
+
+		local consumed_envelope =  channel:BasicConsumeMessage(consumer, -1)
 		assert.True( consumed_envelope.Valid )
 	end)
 end)

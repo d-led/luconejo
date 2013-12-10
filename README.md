@@ -62,6 +62,7 @@ queues
 ------
 
 ```lua
+local queue_name = connection:SimpleDeclareQueue( queue_name )
 local queue_name = connection:DeclareQueue(
 	queue_name,
 	passive,
@@ -95,11 +96,12 @@ publishing a message
 consuming a message
 -------------------
 
+`local consumer_tag = connection:BasicConsume(queue)`
 `local consumer_tag = connection:BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,prefetch_count)` returns the consumer tag
 `local envelope = connection:BasicConsumeMessage(consumer_tag,timeout)`
 
-exception mechanisms
---------------------
+error handling
+--------------
 
 Currently, the wrapped objects have a `.Valid` property, indicating if the object has been successfully created.
 
