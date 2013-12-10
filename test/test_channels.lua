@@ -65,3 +65,17 @@ describe("publishing messages via a channel", function()
 		assert.True( this.channel:BasicPublish("", "test_channel_rk", this.message, false, false) )
 	end)
 end)
+
+describe("consuming messages",function ()
+	local this = connected_test.create()
+
+	it("should consume a message sent within 1 second",function ()
+		local queue = this.channel:DeclareQueue("",false,false,true,true)
+
+		local consumer = this.channel:BasicConsume(queue, "", true, false, true, 1)
+		this.channel:BasicPublish("", queue, this.message,false,false)
+
+		local consumed_envelope = this.channel:BasicConsumeMessage(consumer, 1)
+		assert.True( consumed_envelope.Valid )
+	end)
+end)

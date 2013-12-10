@@ -264,20 +264,20 @@ namespace luconejo {
 				}
 			}
 
-			bool BasicConsume(std::string const& queue,
+			std::string BasicConsume(std::string const& queue,
 		                      std::string const& consumer_tag,
 		                      bool no_local,
 		                      bool no_ack,
 		                      bool exclusive,
 		                      int prefetch_count) {
 				if (!Valid())
-					return false;
+					return INVALID_CONSUMER_TAG();
 
 				try {
-					connection->BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,static_cast<boost::uint16_t>(prefetch_count));
-					return true;
+					return connection->BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,static_cast<boost::uint16_t>(prefetch_count));
 				} catch (std::exception const& e) {
-					return Error(e.what());
+					Error(e.what());
+					return INVALID_CONSUMER_TAG();
 				}
 			}
 
@@ -316,6 +316,7 @@ namespace luconejo {
 			static std::string EXCHANGE_TYPE_FANOUT() { return AmqpClient::Channel::EXCHANGE_TYPE_FANOUT; }
 			static std::string EXCHANGE_TYPE_TOPIC() { return AmqpClient::Channel::EXCHANGE_TYPE_TOPIC; }
 			static std::string INVALID_QUEUE_NAME() { return ""; }
+			static std::string INVALID_CONSUMER_TAG() { return ""; }
 		};
 
 	}
@@ -357,6 +358,7 @@ void register_luconejo (lua_State* L) {
 				.addStaticProperty("EXCHANGE_TYPE_FANOUT",&wrappers::Channel::EXCHANGE_TYPE_FANOUT)
 				.addStaticProperty("EXCHANGE_TYPE_TOPIC",&wrappers::Channel::EXCHANGE_TYPE_TOPIC)
 				.addStaticProperty("INVALID_QUEUE_NAME",&wrappers::Channel::INVALID_QUEUE_NAME)
+				.addStaticProperty("INVALID_CONSUMER_TAG",&wrappers::Channel::INVALID_CONSUMER_TAG)
 		
 				// factories
 				.addStaticFunction("Create",wrappers::Channel::Create)

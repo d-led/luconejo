@@ -12,6 +12,7 @@ reading convention
 The api is mirroring the c++ api as closely as possible. Some overloads are split into multiple functions.
 To read the full documentation, please refer to the original documentation in [SimpleAmqpClient](https://github.com/woldan/SimpleAmqpClient/tree/master/src).
 The full binding can be seen at a glance in [luconejo_lib.cpp -> register_luconejo](src/luconejo_lib.cpp)
+See the [tests](test) for the API usage examples
 
 
 global constants
@@ -94,7 +95,7 @@ publishing a message
 consuming a message
 -------------------
 
-`connection:BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,prefetch_count)` returns the consumer tag
+`local consumer_tag = connection:BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,prefetch_count)` returns the consumer tag
 `local envelope = connection:BasicConsumeMessage(consumer_tag,timeout)`
 
 exception mechanisms
