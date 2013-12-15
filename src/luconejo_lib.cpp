@@ -636,9 +636,25 @@ namespace luconejo {
 		                      bool immediate = false) {
 				if (!Valid() || !message.get() || !message->Valid())
 					return false;
-
 				try {
 					connection->BasicPublish(exchange_name,routing_key,message->message,mandatory,immediate);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
+			}
+
+			bool SimpleBasicPublish(std::string const& exchange_name,
+				                    std::string const& routing_key,
+				                    RefCountedPtr<BasicMessage> message) {
+				return BasicPublish(exchange_name,routing_key,message);
+			}
+
+			bool BasicAck(RefCountedPtr<Envelope> message) {
+				if (!Valid() || !message.get() || !message->Valid())
+					return false;
+				try {
+					connection->BasicAck(message->envelope);
 					return true;
 				} catch (std::exception const& e) {
 					return Error(e.what());
@@ -762,6 +778,8 @@ void register_luconejo (lua_State* L) {
 				.addFunction("SimpleBasicConsume",&wrappers::Channel::SimpleBasicConsume)
 				.addFunction("BasicConsumeMessage",&wrappers::Channel::BasicConsumeMessage)
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
+				.addFunction("SimpleBasicPublish",&wrappers::Channel::SimpleBasicPublish)
+				.addFunction("BasicAck",&wrappers::Channel::BasicAck)
 			.endClass()
 
 

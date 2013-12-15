@@ -93,6 +93,7 @@ publishing a message
 --------------------
 
 `connection:BasicPublish(exchange_name, routing key, message, mandatory, immediate)` message should be a `luconejo.BasicMessage`.
+`connection:SimpleBasicPublish(exchange_name, routing key, message)` nonmandatory and not immediate.
 
 consuming a message
 -------------------
@@ -101,6 +102,11 @@ consuming a message
 `local consumer_tag = connection:BasicConsume(queue,consumer_tag,no_local,no_ack,exclusive,prefetch_count)` returns the consumer tag
 `local envelope = connection:BasicConsumeMessage(consumer_tag,timeout)`
 `local message = envelope.Message` returns `luconejo.BasicMessage`
+
+acknowledging a message
+-----------------------
+
+`connection:BasicAck(envelope)` where `envelope` is `luconejo.Envelope`
 
 error handling
 --------------
