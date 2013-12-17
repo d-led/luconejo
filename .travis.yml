@@ -4,7 +4,9 @@ services:
   - rabbitmq
 
 before_script:
-  - sudo apt-get install libboost-all-dev libboost-chrono-dev
+  - sudo add-apt-repository --yes ppa:apokluda/boost1.53
+  - sudo apt-get --yes update
+  - sudo apt-get --yes install libboost1.53-all-dev
   - sudo apt-get install lua5.1 liblua5.1-dev
   - sudo apt-get install luarocks
   - sudo luarocks install busted
