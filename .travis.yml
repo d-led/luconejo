@@ -1,0 +1,15 @@
+language: cpp
+
+services:
+  - rabbitmq
+
+before_script:
+  - sudo apt-get install libboost-all-dev
+  - sudo apt-get install lua5.1 liblua5.1-dev
+  - sudo apt-get install luarocks
+  - sudo luarocks install busted
+
+script:
+  - make -C Build config=release
+  - busted test/test_connection.lua
+  - busted test/test_channels.lua
