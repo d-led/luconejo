@@ -1,0 +1,6 @@
+mkdir tmp_build
+cd tmp_build
+cmake ../rabbitmq-c/
+make
+make install target=local
+cd ..

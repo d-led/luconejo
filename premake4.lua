@@ -8,6 +8,11 @@ local settings = {
 		linux = { 'lua5.1-c++' , 'boost_chrono' },
 		windows = { 'lua5.1' },
 		macosx = { 'lua' , 'boost_chrono-mt'}
+	},
+	exec_prefix = {
+		linux = "./",
+		windows = "",
+		macosx = "./"
 	}
 }
 
@@ -90,4 +95,12 @@ newaction {
       os.execute("busted test/test_connection.lua")
       os.execute("busted test/test_channels.lua")
    end
+}
+
+newaction {
+	trigger = "prepare",
+	description = "build and install librabbitmq",
+	execute = function ()
+		os.execute(settings.exec_prefix[OS].."build_rabbitmq")
+	end
 }
