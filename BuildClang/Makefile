@@ -6,26 +6,21 @@ ifndef config
 endif
 export config
 
-PROJECTS := rabbitmq SimpleAmqpClient luconejo
+PROJECTS := SimpleAmqpClient luconejo
 
 .PHONY: all clean help $(PROJECTS)
 
 all: $(PROJECTS)
 
-rabbitmq: 
-	@echo "==== Building rabbitmq ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f rabbitmq.make
-
 SimpleAmqpClient: 
 	@echo "==== Building SimpleAmqpClient ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f SimpleAmqpClient.make
 
-luconejo: rabbitmq SimpleAmqpClient
+luconejo: SimpleAmqpClient
 	@echo "==== Building luconejo ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f luconejo.make
 
 clean:
-	@${MAKE} --no-print-directory -C . -f rabbitmq.make clean
 	@${MAKE} --no-print-directory -C . -f SimpleAmqpClient.make clean
 	@${MAKE} --no-print-directory -C . -f luconejo.make clean
 
@@ -39,7 +34,6 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
-	@echo "   rabbitmq"
 	@echo "   SimpleAmqpClient"
 	@echo "   luconejo"
 	@echo ""

@@ -43,21 +43,21 @@ includedirs {
 defines { 'BOOST_NO_VARIADIC_TEMPLATES' }
 
 --------------------------
-make_static_lib( 'rabbitmq',
-	{
-		'./rabbitmq-c/librabbitmq/*.h',
-		'./rabbitmq-c/librabbitmq/*.c'
-	}
-)
+-- make_static_lib( 'rabbitmq',
+-- 	{
+-- 		'./rabbitmq-c/librabbitmq/*.h',
+-- 		'./rabbitmq-c/librabbitmq/*.c'
+-- 	}
+-- )
 
-excludes {
-	'./rabbitmq-c/librabbitmq/amqp_cyassl.c',
-	'./rabbitmq-c/librabbitmq/amqp_openssl.c',
-	'./rabbitmq-c/librabbitmq/amqp_polarssl.c',
-	'./rabbitmq-c/librabbitmq/amqp_gnutls.c'
-}
+-- excludes {
+-- 	'./rabbitmq-c/librabbitmq/amqp_cyassl.c',
+-- 	'./rabbitmq-c/librabbitmq/amqp_openssl.c',
+-- 	'./rabbitmq-c/librabbitmq/amqp_polarssl.c',
+-- 	'./rabbitmq-c/librabbitmq/amqp_gnutls.c'
+-- }
 
-language "C"
+-- language "C"
 
 --------------------------
 make_static_lib( 'SimpleAmqpClient',
