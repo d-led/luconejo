@@ -10,7 +10,7 @@ before_script:
   - sudo apt-get install lua5.1 liblua5.1-dev
   - sudo apt-get install luarocks
   - sudo luarocks install busted
-  - ./build_rabbitmq
+  - sudo ./build_rabbitmq
 
 script:
   - export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH;
