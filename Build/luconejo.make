@@ -38,8 +38,8 @@ ifeq ($(config),debug)
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -L.. -L../linux/bin/Debug -shared
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../linux/bin/Debug/librabbitmq.a ../linux/bin/Debug/libSimpleAmqpClient.a -llua5.1-c++ -lboost_chrono
-  LDDEPS    += ../linux/bin/Debug/librabbitmq.a ../linux/bin/Debug/libSimpleAmqpClient.a
+  LIBS      += ../linux/bin/Debug/libSimpleAmqpClient.a -lrabbitmq -llua5.1-c++ -lboost_chrono
+  LDDEPS    += ../linux/bin/Debug/libSimpleAmqpClient.a
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef
@@ -60,8 +60,8 @@ ifeq ($(config),release)
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -L.. -L../linux/bin/Release -s -shared
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../linux/bin/Release/librabbitmq.a ../linux/bin/Release/libSimpleAmqpClient.a -llua5.1-c++ -lboost_chrono
-  LDDEPS    += ../linux/bin/Release/librabbitmq.a ../linux/bin/Release/libSimpleAmqpClient.a
+  LIBS      += ../linux/bin/Release/libSimpleAmqpClient.a -lrabbitmq -llua5.1-c++ -lboost_chrono
+  LDDEPS    += ../linux/bin/Release/libSimpleAmqpClient.a
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
   define PREBUILDCMDS
   endef
