@@ -2,5 +2,5 @@ mkdir tmp_build
 cd tmp_build
 cmake ../rabbitmq-c/
 make
-sudo make install target=local
+sudo make install
 cd ..
