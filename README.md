@@ -3,6 +3,9 @@ luconejo
 
 a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient
 
+[![Build Status](https://travis-ci.org/d-led/luconejo.png?branch=master)](https://travis-ci.org/d-led/luconejo)
+
+
 api
 ===
 
