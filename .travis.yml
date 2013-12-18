@@ -13,6 +13,7 @@ before_script:
   - ./build_rabbitmq
 
 script:
+  - export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH;
   - make -C Build config=release
   - busted test/test_connection.lua
   - busted test/test_channels.lua
