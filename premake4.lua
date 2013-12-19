@@ -94,6 +94,8 @@ newaction {
    execute     = function ()
       os.execute("busted test/test_connection.lua")
       os.execute("busted test/test_channels.lua")
+      os.execute("busted test/test_ack.lua")
+      os.execute("busted test/test_consume.lua")
    end
 }
 

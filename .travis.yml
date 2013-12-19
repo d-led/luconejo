@@ -17,3 +17,5 @@ script:
   - make -C Build config=release
   - busted test/test_connection.lua
   - busted test/test_channels.lua
+  - busted test/test_ack.lua
+  - busted test/test_consume.lua

@@ -1,5 +1,5 @@
 assert(require 'luconejo')
-local connected_test = assert(require 'connected_test')
+local connected_test = assert(require 'test.connected_test')
 
 describe("basic ack",function()
 	local this = connected_test.create()
