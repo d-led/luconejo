@@ -629,6 +629,18 @@ namespace luconejo {
 				return res;
 			}
 
+			bool BasicCancel(std::string const& queue) {
+				if (!Valid())
+					return false;
+
+				try {
+					connection->BasicCancel(queue);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
+			}
+
 			bool BasicPublish(std::string const& exchange_name,
 		                      std::string const& routing_key,
 		                      RefCountedPtr<BasicMessage> message,
@@ -777,6 +789,7 @@ void register_luconejo (lua_State* L) {
 				.addFunction("BasicConsume",&wrappers::Channel::BasicConsume)
 				.addFunction("SimpleBasicConsume",&wrappers::Channel::SimpleBasicConsume)
 				.addFunction("BasicConsumeMessage",&wrappers::Channel::BasicConsumeMessage)
+				.addFunction("BasicCancel",&wrappers::Channel::BasicCancel)
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
 				.addFunction("SimpleBasicPublish",&wrappers::Channel::SimpleBasicPublish)
 				.addFunction("BasicAck",&wrappers::Channel::BasicAck)
