@@ -1,4 +1,9 @@
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+luconejo
+========
+
+a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient written mostly on a subway train
+
+[![Build Status](https://travis-ci.org/d-led/luconejo.png?branch=master)](https://travis-ci.org/d-led/luconejo)
 
 - [luconejo](#luconejo)
 - [api](#api)
@@ -21,14 +26,6 @@
 - [motivation](#motivation)
 - [dependencies](#dependencies)
 - [license](#license)
-
-luconejo
-========
-
-a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient written mostly on a subway train
-
-[![Build Status](https://travis-ci.org/d-led/luconejo.png?branch=master)](https://travis-ci.org/d-led/luconejo)
-
 
 api
 ===
