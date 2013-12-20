@@ -168,23 +168,29 @@ describe("basic consume 1000 messages",function()
 	end)
 end)
 
--- describe(connected_test, basic_recover)
---,function()
---     local message = luconejo.BasicMessage.Create("Message1")
+describe("basic_recover",function()
+	local this = connected_test.create()
 
---     local queue = this.channel:DeclareQueue("")
---     local consumer = this.channel:BasicConsume(queue, "", true, false)
---     this.channel:BasicPublish("", queue, message)
+	it("",function()
+	    local message = luconejo.BasicMessage.Create("Message1")
 
---     local message1
---     local message2
+	    local queue = this.channel:SimpleDeclareQueue("")
+	    local consumer = this.channel:BasicConsume(queue, "", true, false, true, 1)
+	    this.channel:SimpleBasicPublish("", queue, message)
 
---     assert.True(this.channel:BasicConsumeMessage(consumer, message1))
---     this.channel:BasicRecover(consumer)
---     assert.True(this.channel:BasicConsumeMessage(consumer, message2))
+	    local message1 = this.channel:BasicConsumeMessage(consumer,-1)
+	    assert.True( message1.Valid )
+	    
+	    assert.True( this.channel:BasicRecover(consumer) )
 
---     this.channel:DeleteQueue(queue)
--- end)
+		local message2 = this.channel:BasicConsumeMessage(consumer,-1)
+	    assert.True( message2.Valid )
+
+	    assert.are.Equal( message1.Body, message2.Body )
+
+	    this.channel:DeleteQueue(queue,false,false)
+	end)
+end)
 
 -- describe(connected_test, basic_recover_badconsumer)
 --,function()

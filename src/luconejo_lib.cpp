@@ -694,6 +694,18 @@ namespace luconejo {
 				}
 			}
 
+			bool BasicRecover(std::string const& consumer) {
+				if (!Valid())
+					return false;
+
+				try {
+					connection->BasicRecover(consumer);
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
+			}
+
 		};
 
 	}
@@ -815,6 +827,7 @@ void register_luconejo (lua_State* L) {
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
 				.addFunction("SimpleBasicPublish",&wrappers::Channel::SimpleBasicPublish)
 				.addFunction("BasicAck",&wrappers::Channel::BasicAck)
+				.addFunction("BasicRecover",&wrappers::Channel::BasicRecover)
 			.endClass()
 
 

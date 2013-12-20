@@ -114,6 +114,11 @@ acknowledging a message
 
 `connection:BasicAck(envelope)` where `envelope` is `luconejo.Envelope`
 
+recovering an unacknowledged message
+------------------------------------
+
+`connection:BasicRecover( consumer )`
+
 error handling
 --------------
 
