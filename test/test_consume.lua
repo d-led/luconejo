@@ -44,24 +44,32 @@ describe("cancelling consumer",function()
 	end)
 end)
 
--- describe(connected_test, basic_cancel_bad_consumer)
--- {
---     EXPECT_THROW(this.channel:BasicCancel("test_consume_noexistconsumer"), ConsumerTagNotFoundException);
--- }
+describe("cancelling nonexistent consumer",function()
+	local this = connected_test.create()
 
--- describe(connected_test, basic_cancel_cancelled_consumer)
--- {
---     std::string queue = this.channel:DeclareQueue("");
---     std::string consumer = this.channel:BasicConsume(queue);
---     this.channel:BasicCancel(consumer);
---     EXPECT_THROW(this.channel:BasicCancel(consumer), ConsumerTagNotFoundException);
--- }
+	it("should not cancel nonexistent consumers",function ( )
+	    assert.False( this.channel:BasicCancel("test_consume_noexistconsumer") )
+	end)
+
+end)
+
+describe("recancelling consumer",function()
+	local this = connected_test.create()
+
+	it("should not cancel cancelled consumers",function()
+	    local queue = this.channel:SimpleDeclareQueue("")
+	    local consumer = this.channel:SimpleBasicConsume(queue)
+	    this.channel:BasicCancel(consumer)
+	    assert.False( this.channel:BasicCancel(consumer) )
+	end)
+
+end)
 
 -- describe(connected_test, basic_consume_message)
--- {
+--,function()
 --     BasicMessage::ptr_t message = BasicMessage::Create("Message Body");
---     std::string queue = this.channel:DeclareQueue("");
---     std::string consumer = this.channel:BasicConsume(queue);
+--     local queue = this.channel:DeclareQueue("");
+--     local consumer = this.channel:BasicConsume(queue);
 --     this.channel:BasicPublish("", queue, message);
 
 --     Envelope::ptr_t delivered;
@@ -70,25 +78,25 @@ end)
 --     EXPECT_EQ("", delivered->Exchange());
 --     EXPECT_EQ(queue, delivered->RoutingKey());
 --     EXPECT_EQ(message->Body(), delivered->Message()->Body());
--- }
+-- end)
 
 -- describe(connected_test, basic_consume_message_bad_consumer)
--- {
+--,function()
 --     EXPECT_THROW(this.channel:BasicConsumeMessage("test_consume_noexistconsumer"), ConsumerTagNotFoundException);
--- }
+-- end)
 
 -- describe(connected_test, basic_consume_inital_qos)
--- {
+--,function()
 --     BasicMessage::ptr_t message1 = BasicMessage::Create("Message1");
 --     BasicMessage::ptr_t message2 = BasicMessage::Create("Message2");
 --     BasicMessage::ptr_t message3 = BasicMessage::Create("Message3");
 
---     std::string queue = this.channel:DeclareQueue("");
+--     local queue = this.channel:DeclareQueue("");
 --     this.channel:BasicPublish("", queue, message1, true);
 --     this.channel:BasicPublish("", queue, message2, true);
 --     this.channel:BasicPublish("", queue, message3, true);
 
---     std::string consumer = this.channel:BasicConsume(queue, "", true, false);
+--     local consumer = this.channel:BasicConsume(queue, "", true, false);
 --     Envelope::ptr_t received1, received2;
 --     ASSERT_TRUE(this.channel:BasicConsumeMessage(consumer, received1, 1));
 
@@ -96,24 +104,24 @@ end)
 --     this.channel:BasicAck(received1);
 
 --     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, received2, 1));
--- }
+-- end)
 
 -- describe(connected_test, basic_consume_2consumers)
--- {
+--,function()
 --     BasicMessage::ptr_t message1 = BasicMessage::Create("Message1");
 --     BasicMessage::ptr_t message2 = BasicMessage::Create("Message2");
 --     BasicMessage::ptr_t message3 = BasicMessage::Create("Message3");
 
---     std::string queue1 = this.channel:DeclareQueue("");
---     std::string queue2 = this.channel:DeclareQueue("");
---     std::string queue3 = this.channel:DeclareQueue("");
+--     local queue1 = this.channel:DeclareQueue("");
+--     local queue2 = this.channel:DeclareQueue("");
+--     local queue3 = this.channel:DeclareQueue("");
 
 --     this.channel:BasicPublish("", queue1, message1);
 --     this.channel:BasicPublish("", queue2, message2);
 --     this.channel:BasicPublish("", queue3, message3);
 
---     std::string consumer1 = this.channel:BasicConsume(queue1, "", true, false);
---     std::string consumer2 = this.channel:BasicConsume(queue2, "", true, false);
+--     local consumer1 = this.channel:BasicConsume(queue1, "", true, false);
+--     local consumer2 = this.channel:BasicConsume(queue2, "", true, false);
 
 --     Envelope::ptr_t envelope1;
 --     Envelope::ptr_t envelope2;
@@ -125,14 +133,14 @@ end)
 --     this.channel:BasicAck(envelope2);
 --     this.channel:BasicGet(envelope3, queue3);
 --     this.channel:BasicAck(envelope3);
--- }
+-- end)
 
 -- describe(connected_test, basic_consume_1000messages)
--- {
+--,function()
 --     BasicMessage::ptr_t message1 = BasicMessage::Create("Message1");
 
---     std::string queue = this.channel:DeclareQueue("");
---     std::string consumer = this.channel:BasicConsume(queue, "");
+--     local queue = this.channel:DeclareQueue("");
+--     local consumer = this.channel:BasicConsume(queue, "");
 
 --     Envelope::ptr_t msg;
 --     for (int i = 0; i < 1000; ++i)
@@ -142,14 +150,14 @@ end)
 --         this.channel:BasicConsumeMessage(consumer, msg);
 --     }
 
--- }
+-- end)
 
 -- describe(connected_test, basic_recover)
--- {
+--,function()
 --     BasicMessage::ptr_t message = BasicMessage::Create("Message1");
 
---     std::string queue = this.channel:DeclareQueue("");
---     std::string consumer = this.channel:BasicConsume(queue, "", true, false);
+--     local queue = this.channel:DeclareQueue("");
+--     local consumer = this.channel:BasicConsume(queue, "", true, false);
 --     this.channel:BasicPublish("", queue, message);
 
 --     Envelope::ptr_t message1;
@@ -160,17 +168,17 @@ end)
 --     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, message2));
 
 --     this.channel:DeleteQueue(queue);
--- }
+-- end)
 
 -- describe(connected_test, basic_recover_badconsumer)
--- {
+--,function()
 --     EXPECT_THROW(this.channel:BasicRecover("consumer_notexist"), ConsumerTagNotFoundException);
--- }
+-- end)
 
 -- describe(connected_test, basic_qos)
--- {
---     std::string queue = this.channel:DeclareQueue("");
---     std::string consumer = this.channel:BasicConsume(queue, "", true, false);
+--,function()
+--     local queue = this.channel:DeclareQueue("");
+--     local consumer = this.channel:BasicConsume(queue, "", true, false);
 --     this.channel:BasicPublish("", queue, BasicMessage::Create("Message1"));
 --     this.channel:BasicPublish("", queue, BasicMessage::Create("Message2"));
 
@@ -182,26 +190,26 @@ end)
 --     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, incoming, 1));
 
 --     this.channel:DeleteQueue(queue);
--- }
+-- end)
 
 -- describe(connected_test, basic_qos_badconsumer)
--- {
+--,function()
 --     EXPECT_THROW(this.channel:BasicQos("consumer_notexist", 1), ConsumerTagNotFoundException);
--- }
+-- end)
 
 -- describe(connected_test, consumer_cancelled)
--- {
---     std::string queue = this.channel:DeclareQueue("");
---     std::string consumer = this.channel:BasicConsume(queue, "", true, false);
+--,function()
+--     local queue = this.channel:DeclareQueue("");
+--     local consumer = this.channel:BasicConsume(queue, "", true, false);
 --     this.channel:DeleteQueue(queue);
 
 --     EXPECT_THROW(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException);
--- }
+-- end)
 
 -- describe(connected_test, consumer_cancelled_one_message)
--- {
---     std::string queue = this.channel:DeclareQueue("");
---     std::string consumer = this.channel:BasicConsume(queue, "", true, false);
+--,function()
+--     local queue = this.channel:DeclareQueue("");
+--     local consumer = this.channel:BasicConsume(queue, "", true, false);
 
 --     this.channel:BasicPublish("", queue, BasicMessage::Create("Message"));
 --     this.channel:BasicConsumeMessage(consumer);
@@ -209,14 +217,14 @@ end)
 --     this.channel:DeleteQueue(queue);
 
 --     EXPECT_THROW(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException);
--- }
+-- end)
 
 -- describe(connected_test, consume_multiple)
--- {
---     std::string queue1 = this.channel:DeclareQueue("");
---     std::string queue2 = this.channel:DeclareQueue("");
+--,function()
+--     local queue1 = this.channel:DeclareQueue("");
+--     local queue2 = this.channel:DeclareQueue("");
 
---     std::string Body = "Message 1";
+--     local Body = "Message 1";
 --     this.channel:BasicPublish("", queue1, BasicMessage::Create(Body));
 
 
@@ -226,13 +234,13 @@ end)
 --     Envelope::ptr_t env = this.channel:BasicConsumeMessage();
 
 --     EXPECT_EQ(Body, env->Message()->Body());
--- }
+-- end)
 
 
--- describe("snippet",function()
+-- describe("snippet"--,function()
 -- 	local this = connected_test.create()
 
 -- 	it("should be able to start consuming",function ( )
--- 	end)
+-- 	-- end)
 -- end)
 
