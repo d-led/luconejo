@@ -14,18 +14,18 @@
 	- [acknowledging a message](#acknowledging-a-message)
 	- [recovering an unacknowledged message](#recovering-an-unacknowledged-message)
 	- [quality of service](#quality-of-service)
-	- [error handling](#error-handling)
-	- [binding details](#binding-details)
-	- [building](#building)
-	- [status](#status)
-	- [motivation](#motivation)
-	- [dependencies](#dependencies)
-	- [license](#license)
+- [error handling](#error-handling)
+- [binding details](#binding-details)
+- [building](#building)
+- [status](#status)
+- [motivation](#motivation)
+- [dependencies](#dependencies)
+- [license](#license)
 
 luconejo
 ========
 
-a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient
+a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient written mostly on a subway train
 
 [![Build Status](https://travis-ci.org/d-led/luconejo.png?branch=master)](https://travis-ci.org/d-led/luconejo)
 
@@ -149,7 +149,7 @@ quality of service
 `connection:BasicQos( consumer, message_prefetch_count )`
 
 error handling
---------------
+==============
 
 Currently, the wrapped objects have a `.Valid` property, indicating if the object has been successfully created.
 
@@ -160,20 +160,21 @@ The exception text is sent to `stderr`.
 `void (...)` methods return `true` if succeeded or `false` if exception thrown.
 
 binding details
----------------
+===============
 
 All parameters are mandatory at the moment. C++ Function signatures with default values or without are mapped onto different Lua functions.
 
 building
---------
+========
 
  - generate your makefiles or project files using premake
+ - on Linux and MacOS X the rabbitmq-c library can be built and installed using `premake4 prepare`
  - build accordingly
 
 motivation: [Recursive Make Considered Harmful](http://miller.emu.id.au/pmiller/books/rmch/)
 
 status
-------
+======
 
  - work in process
  - no SSL support yet, will be configurable in the future
@@ -181,12 +182,12 @@ status
  - rabbitmq-c should be built with its own CMake config and linked dynamically
 
 motivation
-----------
+==========
 
 By way of writing this binding, partially going the wrong way of wrapping an otherwise simpler-bindable class, I can dive into the API and its details.
 
 dependencies
-------------
+============
 
 all dependent libraries are built from source
 
@@ -196,12 +197,12 @@ all dependent libraries are built from source
  - Premake for generating makefiles and solutions
  
  testing
- -------
+ =======
  
   - start RabbitMQ
   - `> premake/premake4 test`
 
 license
--------
+=======
 
 [MIT License](http://opensource.org/licenses/MIT)
