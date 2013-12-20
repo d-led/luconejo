@@ -1,3 +1,27 @@
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [luconejo](#luconejo)
+- [api](#api)
+	- [reading convention](#reading-convention)
+	- [global constants](#global-constants)
+	- [connecting](#connecting)
+	- [exchanges](#exchanges)
+	- [queues](#queues)
+	- [disconnecting](#disconnecting)
+	- [basic message](#basic-message)
+	- [publishing a message](#publishing-a-message)
+	- [consuming a message](#consuming-a-message)
+	- [acknowledging a message](#acknowledging-a-message)
+	- [recovering an unacknowledged message](#recovering-an-unacknowledged-message)
+	- [quality of service](#quality-of-service)
+	- [error handling](#error-handling)
+	- [binding details](#binding-details)
+	- [building](#building)
+	- [status](#status)
+	- [motivation](#motivation)
+	- [dependencies](#dependencies)
+	- [license](#license)
+
 luconejo
 ========
 
