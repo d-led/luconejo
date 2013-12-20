@@ -632,6 +632,24 @@ namespace luconejo {
 				return res;
 			}
 
+			RefCountedPtr<Envelope> BasicGet(std::string const & queue, bool no_ack = true) {
+				RefCountedPtr<Envelope> res(new Envelope);
+
+				if (!Valid())
+					return res;
+
+				try {
+					AmqpClient::Envelope::ptr_t msg;
+					if (connection->BasicGet(msg,queue,no_ack)) {
+						res->envelope = msg;
+					}
+				} catch (std::exception const& e) {
+					Error(e.what());
+				}
+
+				return res;
+			}
+
 			bool BasicCancel(std::string const& queue) {
 				if (!Valid())
 					return false;
@@ -792,6 +810,7 @@ void register_luconejo (lua_State* L) {
 				.addFunction("BasicConsume",&wrappers::Channel::BasicConsume)
 				.addFunction("SimpleBasicConsume",&wrappers::Channel::SimpleBasicConsume)
 				.addFunction("BasicConsumeMessage",&wrappers::Channel::BasicConsumeMessage)
+				.addFunction("BasicGet",&wrappers::Channel::BasicGet)
 				.addFunction("BasicCancel",&wrappers::Channel::BasicCancel)
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)
 				.addFunction("SimpleBasicPublish",&wrappers::Channel::SimpleBasicPublish)
