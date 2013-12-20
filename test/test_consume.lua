@@ -83,10 +83,14 @@ describe("basic consume message",function()
 	end)
 end)
 
--- describe(connected_test, basic_consume_message_bad_consumer)
---,function()
---     EXPECT_THROW(this.channel:BasicConsumeMessage("test_consume_noexistconsumer"), ConsumerTagNotFoundException)
--- end)
+describe("consuming from bad consumer",function()
+	local this = connected_test.create()
+
+	it("should not be able to consume message",function()
+    	assert.False( this.channel:BasicConsumeMessage("test_consume_noexistconsumer",-1).Valid )
+    end)
+
+end)
 
 -- describe(connected_test, basic_consume_inital_qos)
 --,function()
@@ -175,7 +179,7 @@ end)
 
 -- describe(connected_test, basic_recover_badconsumer)
 --,function()
---     EXPECT_THROW(this.channel:BasicRecover("consumer_notexist"), ConsumerTagNotFoundException)
+--     assert.False(this.channel:BasicRecover("consumer_notexist"), ConsumerTagNotFoundException)
 -- end)
 
 -- describe(connected_test, basic_qos)
@@ -197,7 +201,7 @@ end)
 
 -- describe(connected_test, basic_qos_badconsumer)
 --,function()
---     EXPECT_THROW(this.channel:BasicQos("consumer_notexist", 1), ConsumerTagNotFoundException)
+--     assert.False(this.channel:BasicQos("consumer_notexist", 1), ConsumerTagNotFoundException)
 -- end)
 
 -- describe(connected_test, consumer_cancelled)
@@ -206,7 +210,7 @@ end)
 --     local consumer = this.channel:BasicConsume(queue, "", true, false)
 --     this.channel:DeleteQueue(queue)
 
---     EXPECT_THROW(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException)
+--     assert.False(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException)
 -- end)
 
 -- describe(connected_test, consumer_cancelled_one_message)
@@ -219,7 +223,7 @@ end)
 
 --     this.channel:DeleteQueue(queue)
 
---     EXPECT_THROW(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException)
+--     assert.False(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException)
 -- end)
 
 -- describe(connected_test, consume_multiple)

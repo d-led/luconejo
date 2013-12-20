@@ -615,15 +615,18 @@ namespace luconejo {
 			}
 
 			RefCountedPtr<Envelope> BasicConsumeMessage(std::string const & consumer_tag, int timeout = -1) {
-				RefCountedPtr<Envelope> res;
+				RefCountedPtr<Envelope> res(new Envelope);
 
 				if (!Valid())
 					return res;
 
-				AmqpClient::Envelope::ptr_t envelope;
-				if (connection->BasicConsumeMessage(consumer_tag,envelope,timeout)) {
-					res = RefCountedPtr<Envelope>(new Envelope);
-					res->envelope = envelope;
+				try {
+					AmqpClient::Envelope::ptr_t envelope;
+					if (connection->BasicConsumeMessage(consumer_tag,envelope,timeout)) {
+						res->envelope = envelope;
+					}
+				} catch (std::exception const& e) {
+					Error(e.what());
 				}
 
 				return res;
