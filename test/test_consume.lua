@@ -145,26 +145,28 @@ describe("2 consumers basic consume", function()
 			assert.True( this.channel:BasicAck(envelope2) )
 			local envelope3 = this.channel:BasicGet(queue3,true)
 			assert.True( envelope3.Valid )
-			this.channel:BasicAck(envelope3)
+			assert.True( this.channel:BasicAck(envelope3) )
 		end)
 end)
 
--- describe(connected_test, basic_consume_1000messages)
---,function()
---     local message1 = luconejo.BasicMessage.Create("Message1")
+describe("basic consume 1000 messages",function()
+	local this = connected_test.create()
 
---     local queue = this.channel:DeclareQueue("")
---     local consumer = this.channel:BasicConsume(queue, "")
+	it("",function ()
+	    local message1 = luconejo.BasicMessage.Create("Message1")
 
---     local msg
---     for (int i = 0 i < 1000 ++i)
---     {
---         message1->Timestamp(i)
---         this.channel:BasicPublish("", queue, message1, true)
---         this.channel:BasicConsumeMessage(consumer, msg)
---     }
+	    local queue = this.channel:SimpleDeclareQueue("")
+	    local consumer = this.channel:SimpleBasicConsume(queue)
 
--- end)
+	    for i = 1,1000 do
+			message1.Timestamp = i
+			this.channel:BasicPublish("", queue, message1, true, false)
+			local envelope = this.channel:BasicConsumeMessage(consumer, -1)
+			assert.True( envelope.Valid )
+			assert.are.Equal( envelope.Message.Timestamp , tostring(i) )
+		end
+	end)
+end)
 
 -- describe(connected_test, basic_recover)
 --,function()
