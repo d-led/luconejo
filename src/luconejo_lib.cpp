@@ -632,6 +632,21 @@ namespace luconejo {
 				return res;
 			}
 
+			RefCountedPtr<Envelope> BasicConsumeAnyMessage() {
+				RefCountedPtr<Envelope> res(new Envelope);
+
+				if (!Valid())
+					return res;
+
+				try {
+					res->envelope = connection->BasicConsumeMessage();
+				} catch (std::exception const& e) {
+					Error(e.what());
+				}
+
+				return res;
+			}
+
 			RefCountedPtr<Envelope> BasicGet(std::string const & queue, bool no_ack = true) {
 				RefCountedPtr<Envelope> res(new Envelope);
 
@@ -834,6 +849,7 @@ void register_luconejo (lua_State* L) {
 				.addFunction("BasicConsume",&wrappers::Channel::BasicConsume)
 				.addFunction("SimpleBasicConsume",&wrappers::Channel::SimpleBasicConsume)
 				.addFunction("BasicConsumeMessage",&wrappers::Channel::BasicConsumeMessage)
+				.addFunction("BasicConsumeAnyMessage",&wrappers::Channel::BasicConsumeAnyMessage)
 				.addFunction("BasicGet",&wrappers::Channel::BasicGet)
 				.addFunction("BasicCancel",&wrappers::Channel::BasicCancel)
 				.addFunction("BasicPublish",&wrappers::Channel::BasicPublish)

@@ -231,50 +231,51 @@ describe("basic qos bad consumer",function()
 	end)
 end)
 
--- describe(connected_test, consumer_cancelled)
--- ,function()
---     local queue = this.channel:DeclareQueue("")
---     local consumer = this.channel:BasicConsume(queue, "", true, false)
---     this.channel:DeleteQueue(queue)
+describe("consumer cancelled",function()
+	local this = connected_test.create()
 
---     assert.False(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException)
--- end)
+	it("should not be able to receive messages on a consumer after its queue has been deleted",function( )
+	    local queue = this.channel:SimpleDeclareQueue("")
+	    local consumer = this.channel:BasicConsume(queue, "", true, false, true, 1)
+	    this.channel:DeleteQueue(queue, false, false)
 
--- describe(connected_test, consumer_cancelled_one_message)
---,function()
---     local queue = this.channel:DeclareQueue("")
---     local consumer = this.channel:BasicConsume(queue, "", true, false)
+	    assert.False( this.channel:BasicConsumeMessage(consumer, 1).Valid )
+	end)
+end)
 
---     this.channel:BasicPublish("", queue, luconejo.BasicMessage.Create("Message"))
---     this.channel:BasicConsumeMessage(consumer)
+describe("consumer cancelled after one message",function()
+	local this = connected_test.create()
 
---     this.channel:DeleteQueue(queue)
+	it("",function ()
+	    local queue = this.channel:SimpleDeclareQueue("")
+	    local consumer = this.channel:BasicConsume(queue, "", true, false, true, 1)
 
---     assert.False(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException)
--- end)
+	    this.channel:SimpleBasicPublish("", queue, luconejo.BasicMessage.Create("Message"))
+	    this.channel:BasicConsumeMessage(consumer, 1)
 
--- describe(connected_test, consume_multiple)
---,function()
---     local queue1 = this.channel:DeclareQueue("")
---     local queue2 = this.channel:DeclareQueue("")
+	    this.channel:DeleteQueue(queue, false, false)
 
---     local Body = "Message 1"
---     this.channel:BasicPublish("", queue1, luconejo.BasicMessage.Create(Body))
+	    assert.False( this.channel:BasicConsumeMessage(consumer, 1).Valid )
+	end)
+end)
+
+describe("consume multiple queues",function()
+	local this = connected_test.create()
+
+	it("should be possible to consume from multiple queues",function ()
+	    local queue1 = this.channel:SimpleDeclareQueue("")
+	    local queue2 = this.channel:SimpleDeclareQueue("")
+
+	    local Body = "Message 1"
+	    assert.True( this.channel:SimpleBasicPublish("", queue1, luconejo.BasicMessage.Create(Body)) )
 
 
---     this.channel:BasicConsume(queue1)
---     this.channel:BasicConsume(queue2)
+	    this.channel:SimpleBasicConsume(queue1)
+	    this.channel:SimpleBasicConsume(queue2)
 
---     local env = this.channel:BasicConsumeMessage()
+	    local env = this.channel:BasicConsumeAnyMessage()
+	    assert.True( env.Valid )
 
---     assert.are.Equal(Body, env->Message()->Body())
--- end)
-
-
--- describe("snippet"--,function()
--- 	local this = connected_test.create()
-
--- 	it("should be able to start consuming",function ( )
--- 	-- end)
--- end)
-
+	    assert.are.Equal( Body, env.Message.Body )
+	end)
+end)
