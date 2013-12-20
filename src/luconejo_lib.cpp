@@ -706,6 +706,18 @@ namespace luconejo {
 				}
 			}
 
+			bool BasicQos(std::string const& consumer_tag, int message_prefetch_count) {
+				if(!Valid())
+					return false;
+
+				try {
+					connection->BasicQos(consumer_tag,static_cast<boost::uint16_t>(message_prefetch_count));
+					return true;
+				} catch (std::exception const& e) {
+					return Error(e.what());
+				}
+			}
+
 		};
 
 	}
@@ -828,6 +840,7 @@ void register_luconejo (lua_State* L) {
 				.addFunction("SimpleBasicPublish",&wrappers::Channel::SimpleBasicPublish)
 				.addFunction("BasicAck",&wrappers::Channel::BasicAck)
 				.addFunction("BasicRecover",&wrappers::Channel::BasicRecover)
+				.addFunction("BasicQos",&wrappers::Channel::BasicQos)
 			.endClass()
 
 

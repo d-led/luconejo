@@ -119,6 +119,11 @@ recovering an unacknowledged message
 
 `connection:BasicRecover( consumer )`
 
+quality of service
+------------------
+
+`connection:BasicQos( consumer, message_prefetch_count )`
+
 error handling
 --------------
 

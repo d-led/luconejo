@@ -192,27 +192,36 @@ describe("basic_recover",function()
 	end)
 end)
 
--- describe(connected_test, basic_recover_badconsumer)
---,function()
---     assert.False(this.channel:BasicRecover("consumer_notexist"), ConsumerTagNotFoundException)
--- end)
+describe("basic recover of a bad consumer", function()
+	local this = connected_test.create()
+    
+    it("",function()
+		assert.False( this.channel:BasicRecover("consumer_notexist") )
+	end)
+end)
 
--- describe(connected_test, basic_qos)
---,function()
---     local queue = this.channel:DeclareQueue("")
---     local consumer = this.channel:BasicConsume(queue, "", true, false)
---     this.channel:BasicPublish("", queue, luconejo.BasicMessage.Create("Message1"))
---     this.channel:BasicPublish("", queue, luconejo.BasicMessage.Create("Message2"))
+describe("basic qos", function()
+	local this = connected_test.create()
 
---     local incoming
---     assert.True(this.channel:BasicConsumeMessage(consumer, incoming, 1))
---     assert.False(this.channel:BasicConsumeMessage(consumer, incoming, 1))
+	it("", function()
+	    local queue = this.channel:SimpleDeclareQueue("")
+	    local consumer = this.channel:BasicConsume(queue, "", true, false, true, 1)
+	    this.channel:SimpleBasicPublish("", queue, luconejo.BasicMessage.Create("Message1"))
+	    this.channel:SimpleBasicPublish("", queue, luconejo.BasicMessage.Create("Message2"))
 
---     this.channel:BasicQos(consumer, 2)
---     assert.True(this.channel:BasicConsumeMessage(consumer, incoming, 1))
+	    local incoming = this.channel:BasicConsumeMessage(consumer, 1)
+	    assert.True( incoming.Valid )
 
---     this.channel:DeleteQueue(queue)
--- end)
+	    incoming = this.channel:BasicConsumeMessage(consumer, 1)
+	    assert.False( incoming.Valid )
+
+	    assert.True( this.channel:BasicQos(consumer, 2) )
+	    incoming = this.channel:BasicConsumeMessage(consumer, 1)
+	    assert.True( incoming.Valid )
+
+	    this.channel:DeleteQueue(queue,false,false)
+	end)
+end)
 
 -- describe(connected_test, basic_qos_badconsumer)
 --,function()
