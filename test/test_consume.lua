@@ -92,32 +92,37 @@ describe("consuming from bad consumer",function()
 
 end)
 
--- describe(connected_test, basic_consume_inital_qos)
---,function()
---     local message1 = BasicMessage::Create("Message1")
---     local message2 = BasicMessage::Create("Message2")
---     local message3 = BasicMessage::Create("Message3")
+describe("basic consume inital qos", function()
+	local this = connected_test.create()
 
---     local queue = this.channel:DeclareQueue("")
---     this.channel:BasicPublish("", queue, message1, true)
---     this.channel:BasicPublish("", queue, message2, true)
---     this.channel:BasicPublish("", queue, message3, true)
+	it("",function()
+	    local message1 = luconejo.BasicMessage.Create("Message1")
+	    local message2 = luconejo.BasicMessage.Create("Message2")
+	    local message3 = luconejo.BasicMessage.Create("Message3")
 
---     local consumer = this.channel:BasicConsume(queue, "", true, false)
---     local received1, received2
---     ASSERT_TRUE(this.channel:BasicConsumeMessage(consumer, received1, 1))
+	    local queue = this.channel:SimpleDeclareQueue("")
+	    this.channel:BasicPublish("", queue, message1, true, false)
+	    this.channel:BasicPublish("", queue, message2, true, false)
+	    this.channel:BasicPublish("", queue, message3, true, false)
 
---     EXPECT_FALSE(this.channel:BasicConsumeMessage(consumer, received2, 0))
---     this.channel:BasicAck(received1)
+	    local consumer = this.channel:BasicConsume(queue, "", true, false,true,1)
+	    local received1 = this.channel:BasicConsumeMessage(consumer, 1)
+	    assert.True( received1.Valid )
 
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, received2, 1))
--- end)
+	    local received2 = this.channel:BasicConsumeMessage(consumer, 0)
+	    assert.False( received2.Valid )
+	    assert.True( this.channel:BasicAck(received1) )
+
+	    received2 = this.channel:BasicConsumeMessage(consumer, 1)
+	    assert.True( received2.Valid )
+	end)
+end)
 
 -- describe(connected_test, basic_consume_2consumers)
 --,function()
---     local message1 = BasicMessage::Create("Message1")
---     local message2 = BasicMessage::Create("Message2")
---     local message3 = BasicMessage::Create("Message3")
+--     local message1 = luconejo.BasicMessage.Create("Message1")
+--     local message2 = luconejo.BasicMessage.Create("Message2")
+--     local message3 = luconejo.BasicMessage.Create("Message3")
 
 --     local queue1 = this.channel:DeclareQueue("")
 --     local queue2 = this.channel:DeclareQueue("")
@@ -144,7 +149,7 @@ end)
 
 -- describe(connected_test, basic_consume_1000messages)
 --,function()
---     local message1 = BasicMessage::Create("Message1")
+--     local message1 = luconejo.BasicMessage.Create("Message1")
 
 --     local queue = this.channel:DeclareQueue("")
 --     local consumer = this.channel:BasicConsume(queue, "")
@@ -161,7 +166,7 @@ end)
 
 -- describe(connected_test, basic_recover)
 --,function()
---     local message = BasicMessage::Create("Message1")
+--     local message = luconejo.BasicMessage.Create("Message1")
 
 --     local queue = this.channel:DeclareQueue("")
 --     local consumer = this.channel:BasicConsume(queue, "", true, false)
@@ -170,9 +175,9 @@ end)
 --     local message1
 --     local message2
 
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, message1))
+--     assert.True(this.channel:BasicConsumeMessage(consumer, message1))
 --     this.channel:BasicRecover(consumer)
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, message2))
+--     assert.True(this.channel:BasicConsumeMessage(consumer, message2))
 
 --     this.channel:DeleteQueue(queue)
 -- end)
@@ -186,15 +191,15 @@ end)
 --,function()
 --     local queue = this.channel:DeclareQueue("")
 --     local consumer = this.channel:BasicConsume(queue, "", true, false)
---     this.channel:BasicPublish("", queue, BasicMessage::Create("Message1"))
---     this.channel:BasicPublish("", queue, BasicMessage::Create("Message2"))
+--     this.channel:BasicPublish("", queue, luconejo.BasicMessage.Create("Message1"))
+--     this.channel:BasicPublish("", queue, luconejo.BasicMessage.Create("Message2"))
 
 --     local incoming
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, incoming, 1))
---     EXPECT_FALSE(this.channel:BasicConsumeMessage(consumer, incoming, 1))
+--     assert.True(this.channel:BasicConsumeMessage(consumer, incoming, 1))
+--     assert.False(this.channel:BasicConsumeMessage(consumer, incoming, 1))
 
 --     this.channel:BasicQos(consumer, 2)
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, incoming, 1))
+--     assert.True(this.channel:BasicConsumeMessage(consumer, incoming, 1))
 
 --     this.channel:DeleteQueue(queue)
 -- end)
@@ -218,7 +223,7 @@ end)
 --     local queue = this.channel:DeclareQueue("")
 --     local consumer = this.channel:BasicConsume(queue, "", true, false)
 
---     this.channel:BasicPublish("", queue, BasicMessage::Create("Message"))
+--     this.channel:BasicPublish("", queue, luconejo.BasicMessage.Create("Message"))
 --     this.channel:BasicConsumeMessage(consumer)
 
 --     this.channel:DeleteQueue(queue)
@@ -232,7 +237,7 @@ end)
 --     local queue2 = this.channel:DeclareQueue("")
 
 --     local Body = "Message 1"
---     this.channel:BasicPublish("", queue1, BasicMessage::Create(Body))
+--     this.channel:BasicPublish("", queue1, luconejo.BasicMessage.Create(Body))
 
 
 --     this.channel:BasicConsume(queue1)
