@@ -65,175 +65,178 @@ describe("recancelling consumer",function()
 
 end)
 
--- describe(connected_test, basic_consume_message)
---,function()
---     BasicMessage::ptr_t message = BasicMessage::Create("Message Body");
---     local queue = this.channel:DeclareQueue("");
---     local consumer = this.channel:BasicConsume(queue);
---     this.channel:BasicPublish("", queue, message);
+describe("basic consume message",function()
+	local this = connected_test.create()
 
---     Envelope::ptr_t delivered;
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, delivered, -1));
---     EXPECT_EQ(consumer, delivered->ConsumerTag());
---     EXPECT_EQ("", delivered->Exchange());
---     EXPECT_EQ(queue, delivered->RoutingKey());
---     EXPECT_EQ(message->Body(), delivered->Message()->Body());
--- end)
+	it("should deliver the messages successfully",function()
+	    local message = luconejo.BasicMessage.Create("Message Body")
+	    local queue = this.channel:SimpleDeclareQueue("")
+	    local consumer = this.channel:SimpleBasicConsume(queue)
+	    this.channel:SimpleBasicPublish("", queue, message)
+
+	    local delivered = this.channel:BasicConsumeMessage(consumer, -1)
+	    assert.True( delivered.Valid )
+	    assert.are.Equal( consumer, delivered.ConsumerTag )
+	    assert.are.Equal( "" , delivered.Exchange )
+	    assert.are.Equal( queue , delivered.RoutingKey )
+	    assert.are.Equal( message.Body , delivered.Message.Body )
+	end)
+end)
 
 -- describe(connected_test, basic_consume_message_bad_consumer)
 --,function()
---     EXPECT_THROW(this.channel:BasicConsumeMessage("test_consume_noexistconsumer"), ConsumerTagNotFoundException);
+--     EXPECT_THROW(this.channel:BasicConsumeMessage("test_consume_noexistconsumer"), ConsumerTagNotFoundException)
 -- end)
 
 -- describe(connected_test, basic_consume_inital_qos)
 --,function()
---     BasicMessage::ptr_t message1 = BasicMessage::Create("Message1");
---     BasicMessage::ptr_t message2 = BasicMessage::Create("Message2");
---     BasicMessage::ptr_t message3 = BasicMessage::Create("Message3");
+--     local message1 = BasicMessage::Create("Message1")
+--     local message2 = BasicMessage::Create("Message2")
+--     local message3 = BasicMessage::Create("Message3")
 
---     local queue = this.channel:DeclareQueue("");
---     this.channel:BasicPublish("", queue, message1, true);
---     this.channel:BasicPublish("", queue, message2, true);
---     this.channel:BasicPublish("", queue, message3, true);
+--     local queue = this.channel:DeclareQueue("")
+--     this.channel:BasicPublish("", queue, message1, true)
+--     this.channel:BasicPublish("", queue, message2, true)
+--     this.channel:BasicPublish("", queue, message3, true)
 
---     local consumer = this.channel:BasicConsume(queue, "", true, false);
---     Envelope::ptr_t received1, received2;
---     ASSERT_TRUE(this.channel:BasicConsumeMessage(consumer, received1, 1));
+--     local consumer = this.channel:BasicConsume(queue, "", true, false)
+--     local received1, received2
+--     ASSERT_TRUE(this.channel:BasicConsumeMessage(consumer, received1, 1))
 
---     EXPECT_FALSE(this.channel:BasicConsumeMessage(consumer, received2, 0));
---     this.channel:BasicAck(received1);
+--     EXPECT_FALSE(this.channel:BasicConsumeMessage(consumer, received2, 0))
+--     this.channel:BasicAck(received1)
 
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, received2, 1));
+--     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, received2, 1))
 -- end)
 
 -- describe(connected_test, basic_consume_2consumers)
 --,function()
---     BasicMessage::ptr_t message1 = BasicMessage::Create("Message1");
---     BasicMessage::ptr_t message2 = BasicMessage::Create("Message2");
---     BasicMessage::ptr_t message3 = BasicMessage::Create("Message3");
+--     local message1 = BasicMessage::Create("Message1")
+--     local message2 = BasicMessage::Create("Message2")
+--     local message3 = BasicMessage::Create("Message3")
 
---     local queue1 = this.channel:DeclareQueue("");
---     local queue2 = this.channel:DeclareQueue("");
---     local queue3 = this.channel:DeclareQueue("");
+--     local queue1 = this.channel:DeclareQueue("")
+--     local queue2 = this.channel:DeclareQueue("")
+--     local queue3 = this.channel:DeclareQueue("")
 
---     this.channel:BasicPublish("", queue1, message1);
---     this.channel:BasicPublish("", queue2, message2);
---     this.channel:BasicPublish("", queue3, message3);
+--     this.channel:BasicPublish("", queue1, message1)
+--     this.channel:BasicPublish("", queue2, message2)
+--     this.channel:BasicPublish("", queue3, message3)
 
---     local consumer1 = this.channel:BasicConsume(queue1, "", true, false);
---     local consumer2 = this.channel:BasicConsume(queue2, "", true, false);
+--     local consumer1 = this.channel:BasicConsume(queue1, "", true, false)
+--     local consumer2 = this.channel:BasicConsume(queue2, "", true, false)
 
---     Envelope::ptr_t envelope1;
---     Envelope::ptr_t envelope2;
---     Envelope::ptr_t envelope3;
+--     local envelope1
+--     local envelope2
+--     local envelope3
 
---     this.channel:BasicConsumeMessage(consumer1, envelope1);
---     this.channel:BasicAck(envelope1);
---     this.channel:BasicConsumeMessage(consumer2, envelope2);
---     this.channel:BasicAck(envelope2);
---     this.channel:BasicGet(envelope3, queue3);
---     this.channel:BasicAck(envelope3);
+--     this.channel:BasicConsumeMessage(consumer1, envelope1)
+--     this.channel:BasicAck(envelope1)
+--     this.channel:BasicConsumeMessage(consumer2, envelope2)
+--     this.channel:BasicAck(envelope2)
+--     this.channel:BasicGet(envelope3, queue3)
+--     this.channel:BasicAck(envelope3)
 -- end)
 
 -- describe(connected_test, basic_consume_1000messages)
 --,function()
---     BasicMessage::ptr_t message1 = BasicMessage::Create("Message1");
+--     local message1 = BasicMessage::Create("Message1")
 
---     local queue = this.channel:DeclareQueue("");
---     local consumer = this.channel:BasicConsume(queue, "");
+--     local queue = this.channel:DeclareQueue("")
+--     local consumer = this.channel:BasicConsume(queue, "")
 
---     Envelope::ptr_t msg;
---     for (int i = 0; i < 1000; ++i)
+--     local msg
+--     for (int i = 0 i < 1000 ++i)
 --     {
---         message1->Timestamp(i);
---         this.channel:BasicPublish("", queue, message1, true);
---         this.channel:BasicConsumeMessage(consumer, msg);
+--         message1->Timestamp(i)
+--         this.channel:BasicPublish("", queue, message1, true)
+--         this.channel:BasicConsumeMessage(consumer, msg)
 --     }
 
 -- end)
 
 -- describe(connected_test, basic_recover)
 --,function()
---     BasicMessage::ptr_t message = BasicMessage::Create("Message1");
+--     local message = BasicMessage::Create("Message1")
 
---     local queue = this.channel:DeclareQueue("");
---     local consumer = this.channel:BasicConsume(queue, "", true, false);
---     this.channel:BasicPublish("", queue, message);
+--     local queue = this.channel:DeclareQueue("")
+--     local consumer = this.channel:BasicConsume(queue, "", true, false)
+--     this.channel:BasicPublish("", queue, message)
 
---     Envelope::ptr_t message1;
---     Envelope::ptr_t message2;
+--     local message1
+--     local message2
 
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, message1));
---     this.channel:BasicRecover(consumer);
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, message2));
+--     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, message1))
+--     this.channel:BasicRecover(consumer)
+--     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, message2))
 
---     this.channel:DeleteQueue(queue);
+--     this.channel:DeleteQueue(queue)
 -- end)
 
 -- describe(connected_test, basic_recover_badconsumer)
 --,function()
---     EXPECT_THROW(this.channel:BasicRecover("consumer_notexist"), ConsumerTagNotFoundException);
+--     EXPECT_THROW(this.channel:BasicRecover("consumer_notexist"), ConsumerTagNotFoundException)
 -- end)
 
 -- describe(connected_test, basic_qos)
 --,function()
---     local queue = this.channel:DeclareQueue("");
---     local consumer = this.channel:BasicConsume(queue, "", true, false);
---     this.channel:BasicPublish("", queue, BasicMessage::Create("Message1"));
---     this.channel:BasicPublish("", queue, BasicMessage::Create("Message2"));
+--     local queue = this.channel:DeclareQueue("")
+--     local consumer = this.channel:BasicConsume(queue, "", true, false)
+--     this.channel:BasicPublish("", queue, BasicMessage::Create("Message1"))
+--     this.channel:BasicPublish("", queue, BasicMessage::Create("Message2"))
 
---     Envelope::ptr_t incoming;
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, incoming, 1));
---     EXPECT_FALSE(this.channel:BasicConsumeMessage(consumer, incoming, 1));
+--     local incoming
+--     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, incoming, 1))
+--     EXPECT_FALSE(this.channel:BasicConsumeMessage(consumer, incoming, 1))
 
---     this.channel:BasicQos(consumer, 2);
---     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, incoming, 1));
+--     this.channel:BasicQos(consumer, 2)
+--     EXPECT_TRUE(this.channel:BasicConsumeMessage(consumer, incoming, 1))
 
---     this.channel:DeleteQueue(queue);
+--     this.channel:DeleteQueue(queue)
 -- end)
 
 -- describe(connected_test, basic_qos_badconsumer)
 --,function()
---     EXPECT_THROW(this.channel:BasicQos("consumer_notexist", 1), ConsumerTagNotFoundException);
+--     EXPECT_THROW(this.channel:BasicQos("consumer_notexist", 1), ConsumerTagNotFoundException)
 -- end)
 
 -- describe(connected_test, consumer_cancelled)
 --,function()
---     local queue = this.channel:DeclareQueue("");
---     local consumer = this.channel:BasicConsume(queue, "", true, false);
---     this.channel:DeleteQueue(queue);
+--     local queue = this.channel:DeclareQueue("")
+--     local consumer = this.channel:BasicConsume(queue, "", true, false)
+--     this.channel:DeleteQueue(queue)
 
---     EXPECT_THROW(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException);
+--     EXPECT_THROW(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException)
 -- end)
 
 -- describe(connected_test, consumer_cancelled_one_message)
 --,function()
---     local queue = this.channel:DeclareQueue("");
---     local consumer = this.channel:BasicConsume(queue, "", true, false);
+--     local queue = this.channel:DeclareQueue("")
+--     local consumer = this.channel:BasicConsume(queue, "", true, false)
 
---     this.channel:BasicPublish("", queue, BasicMessage::Create("Message"));
---     this.channel:BasicConsumeMessage(consumer);
+--     this.channel:BasicPublish("", queue, BasicMessage::Create("Message"))
+--     this.channel:BasicConsumeMessage(consumer)
 
---     this.channel:DeleteQueue(queue);
+--     this.channel:DeleteQueue(queue)
 
---     EXPECT_THROW(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException);
+--     EXPECT_THROW(this.channel:BasicConsumeMessage(consumer), ConsumerCancelledException)
 -- end)
 
 -- describe(connected_test, consume_multiple)
 --,function()
---     local queue1 = this.channel:DeclareQueue("");
---     local queue2 = this.channel:DeclareQueue("");
+--     local queue1 = this.channel:DeclareQueue("")
+--     local queue2 = this.channel:DeclareQueue("")
 
---     local Body = "Message 1";
---     this.channel:BasicPublish("", queue1, BasicMessage::Create(Body));
+--     local Body = "Message 1"
+--     this.channel:BasicPublish("", queue1, BasicMessage::Create(Body))
 
 
---     this.channel:BasicConsume(queue1);
---     this.channel:BasicConsume(queue2);
+--     this.channel:BasicConsume(queue1)
+--     this.channel:BasicConsume(queue2)
 
---     Envelope::ptr_t env = this.channel:BasicConsumeMessage();
+--     local env = this.channel:BasicConsumeMessage()
 
---     EXPECT_EQ(Body, env->Message()->Body());
+--     assert.are.Equal(Body, env->Message()->Body())
 -- end)
 
 

@@ -106,6 +106,8 @@ consuming a message
 `local envelope = connection:BasicConsumeMessage(consumer_tag,timeout)`
 `local message = envelope.Message` returns `luconejo.BasicMessage`
 
+`connection:BasicCancel( consumer_tag )` stop consuming
+
 acknowledging a message
 -----------------------
 
