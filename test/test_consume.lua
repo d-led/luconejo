@@ -38,9 +38,9 @@ describe("cancelling consumer",function()
 	local this = connected_test.create()
 
 	it("should be able to cancel a consumer",function ( )
-	-- local queue = this.channel:DeclareQueue("")
-	-- local consumer = this.channel:BasicConsume(queue)
-	-- this.channel:BasicCancel(consumer)
+	local queue = this.channel:SimpleDeclareQueue("")
+	local consumer = this.channel:SimpleBasicConsume( queue )
+	assert.True( this.channel:BasicCancel(consumer) )
 	end)
 end)
 
