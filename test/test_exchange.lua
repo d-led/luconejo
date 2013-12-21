@@ -106,7 +106,7 @@ describe("delete_exchange",function()
     end)
 end)
 
--- TODO: problematic
+-- PENDING: no error is returned in the librabbitmq-c library
 -- describe("delete_exchange_notexist",function()
 -- 	local this = connected_test.create()
 --     it("",function()
@@ -122,7 +122,7 @@ describe("delete_exhange_ifunused",function()
     end)
 end)
 
--- TODO: problematic
+-- PENDING: no error is returned in the librabbitmq-c library
 -- describe("delete_exhange_ifused",function()
 -- 	local this = connected_test.create()
     
