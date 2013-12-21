@@ -80,7 +80,7 @@ connection:DeclareExchange(
 	durable,
 	auto_delete)
 connection:DeleteExchange( exchange_name )
-connection:DeleteExchangeIfUnused( exchange_name ) -- delete an exchange if unused
+connection:DeleteExchangeIfUnused( exchange_name )
 connection:BindExchange( destination, source, routing key )
 connection:UnbindExchange( destination, source, routing key )
 ```
@@ -180,6 +180,7 @@ status
  - no SSL support yet, will be configurable in the future
  - compiles and passes tests with clang on MacOS X only
  - rabbitmq-c should be built with its own CMake config and linked dynamically
+ - deleting exchanges seems to work, but doesn't throw on wrongful deletion
 
 motivation
 ==========
