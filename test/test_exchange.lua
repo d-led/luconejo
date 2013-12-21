@@ -126,9 +126,9 @@ describe("delete_exhange_ifused",function()
 	local this = connected_test.create()
     
     it("",function()
-	    this.channel:DeclareExchange("exchange_used", luconejo.Channel.EXCHANGE_TYPE_DIRECT, false, false, false)
+	    assert.True( this.channel:DeclareExchange("exchange_used", luconejo.Channel.EXCHANGE_TYPE_DIRECT, false, false, false) )
 	    local queue = this.channel:SimpleDeclareQueue("")
-	    this.channel:BindQueue(queue, "exchange_used", "whatever")
+	    assert.True( this.channel:BindQueue(queue, "exchange_used", "whatever") )
 
 	    -- assert.False(  -- TODO
 	    	this.channel:DeleteExchangeIfUnused("exchange_used") 
