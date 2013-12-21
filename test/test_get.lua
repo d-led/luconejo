@@ -15,34 +15,36 @@ describe("connected_test",function()
 	end)
 end)
 
--- describe("connected_test",function()
--- 	local this = connected_test.create()
---	
---	it("",function()
---     local message = luconejo.BasicMessage.Create("Message Body")
---     local queue = this.channel:DeclareQueue("")
+describe("connected_test",function()
+	local this = connected_test.create()
+	
+	it("",function()
+	    local message = luconejo.BasicMessage.Create("Message Body")
+	    local queue = this.channel:SimpleDeclareQueue("")
 
---     local new_message
---     assert.False(this.channel:BasicGet(new_message, queue))
---	end)
--- end)
+	    local new_message = this.channel:BasicGet(queue, true)
+	    assert.False( new_message.Valid )
+	end)
+end)
 
--- describe("test_get", function()
--- 	local this = connected_test.create()
---	
---	it("",function()
---     // Smallest frame size allowed by AMQP
---     Channel::ptr_t channel = Channel::Create(this.host, 5672, "guest", "guest", "/", 4096)
---     // Create a message with a body larger than a single frame
---     local message = luconejo.BasicMessage.Create(local(4099, 'a'))
---     local queue = this.channel:DeclareQueue("")
+describe("large message", function()
+	local this = connected_test.create()
 
---     this.channel:BasicPublish("", queue, message)
---     local new_message
---     assert.True(this.channel:BasicGet(new_message, queue))
---     assert.are.Equal(message.Body(), new_message.Message.Body())
---	end)
--- end)
+	local function LargeMessage () t={} for i=1,4099 do t[#t+1]='a' end return table.concat(t) end
+	
+	it("",function()
+	    -- Smallest frame size allowed by AMQP
+	    local channel = luconejo.Channel.CreateWithParameters(this.host, 5672, "guest", "guest", "/", 4096)
+	    -- Create a message with a body larger than a single frame
+	    local message = luconejo.BasicMessage.Create( LargeMessage() )
+	    local queue = this.channel:SimpleDeclareQueue("")
+
+	    this.channel:SimpleBasicPublish("", queue, message)
+	    local new_message = this.channel:BasicGet(queue,true)
+	    assert.True( new_message.Valid )
+	    assert.are.Equal( message.Body , new_message.Message.Body )
+	end)
+end)
 
 -- describe("connected_test",function()
 -- 	local this = connected_test.create()
