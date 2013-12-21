@@ -70,6 +70,9 @@ luconejo.Channel.EXCHANGE_TYPE_DIRECT -- constant
 luconejo.Channel.EXCHANGE_TYPE_FANOUT -- constant
 luconejo.Channel.EXCHANGE_TYPE_TOPIC -- constant
 
+connection:SimpleDeclareExchange(exchange_name)
+
+
 connection:DeclareExchange(
 	exchange_name,
 	exchange_type,

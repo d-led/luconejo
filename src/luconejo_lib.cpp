@@ -452,7 +452,7 @@ namespace luconejo {
 			}
 
 			bool DeclareExchange(const std::string &exchange_name,
-		                         const std::string &exchange_type,
+		                         const std::string &exchange_type = AmqpClient::Channel::EXCHANGE_TYPE_DIRECT,
 		                         bool passive = false,
 		                         bool durable = false,
 		                         bool auto_delete = false) {
@@ -465,6 +465,10 @@ namespace luconejo {
 				} catch (std::exception const& e) {
 					return Error(e.what());
 				}
+			}
+
+			bool SimpleDeclareExchange(std::string const& exchange_name) {
+				return DeclareExchange(exchange_name);
 			}
 
 			bool DeleteExchange(const std::string &exchange_name) {
@@ -836,6 +840,7 @@ void register_luconejo (lua_State* L) {
 				.addProperty("Valid",&wrappers::Channel::Valid)
 				.addFunction("Disconnect",&wrappers::Channel::Disconnect)
 				.addFunction("DeclareExchange",&wrappers::Channel::DeclareExchange)
+				.addFunction("SimpleDeclareExchange",&wrappers::Channel::SimpleDeclareExchange)
 				.addFunction("DeleteExchange",&wrappers::Channel::DeleteExchange)
 				.addFunction("DeleteExchangeIfUnused",&wrappers::Channel::DeleteExchangeIfUnused)
 				.addFunction("BindExchange",&wrappers::Channel::BindExchange)
