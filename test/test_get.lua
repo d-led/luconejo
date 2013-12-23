@@ -29,14 +29,12 @@ end)
 
 describe("large message", function()
 	local this = connected_test.create()
-
-	local function LargeMessage () t={} for i=1,4099 do t[#t+1]='a' end return table.concat(t) end
 	
 	it("",function()
 	    -- Smallest frame size allowed by AMQP
 	    local channel = luconejo.Channel.CreateWithParameters(this.host, 5672, "guest", "guest", "/", 4096)
 	    -- Create a message with a body larger than a single frame
-	    local message = luconejo.BasicMessage.Create( LargeMessage() )
+	    local message = luconejo.BasicMessage.Create( connected_test.LargeMessage(4099) )
 	    local queue = this.channel:SimpleDeclareQueue("")
 
 	    assert.True( this.channel:SimpleBasicPublish("", queue, message) )

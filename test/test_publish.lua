@@ -11,83 +11,92 @@ describe("publish_success",function()
 	end)
 end)
 
--- TEST(test_publish, publish_large_message)
--- {
---     // Smallest frame size allowed by AMQP
---     local channel = Channel::Create(this.host, 5672, "guest", "guest", "/", 4096)
---     // Create a message with a body larger than a single frame
---     local message = luconejo.BasicMessage.Create(std::string(4099, 'a'))
+describe("publish_large_message",function()
+	local this = connected_test.create()
+	it("",function()
+	    local channel = luconejo.Channel.CreateWithParameters(this.host, 5672, "guest", "guest", "/", 4096)
+	    assert.True( channel.Valid )
+	    local message = luconejo.BasicMessage.Create( connected_test.LargeMessage(4099) )
 
---     this.channel:BasicPublish("", "test_publish_rk", message)
---	end)
--- end)
+	    assert.True( this.channel:SimpleBasicPublish("", "test_publish_rk", message) )
+	end)
+end)
 
--- describe("publish_badexchange",function()
--- 	local this = connected_test.create()
---	it("",function()
---     local message = luconejo.BasicMessage.Create("message body")
+describe("publish_badexchange",function()
+	local this = connected_test.create()
+	
+	it("",function()
+	    local message = luconejo.BasicMessage.Create("message body")
 
---     EXPECT_THROW(this.channel:BasicPublish("test_publish_notexist", "test_publish_rk", message), ChannelException)
---	end)
--- end)
+	    assert.False( this.channel:SimpleBasicPublish("test_publish_notexist", "test_publish_rk", message) )
+	end)
+end)
 
--- describe("publish_recover_from_error",function()
--- 	local this = connected_test.create()
---	it("",function()
---     local message = luconejo.BasicMessage.Create("message body")
+describe("publish_recover_from_error",function()
+	local this = connected_test.create()
 
---     EXPECT_THROW(this.channel:BasicPublish("test_publish_notexist", "test_publish_rk", message), ChannelException)
---     this.channel:BasicPublish("", "test_publish_rk", message)
---	end)
--- end)
+	it("",function()
+	    local message = luconejo.BasicMessage.Create("message body")
 
--- describe("publish_mandatory_fail",function()
--- 	local this = connected_test.create()
---	it("",function()
---     local message = luconejo.BasicMessage.Create("message body")
+	    assert.False( this.channel:SimpleBasicPublish("test_publish_notexist", "test_publish_rk", message) )
+	    assert.True( this.channel:SimpleBasicPublish("", "test_publish_rk", message) )
+	end)
+end)
 
---     EXPECT_THROW(this.channel:BasicPublish("", "test_publish_notexist", message, true), MessageReturnedException)
---	end)
--- end)
+describe("publish_mandatory_fail",function()
+	local this = connected_test.create()
+	
+	it("",function()
+	    local message = luconejo.BasicMessage.Create("message body")
 
--- describe("publish_mandatory_success",function()
--- 	local this = connected_test.create()
---	it("",function()
---     local message = luconejo.BasicMessage.Create("message body")
---     std::string queue = this.channel:DeclareQueue("")
+	    assert.False( this.channel:BasicPublish("", "test_publish_notexist", message, true, false) )
+	end)
+end)
 
---     this.channel:BasicPublish("", queue, message, true)
---	end)
--- end)
+describe("publish_mandatory_success",function()
+	local this = connected_test.create()
 
+	it("",function()
+	    local message = luconejo.BasicMessage.Create("message body")
+	    local queue = this.channel:SimpleDeclareQueue("")
+
+	    assert.True( this.channel:BasicPublish("", queue, message, true, false) )
+	end)
+end)
+
+-- not implemented yet
 -- describe("DISABLED_publish_immediate_fail1",function()
 -- 	local this = connected_test.create()
---	it("",function()
---     local message = luconejo.BasicMessage.Create("message body")
 
---     // No queue connected
---     EXPECT_THROW(this.channel:BasicPublish("", "test_publish_notexist", message, false, true), MessageReturnedException)
---	end)
+-- 	it("",function()
+-- 	    local message = luconejo.BasicMessage.Create("message body")
+
+-- 	    -- No queue connected
+-- 	    assert.False( this.channel:BasicPublish("", "test_publish_notexist", message, false, true) )
+-- 	end)
 -- end)
 
+-- not implemented yet
 -- describe("DISABLED_publish_immediate_fail2",function()
 -- 	local this = connected_test.create()
---	it("",function()
---     local message = luconejo.BasicMessage.Create("message body")
---     std::string queue = this.channel:DeclareQueue("")
 
---     // No consumer connected
---     EXPECT_THROW(this.channel:BasicPublish("", queue, message, false, true), MessageReturnedException)
---	end)
+-- 	it("",function()
+-- 	    local message = luconejo.BasicMessage.Create("message body")
+-- 	    local queue = this.channel:SimpleDeclareQueue("")
+
+-- 	    -- No consumer connected
+-- 	    assert.False( this.channel:BasicPublish("", queue, message, false, true) )
+-- 	end)
 -- end)
 
--- describe("publish_immediate_success",function()
--- 	local this = connected_test.create()
---	it("",function()
---     local message = luconejo.BasicMessage.Create("message body")
---     std::string queue = this.channel:DeclareQueue("")
---     std::string consumer = this.channel:BasicConsume(queue, "")
+describe("publish_immediate_success",function()
+	local this = connected_test.create()
 
---     this.channel:BasicPublish("", queue, message, true)
---	end)
--- end)
+	it("",function()
+	    local message = luconejo.BasicMessage.Create("message body")
+	    local queue = this.channel:SimpleDeclareQueue("")
+	    local consumer = this.channel:SimpleBasicConsume(queue)
+
+	    assert.True( this.channel:BasicPublish("", queue, message, true, false) )
+	end)
+end)

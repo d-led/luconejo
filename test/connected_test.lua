@@ -9,7 +9,9 @@ local connected_test = {
 		assert.truthy( fixture.channel )
 		assert.truthy( fixture.message )
 		return fixture
-	end	
+	end
+	,
+	LargeMessage = function (num) t={} for i=1,num do t[#t+1]='a' end return table.concat(t) end
 }
 
 return connected_test
