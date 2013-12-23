@@ -97,6 +97,9 @@ newaction {
       os.execute("busted test/test_ack.lua")
       os.execute("busted test/test_consume.lua")
       os.execute("busted test/test_exchange.lua")
+      os.execute("busted test/test_publish.lua")
+      os.execute("busted test/test_message.lua")
+      os.execute("busted test/test_get.lua")
    end
 }
 
