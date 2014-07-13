@@ -3,7 +3,7 @@
 	url = https://github.com/d-led/premake-meta-cpp.git
 [submodule "SimpleAmqpClient"]
 	path = SimpleAmqpClient
-	url = https://github.com/d-led/SimpleAmqpClient.git
+	url = https://github.com/alanxz/SimpleAmqpClient.git
 [submodule "rabbitmq-c"]
 	path = rabbitmq-c
 	url = https://github.com/alanxz/rabbitmq-c.git

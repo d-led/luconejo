@@ -73,6 +73,7 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/AmqpException.o \
+	$(OBJDIR)/AmqpLibraryException.o \
 	$(OBJDIR)/AmqpResponseLibraryException.o \
 	$(OBJDIR)/BasicMessage.o \
 	$(OBJDIR)/Channel.o \
@@ -146,6 +147,9 @@ endif
 endif
 
 $(OBJDIR)/AmqpException.o: ../SimpleAmqpClient/src/AmqpException.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+$(OBJDIR)/AmqpLibraryException.o: ../SimpleAmqpClient/src/AmqpLibraryException.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 $(OBJDIR)/AmqpResponseLibraryException.o: ../SimpleAmqpClient/src/AmqpResponseLibraryException.cpp
