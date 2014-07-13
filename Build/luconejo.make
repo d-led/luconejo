@@ -7,17 +7,9 @@ ifndef verbose
   SILENT = @
 endif
 
-ifndef CC
-  CC = gcc
-endif
-
-ifndef CXX
-  CXX = g++
-endif
-
-ifndef AR
-  AR = ar
-endif
+CC = gcc
+CXX = g++
+AR = ar
 
 ifndef RESCOMP
   ifdef WINDRES
@@ -33,14 +25,14 @@ ifeq ($(config),debug)
   TARGET     = $(TARGETDIR)/luconejo.so
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I/usr/include/lua5.1
-  CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -fPIC -v -fPIC
-  CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -L.. -L../linux/bin/Debug -shared
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../linux/bin/Debug/libSimpleAmqpClient.a -lrabbitmq -llua5.1-c++ -lboost_chrono
+  ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
+  ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -g -fPIC -v -fPIC
+  ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
+  ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
+  ALL_LDFLAGS   += $(LDFLAGS) -L.. -L. -L../linux/bin/Debug -shared
   LDDEPS    += ../linux/bin/Debug/libSimpleAmqpClient.a
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LIBS      += $(LDDEPS) -lrabbitmq -llua5.1-c++ -lboost_chrono
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -55,14 +47,14 @@ ifeq ($(config),release)
   TARGET     = $(TARGETDIR)/luconejo.so
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I/usr/include/lua5.1
-  CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -fPIC -v -fPIC
-  CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -L.. -L../linux/bin/Release -s -shared
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../linux/bin/Release/libSimpleAmqpClient.a -lrabbitmq -llua5.1-c++ -lboost_chrono
+  ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
+  ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -O2 -fPIC -v -fPIC
+  ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
+  ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
+  ALL_LDFLAGS   += $(LDFLAGS) -L.. -L. -L../linux/bin/Release -s -shared
   LDDEPS    += ../linux/bin/Release/libSimpleAmqpClient.a
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LIBS      += $(LDDEPS) -lrabbitmq -llua5.1-c++ -lboost_chrono
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -130,19 +122,18 @@ prelink:
 ifneq (,$(PCH))
 $(GCH): $(PCH)
 	@echo $(notdir $<)
-ifeq (posix,$(SHELLTYPE))
-	-$(SILENT) cp $< $(OBJDIR)
-else
-	$(SILENT) xcopy /D /Y /Q "$(subst /,\,$<)" "$(subst /,\,$(OBJDIR))" 1>nul
-endif
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) -x c++-header $(ALL_CXXFLAGS) -MMD -MP $(DEFINES) $(INCLUDES) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 endif
 
 $(OBJDIR)/luconejo.o: ../src/luconejo.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
 $(OBJDIR)/luconejo_lib.o: ../src/luconejo_lib.cpp
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 -include $(OBJECTS:%.o=%.d)
+ifneq (,$(PCH))
+  -include $(OBJDIR)/$(notdir $(PCH)).d
+endif
