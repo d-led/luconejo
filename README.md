@@ -5,6 +5,8 @@ a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient w
 
 [![Build Status](https://travis-ci.org/d-led/luconejo.png?branch=master)](https://travis-ci.org/d-led/luconejo)
 
+many features work, but just as the [SimpleAmqpClient](https://github.com/woldan/SimpleAmqpClient/tree/master/src) tests are failing, so are the wrapper tests.
+
 - [luconejo](#luconejo)
 - [api](#api)
 	- [reading convention](#reading-convention)

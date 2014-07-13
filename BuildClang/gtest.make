@@ -28,19 +28,19 @@ ifndef RESCOMP
 endif
 
 ifeq ($(config),debug)
-  OBJDIR     = Debug/obj/Debug/luconejo
-  TARGETDIR  = ..
-  TARGET     = $(TARGETDIR)/luconejo.so
+  OBJDIR     = Debug/obj/Debug/gtest
+  TARGETDIR  = ../macosx/bin/Debug
+  TARGET     = $(TARGETDIR)/libgtest.a
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG -DGTEST_USE_OWN_TR1_TUPLE=1
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I../SimpleAmqpClient/third-party/gtest-1.7.0
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -fPIC -v  -fPIC
+  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -v  -fPIC
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -L.. -L../macosx/bin/Debug -dynamiclib -flat_namespace
+  LDFLAGS   += -L..
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../macosx/bin/Debug/libSimpleAmqpClient.a -lrabbitmq -llua -lboost_chrono-mt
-  LDDEPS    += ../macosx/bin/Debug/libSimpleAmqpClient.a
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LIBS      += 
+  LDDEPS    += 
+  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -50,19 +50,19 @@ ifeq ($(config),debug)
 endif
 
 ifeq ($(config),release)
-  OBJDIR     = Release/obj/Release/luconejo
-  TARGETDIR  = ..
-  TARGET     = $(TARGETDIR)/luconejo.so
+  OBJDIR     = Release/obj/Release/gtest
+  TARGETDIR  = ../macosx/bin/Release
+  TARGET     = $(TARGETDIR)/libgtest.a
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE -DGTEST_USE_OWN_TR1_TUPLE=1
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I../SimpleAmqpClient/third-party/gtest-1.7.0
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -fPIC -v  -fPIC
+  CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -v  -fPIC
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -L.. -L../macosx/bin/Release -Wl,-x -dynamiclib -flat_namespace
+  LDFLAGS   += -L.. -Wl,-x
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LIBS      += ../macosx/bin/Release/libSimpleAmqpClient.a -lrabbitmq -llua -lboost_chrono-mt
-  LDDEPS    += ../macosx/bin/Release/libSimpleAmqpClient.a
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(LIBS) $(LDFLAGS)
+  LIBS      += 
+  LDDEPS    += 
+  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -72,8 +72,8 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/luconejo.o \
-	$(OBJDIR)/luconejo_lib.o \
+	$(OBJDIR)/gtest-all.o \
+	$(OBJDIR)/gtest_main.o \
 
 RESOURCES := \
 
@@ -91,7 +91,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking luconejo
+	@echo Linking gtest
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -112,7 +112,7 @@ else
 endif
 
 clean:
-	@echo Cleaning luconejo
+	@echo Cleaning gtest
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -138,10 +138,10 @@ endif
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 endif
 
-$(OBJDIR)/luconejo.o: ../src/luconejo.cpp
+$(OBJDIR)/gtest-all.o: ../SimpleAmqpClient/third-party/gtest-1.7.0/gtest/gtest-all.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-$(OBJDIR)/luconejo_lib.o: ../src/luconejo_lib.cpp
+$(OBJDIR)/gtest_main.o: ../SimpleAmqpClient/third-party/gtest-1.7.0/gtest/gtest_main.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

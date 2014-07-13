@@ -13,6 +13,11 @@ local settings = {
 		linux = "./",
 		windows = "",
 		macosx = "./"
+	},
+	test_links = {
+		linux = { 'boost_chrono', 'boost_system' },
+		windows = { },
+		macosx = { 'boost_chrono-mt', 'boost_system-mt' }
 	}
 }
 
@@ -37,27 +42,11 @@ make_solution 'luconejo'
 includedirs { 
 	'./rabbitmq-c/librabbitmq',
 	'./SimpleAmqpClient/src',
-	'./LuaBridge-1.0.2'
+	'./LuaBridge-1.0.2',
+	'./SimpleAmqpClient/third-party/gtest-1.7.0'
 }
 
 defines { 'BOOST_NO_VARIADIC_TEMPLATES' }
-
---------------------------
--- make_static_lib( 'rabbitmq',
--- 	{
--- 		'./rabbitmq-c/librabbitmq/*.h',
--- 		'./rabbitmq-c/librabbitmq/*.c'
--- 	}
--- )
-
--- excludes {
--- 	'./rabbitmq-c/librabbitmq/amqp_cyassl.c',
--- 	'./rabbitmq-c/librabbitmq/amqp_openssl.c',
--- 	'./rabbitmq-c/librabbitmq/amqp_polarssl.c',
--- 	'./rabbitmq-c/librabbitmq/amqp_gnutls.c'
--- }
-
--- language "C"
 
 --------------------------
 make_static_lib( 'SimpleAmqpClient',
@@ -88,6 +77,29 @@ links {
 
 platform_specifics()
 
+--original tests--------------------
+make_static_lib( 'gtest',
+	{
+		'./SimpleAmqpClient/third-party/gtest-1.7.0/gtest/*.cc'
+	}
+)
+
+make_console_app( 'SimpleAmqpClientTests',
+	{
+		'./SimpleAmqpClient/testing/*.cpp'
+	}
+)
+
+links {
+	'rabbitmq',
+	'SimpleAmqpClient',
+	'gtest',
+	settings.test_links[OS]
+}
+
+run_target_after_build()
+------------------------------------
+
 newaction {
    trigger     = "test",
    description = "run lua test",
@@ -113,7 +125,7 @@ newaction {
 
 newaction {
 	trigger = 'start',
-	description = 'star the rabbitmq server',
+	description = 'start the rabbitmq server',
 	execute = function ()
 		os.execute 'rabbitmq-server start &'
 	end
