@@ -15,7 +15,7 @@ local settings = {
 		macosx = "./"
 	},
 	test_links = {
-		linux = { 'boost_chrono', 'boost_system' },
+		linux = { 'boost_chrono', 'boost_system', 'pthread' },
 		windows = { },
 		macosx = { 'boost_chrono-mt', 'boost_system-mt' }
 	}
@@ -128,5 +128,13 @@ newaction {
 	description = 'start the rabbitmq server',
 	execute = function ()
 		os.execute 'rabbitmq-server start &'
+	end
+}
+
+newaction {
+	trigger = 'stop',
+	description = 'stop the rabbitmq server',
+	execute = function ()
+		os.execute 'rabbitmqctl stop'
 	end
 }

@@ -20,60 +20,65 @@ ifndef RESCOMP
 endif
 
 ifeq ($(config),debug)
-  OBJDIR     = Debug/obj/Debug/SimpleAmqpClient
+  OBJDIR     = Debug/obj/Debug/SimpleAmqpClientTests
   TARGETDIR  = ../linux/bin/Debug
-  TARGET     = $(TARGETDIR)/libSimpleAmqpClient.a
+  TARGET     = $(TARGETDIR)/SimpleAmqpClientTests
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I../SimpleAmqpClient/third-party/gtest-1.7.0
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -g -v -fPIC
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -L..
-  LDDEPS    +=
-  LIBS      += $(LDDEPS)
-  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
+  ALL_LDFLAGS   += $(LDFLAGS) -L.. -L. -L../linux/bin/Debug
+  LDDEPS    += ../linux/bin/Debug/libSimpleAmqpClient.a ../linux/bin/Debug/libgtest.a
+  LIBS      += $(LDDEPS) -lrabbitmq -lboost_chrono -lboost_system -lpthread
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
   endef
   define POSTBUILDCMDS
+	@echo Running post-build commands
+	$(TARGET)
   endef
 endif
 
 ifeq ($(config),release)
-  OBJDIR     = Release/obj/Release/SimpleAmqpClient
+  OBJDIR     = Release/obj/Release/SimpleAmqpClientTests
   TARGETDIR  = ../linux/bin/Release
-  TARGET     = $(TARGETDIR)/libSimpleAmqpClient.a
+  TARGET     = $(TARGETDIR)/SimpleAmqpClientTests
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE
   INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I../SimpleAmqpClient/third-party/gtest-1.7.0
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -O2 -v -fPIC
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -L.. -s
-  LDDEPS    +=
-  LIBS      += $(LDDEPS)
-  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
+  ALL_LDFLAGS   += $(LDFLAGS) -L.. -L. -L../linux/bin/Release -s
+  LDDEPS    += ../linux/bin/Release/libSimpleAmqpClient.a ../linux/bin/Release/libgtest.a
+  LIBS      += $(LDDEPS) -lrabbitmq -lboost_chrono -lboost_system -lpthread
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
   endef
   define POSTBUILDCMDS
+	@echo Running post-build commands
+	$(TARGET)
   endef
 endif
 
 OBJECTS := \
-	$(OBJDIR)/MessageReturnedException.o \
-	$(OBJDIR)/BasicMessage.o \
-	$(OBJDIR)/TableImpl.o \
-	$(OBJDIR)/AmqpResponseLibraryException.o \
-	$(OBJDIR)/Envelope.o \
-	$(OBJDIR)/Channel.o \
-	$(OBJDIR)/ChannelImpl.o \
-	$(OBJDIR)/Table.o \
-	$(OBJDIR)/AmqpLibraryException.o \
-	$(OBJDIR)/AmqpException.o \
+	$(OBJDIR)/test_get.o \
+	$(OBJDIR)/test_connect.o \
+	$(OBJDIR)/test_ack.o \
+	$(OBJDIR)/test_queue.o \
+	$(OBJDIR)/test_publish.o \
+	$(OBJDIR)/test_message.o \
+	$(OBJDIR)/test_consume.o \
+	$(OBJDIR)/test_table.o \
+	$(OBJDIR)/test_channels.o \
+	$(OBJDIR)/test_nack.o \
+	$(OBJDIR)/test_exchange.o \
 
 RESOURCES := \
 
@@ -91,7 +96,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking SimpleAmqpClient
+	@echo Linking SimpleAmqpClientTests
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -112,7 +117,7 @@ else
 endif
 
 clean:
-	@echo Cleaning SimpleAmqpClient
+	@echo Cleaning SimpleAmqpClientTests
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -133,43 +138,47 @@ $(GCH): $(PCH)
 	$(SILENT) $(CXX) -x c++-header $(ALL_CXXFLAGS) -MMD -MP $(DEFINES) $(INCLUDES) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 endif
 
-$(OBJDIR)/MessageReturnedException.o: ../SimpleAmqpClient/src/MessageReturnedException.cpp
+$(OBJDIR)/test_get.o: ../SimpleAmqpClient/testing/test_get.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/BasicMessage.o: ../SimpleAmqpClient/src/BasicMessage.cpp
+$(OBJDIR)/test_connect.o: ../SimpleAmqpClient/testing/test_connect.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/TableImpl.o: ../SimpleAmqpClient/src/TableImpl.cpp
+$(OBJDIR)/test_ack.o: ../SimpleAmqpClient/testing/test_ack.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/AmqpResponseLibraryException.o: ../SimpleAmqpClient/src/AmqpResponseLibraryException.cpp
+$(OBJDIR)/test_queue.o: ../SimpleAmqpClient/testing/test_queue.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/Envelope.o: ../SimpleAmqpClient/src/Envelope.cpp
+$(OBJDIR)/test_publish.o: ../SimpleAmqpClient/testing/test_publish.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/Channel.o: ../SimpleAmqpClient/src/Channel.cpp
+$(OBJDIR)/test_message.o: ../SimpleAmqpClient/testing/test_message.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/ChannelImpl.o: ../SimpleAmqpClient/src/ChannelImpl.cpp
+$(OBJDIR)/test_consume.o: ../SimpleAmqpClient/testing/test_consume.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/Table.o: ../SimpleAmqpClient/src/Table.cpp
+$(OBJDIR)/test_table.o: ../SimpleAmqpClient/testing/test_table.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/AmqpLibraryException.o: ../SimpleAmqpClient/src/AmqpLibraryException.cpp
+$(OBJDIR)/test_channels.o: ../SimpleAmqpClient/testing/test_channels.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/AmqpException.o: ../SimpleAmqpClient/src/AmqpException.cpp
+$(OBJDIR)/test_nack.o: ../SimpleAmqpClient/testing/test_nack.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
+$(OBJDIR)/test_exchange.o: ../SimpleAmqpClient/testing/test_exchange.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

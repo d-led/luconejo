@@ -20,19 +20,19 @@ ifndef RESCOMP
 endif
 
 ifeq ($(config),debug)
-  OBJDIR     = Debug/obj/Debug/luconejo
-  TARGETDIR  = ..
-  TARGET     = $(TARGETDIR)/luconejo.so
+  OBJDIR     = Debug/obj/Debug/gtest
+  TARGETDIR  = ../linux/bin/Debug
+  TARGET     = $(TARGETDIR)/libgtest.a
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG
-  INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
+  INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I../SimpleAmqpClient/third-party/gtest-1.7.0
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -g -fPIC -v -fPIC
+  ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -g -v -fPIC
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -L.. -L. -L../linux/bin/Debug -shared
-  LDDEPS    += ../linux/bin/Debug/libSimpleAmqpClient.a
-  LIBS      += $(LDDEPS) -lrabbitmq -llua5.1-c++ -lboost_chrono
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
+  ALL_LDFLAGS   += $(LDFLAGS) -L..
+  LDDEPS    +=
+  LIBS      += $(LDDEPS)
+  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -42,19 +42,19 @@ ifeq ($(config),debug)
 endif
 
 ifeq ($(config),release)
-  OBJDIR     = Release/obj/Release/luconejo
-  TARGETDIR  = ..
-  TARGET     = $(TARGETDIR)/luconejo.so
+  OBJDIR     = Release/obj/Release/gtest
+  TARGETDIR  = ../linux/bin/Release
+  TARGET     = $(TARGETDIR)/libgtest.a
   DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE
-  INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
+  INCLUDES  += -I.. -I../rabbitmq-c/librabbitmq -I../SimpleAmqpClient/src -I../LuaBridge-1.0.2 -I../SimpleAmqpClient/third-party/gtest-1.7.0
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -O2 -fPIC -v -fPIC
+  ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -O2 -v -fPIC
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -L.. -L. -L../linux/bin/Release -s -shared
-  LDDEPS    += ../linux/bin/Release/libSimpleAmqpClient.a
-  LIBS      += $(LDDEPS) -lrabbitmq -llua5.1-c++ -lboost_chrono
-  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
+  ALL_LDFLAGS   += $(LDFLAGS) -L.. -s
+  LDDEPS    +=
+  LIBS      += $(LDDEPS)
+  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -64,8 +64,8 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/luconejo.o \
-	$(OBJDIR)/luconejo_lib.o \
+	$(OBJDIR)/gtest_main.o \
+	$(OBJDIR)/gtest-all.o \
 
 RESOURCES := \
 
@@ -83,7 +83,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking luconejo
+	@echo Linking gtest
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -104,7 +104,7 @@ else
 endif
 
 clean:
-	@echo Cleaning luconejo
+	@echo Cleaning gtest
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -125,11 +125,11 @@ $(GCH): $(PCH)
 	$(SILENT) $(CXX) -x c++-header $(ALL_CXXFLAGS) -MMD -MP $(DEFINES) $(INCLUDES) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 endif
 
-$(OBJDIR)/luconejo.o: ../src/luconejo.cpp
+$(OBJDIR)/gtest_main.o: ../SimpleAmqpClient/third-party/gtest-1.7.0/gtest/gtest_main.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
-$(OBJDIR)/luconejo_lib.o: ../src/luconejo_lib.cpp
+$(OBJDIR)/gtest-all.o: ../SimpleAmqpClient/third-party/gtest-1.7.0/gtest/gtest-all.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

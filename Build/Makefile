@@ -6,7 +6,7 @@ ifndef config
 endif
 export config
 
-PROJECTS := SimpleAmqpClient luconejo
+PROJECTS := SimpleAmqpClient luconejo gtest SimpleAmqpClientTests
 
 .PHONY: all clean help $(PROJECTS)
 
@@ -20,9 +20,19 @@ luconejo: SimpleAmqpClient
 	@echo "==== Building luconejo ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f luconejo.make
 
+gtest: 
+	@echo "==== Building gtest ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f gtest.make
+
+SimpleAmqpClientTests: SimpleAmqpClient gtest
+	@echo "==== Building SimpleAmqpClientTests ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f SimpleAmqpClientTests.make
+
 clean:
 	@${MAKE} --no-print-directory -C . -f SimpleAmqpClient.make clean
 	@${MAKE} --no-print-directory -C . -f luconejo.make clean
+	@${MAKE} --no-print-directory -C . -f gtest.make clean
+	@${MAKE} --no-print-directory -C . -f SimpleAmqpClientTests.make clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -36,5 +46,7 @@ help:
 	@echo "   clean"
 	@echo "   SimpleAmqpClient"
 	@echo "   luconejo"
+	@echo "   gtest"
+	@echo "   SimpleAmqpClientTests"
 	@echo ""
 	@echo "For more information, see http://industriousone.com/premake/quick-start"
