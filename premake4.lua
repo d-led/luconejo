@@ -110,3 +110,11 @@ newaction {
 		os.execute(settings.exec_prefix[OS].."build_rabbitmq")
 	end
 }
+
+newaction {
+	trigger = 'start',
+	description = 'star the rabbitmq server',
+	execute = function ()
+		os.execute 'rabbitmq-server start &'
+	end
+}
