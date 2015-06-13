@@ -6,8 +6,8 @@ local connected_test = {
 			channel = luconejo.Channel.Create( test_host ),
 			message = luconejo.BasicMessage.Create("Test message")
 		}
-		assert.truthy( fixture.channel )
-		assert.truthy( fixture.message )
+		assert ( fixture.channel )
+		assert ( fixture.message )
 		return fixture
 	end
 	,
