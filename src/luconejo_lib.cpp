@@ -71,7 +71,7 @@ namespace luconejo {
 			}
 
 			bool Valid() const {
-				return message;
+				return !!message;
 			}
 
 			std::string Body() const {
@@ -341,7 +341,7 @@ namespace luconejo {
 			AmqpClient::Envelope::ptr_t envelope;
 
 			bool Valid() const {
-				return envelope;
+				return !!envelope;
 			}
 
 			RefCountedPtr<BasicMessage> Message() const {
@@ -448,7 +448,7 @@ namespace luconejo {
 			}
 
 			bool Valid() const {
-				return connection;
+				return !!connection;
 			}
 
 			bool DeclareExchange(const std::string &exchange_name,
