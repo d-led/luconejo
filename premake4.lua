@@ -1,39 +1,11 @@
-_G.package.path=_G.package.path..[[;./?.lua;./?/?.lua]]
-
-assert( require 'premake.quickstart' )
+include 'premake'
 
 local OS = os.get()
-local settings = {
-	links = {
-		linux = { 'lua5.1-c++' , 'boost_chrono' },
-		windows = { 'lua5.1' },
-		macosx = { 'lua' , 'boost_chrono-mt'}
-	},
-	exec_prefix = {
-		linux = "./",
-		windows = "",
-		macosx = "./"
-	},
-	test_links = {
-		linux = { 'boost_chrono', 'boost_system', 'pthread' },
-		windows = { },
-		macosx = { 'boost_chrono-mt', 'boost_system-mt' }
-	}
-}
 
-local function platform_specifics()
-	-- platform specific --
-	configuration 'macosx'
-		targetprefix ''
-		targetextension '.so'
-	configuration 'windows'
-		includedirs { [[C:\Users\Public\lua\LuaRocks\2.1\include]] , os.getenv 'BOOST' }
-		libdirs { [[C:\Users\Public\lua\LuaRocks\2.1]] , path.join(os.getenv'BOOST',[[stage\lib]]) }
-	configuration 'linux'
-		targetprefix ''
-		includedirs { [[/usr/include/lua5.1]] }
-	configuration { '*' }
-end
+lua = assert(dofile 'premake/recipes/lua.lua')
+boost = assert(dofile 'premake/recipes/boost.lua')
+
+OS = os.get()
 
 ------------------------
 make_solution 'luconejo'
@@ -46,6 +18,17 @@ includedirs {
 	'./SimpleAmqpClient/third-party/gtest-1.7.0'
 }
 
+boost:set_libdirs()
+
+includedirs {
+	lua.includedirs[OS],
+	boost.includedirs[OS]
+}
+
+libdirs {
+	lua.libdirs[OS]
+}
+
 defines { 'BOOST_NO_VARIADIC_TEMPLATES' }
 
 --------------------------
@@ -55,7 +38,6 @@ make_static_lib( 'SimpleAmqpClient',
 		'./SimpleAmqpClient/src/**.h'
 	}
 )
-language "C++"
 
 ----------------------------
 make_shared_lib( 'luconejo',
@@ -67,15 +49,22 @@ make_shared_lib( 'luconejo',
 
 targetdir '.'
 
-language "C++"
-
 links {
 	'rabbitmq',
 	'SimpleAmqpClient',
-	settings.links[OS]
 }
 
-platform_specifics()
+links {
+	lua.links[OS],
+	boost.links[OS]
+}
+
+targetprefix ''
+
+configuration 'macosx'
+	links 'boost_chrono'
+	targetextension '.so'
+configuration '*'
 
 --original tests--------------------
 make_static_lib( 'gtest',
@@ -94,8 +83,16 @@ links {
 	'rabbitmq',
 	'SimpleAmqpClient',
 	'gtest',
-	settings.test_links[OS]
 }
+
+links {
+	lua.links[OS],
+	boost.links[OS]
+}
+
+configuration 'macosx'
+	links 'boost_chrono'
+configuration '*'
 
 run_target_after_build()
 ------------------------------------
