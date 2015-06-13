@@ -39,6 +39,10 @@ make_static_lib( 'SimpleAmqpClient',
 	}
 )
 
+configuration 'linux'
+	buildoptions '-fPIC'
+configuration '*'
+
 ----------------------------
 make_shared_lib( 'luconejo',
 	{
