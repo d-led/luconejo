@@ -110,3 +110,5 @@ packages/
 #my
 
 tmp_build
+*.lib
+*.dll

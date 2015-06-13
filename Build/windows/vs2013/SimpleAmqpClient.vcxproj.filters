@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="SimpleAmqpClient">
+      <UniqueIdentifier>{DD2FDA1D-C928-F96F-F25A-DEF4DEB2D87B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\AmqpException.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\AmqpLibraryException.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\AmqpResponseLibraryException.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\BadUriException.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\BasicMessage.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\Channel.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\ChannelImpl.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\ConnectionClosedException.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\ConsumerCancelledException.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\ConsumerTagNotFoundException.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\Envelope.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\MessageReturnedException.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\SimpleAmqpClient.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\Table.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\TableImpl.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\Util.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SimpleAmqpClient\src\SimpleAmqpClient\Version.h">
+      <Filter>SimpleAmqpClient</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\AmqpException.cpp" />
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\AmqpLibraryException.cpp" />
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\AmqpResponseLibraryException.cpp" />
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\BasicMessage.cpp" />
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\Channel.cpp" />
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\ChannelImpl.cpp" />
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\Envelope.cpp" />
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\MessageReturnedException.cpp" />
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\Table.cpp" />
+    <ClCompile Include="..\..\..\SimpleAmqpClient\src\TableImpl.cpp" />
+  </ItemGroup>
+</Project>
