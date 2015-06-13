@@ -64,6 +64,8 @@ targetprefix ''
 configuration 'macosx'
 	links 'boost_chrono'
 	targetextension '.so'
+configuration 'linux'
+	links 'boost_chrono'
 configuration '*'
 
 --original tests--------------------
