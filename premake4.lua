@@ -92,6 +92,10 @@ links {
 
 configuration 'macosx'
 	links 'boost_chrono'
+configuration 'linux'
+	links {
+		'boost_chrono',
+	}
 configuration '*'
 
 run_target_after_build()
@@ -116,7 +120,7 @@ newaction {
 	trigger = "prepare",
 	description = "build and install librabbitmq",
 	execute = function ()
-		os.execute(settings.exec_prefix[OS].."build_rabbitmq")
+		os.execute("./build_rabbitmq")
 	end
 }
 
