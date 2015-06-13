@@ -23,7 +23,7 @@ ifeq ($(config),debug32)
   OBJDIR     = ../../../obj/linux/gmake/x32/Debug/SimpleAmqpClient/x32
   TARGETDIR  = ../../../bin/linux/gmake/x32/Debug
   TARGET     = $(TARGETDIR)/libSimpleAmqpClient.a
-  DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG
+  DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG -DSimpleAmqpClient_EXPORTS
   INCLUDES  += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -g -m32 -fPIC
@@ -45,7 +45,7 @@ ifeq ($(config),release32)
   OBJDIR     = ../../../obj/linux/gmake/x32/Release/SimpleAmqpClient/x32
   TARGETDIR  = ../../../bin/linux/gmake/x32/Release
   TARGET     = $(TARGETDIR)/libSimpleAmqpClient.a
-  DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE
+  DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE -DSimpleAmqpClient_EXPORTS
   INCLUDES  += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -O2 -m32 -fPIC
@@ -67,7 +67,7 @@ ifeq ($(config),debug64)
   OBJDIR     = ../../../obj/linux/gmake/x64/Debug/SimpleAmqpClient/x64
   TARGETDIR  = ../../../bin/linux/gmake/x64/Debug
   TARGET     = $(TARGETDIR)/libSimpleAmqpClient.a
-  DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG
+  DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DDEBUG -D_DEBUG -DSimpleAmqpClient_EXPORTS
   INCLUDES  += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -g -m64 -fPIC
@@ -89,7 +89,7 @@ ifeq ($(config),release64)
   OBJDIR     = ../../../obj/linux/gmake/x64/Release/SimpleAmqpClient/x64
   TARGETDIR  = ../../../bin/linux/gmake/x64/Release
   TARGET     = $(TARGETDIR)/libSimpleAmqpClient.a
-  DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE
+  DEFINES   += -DBOOST_NO_VARIADIC_TEMPLATES -DRELEASE -DSimpleAmqpClient_EXPORTS
   INCLUDES  += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -O2 -m64 -fPIC
