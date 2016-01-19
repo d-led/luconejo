@@ -1,6 +1,6 @@
 language: cpp
 
-sudo: false
+# sudo: false
 
 services:
   - rabbitmq
@@ -24,7 +24,7 @@ cache:
 before_script:
   - export CXX="g++-5"
   - export AMQP_BROKER="localhost"
-  # - sudo ./build_rabbitmq
+  - sudo ./build_rabbitmq
   - luarocks --local install busted
 
 script:
