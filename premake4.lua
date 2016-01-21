@@ -126,7 +126,7 @@ configuration 'linux'
 	}
 configuration '*'
 
-run_target_after_build()
+-- run_target_after_build()
 ------------------------------------
 
 newaction {
