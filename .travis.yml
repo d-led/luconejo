@@ -24,11 +24,11 @@ cache:
 before_script:
   - export CXX="g++-5"
   - export AMQP_BROKER="localhost"
-  - sudo ./build_rabbitmq
+  - ./build_rabbitmq
   - luarocks --local install busted
 
 script:
-  - export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH;
+  - export LD_LIBRARY_PATH=`pwd`/tmp_build/librabbitmq:$LD_LIBRARY_PATH
   - make -C Build/linux/gmake config=release64
   - ~/.luarocks/bin/busted test/test_connection.lua
   - ~/.luarocks/bin/busted test/test_channels.lua
