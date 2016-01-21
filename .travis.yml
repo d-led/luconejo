@@ -17,7 +17,6 @@ addons:
       - lua5.1
       - luarocks
       - librabbitmq-dev
-      - gcc-multilib
 
 cache:
   - apt
@@ -30,7 +29,7 @@ before_script:
 
 script:
   - export LD_LIBRARY_PATH=`pwd`/tmp_build/librabbitmq:$LD_LIBRARY_PATH
-  - make -C Build/linux/gmake config=release32
+  - make -C Build/linux/gmake config=release64
   - ~/.luarocks/bin/busted test/test_connection.lua
   - ~/.luarocks/bin/busted test/test_channels.lua
   - ~/.luarocks/bin/busted test/test_ack.lua
