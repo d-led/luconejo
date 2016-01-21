@@ -17,6 +17,7 @@ addons:
       - lua5.1
       - luarocks
       - librabbitmq-dev
+      - gcc-multilib
 
 cache:
   - apt
