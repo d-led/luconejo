@@ -1,6 +1,7 @@
 mkdir tmp_build
 cd tmp_build
-cmake ../rabbitmq-c/
+FLAG=-m`getconf LONG_BIT`
+cmake ../rabbitmq-c/ -DCMAKE_C_FLAGS=$FLAG -DCMAKE_MODULE_LINKER_FLAGS=$FLAG -DCMAKE_SHARED_LINKER_FLAGS=$FLAG -DCMAKE_SHARED_LINKER_FLAGS=$FLAG -DCMAKE_EXE_LINKER_FLAGS=$FLAG
 make
 # make install
 cd ..
