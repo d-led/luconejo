@@ -7,6 +7,7 @@ a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient w
 
 many features work, but just as the [SimpleAmqpClient](https://github.com/woldan/SimpleAmqpClient/tree/master/src) tests are failing, so are the wrapper tests.
 
+- [status](#status)
 - [luconejo](#luconejo)
 - [api](#api)
 	- [reading convention](#reading-convention)
@@ -24,10 +25,14 @@ many features work, but just as the [SimpleAmqpClient](https://github.com/woldan
 - [error handling](#error-handling)
 - [binding details](#binding-details)
 - [building](#building)
-- [status](#status)
 - [motivation](#motivation)
 - [dependencies](#dependencies)
 - [license](#license)
+
+status
+======
+
+semi-abandoned
 
 api
 ===
@@ -188,14 +193,6 @@ building
 
 motivation: [Recursive Make Considered Harmful](http://miller.emu.id.au/pmiller/books/rmch/)
 
-status
-======
-
- - work in process
- - no SSL support yet, will be configurable in the future
- - compiles and passes tests with clang on MacOS X only
- - rabbitmq-c should be built with its own CMake config and linked dynamically
- - deleting exchanges seems to work, but doesn't throw on wrongful deletion
 
 motivation
 ==========
