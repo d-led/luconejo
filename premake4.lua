@@ -31,6 +31,8 @@ includedirs {
 configuration 'windows'
 	includedirs 'C:/Program Files (x86)/rabbitmq-c/include/'
 	libdirs 'C:/Program Files (x86)/rabbitmq-c/lib'
+configuration 'macosx'
+	includedirs { '/usr/local/include/lua5.1' }
 configuration '*'
 
 boost:set_libdirs()
