@@ -12,6 +12,7 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-5
+      - g++-5-multilib
       - libboost1.55-all-dev
       - liblua5.1-0
       - lua5.1
@@ -28,8 +29,8 @@ before_script:
   - luarocks --local install busted
 
 script:
-  - export LD_LIBRARY_PATH=`pwd`/tmp_build/librabbitmq:$LD_LIBRARY_PATH
-  - make -C Build/linux/gmake config=release_x64
+  - export LD_LIBRARY_PATH=`pwd`/tmp_build/librabbitmq:$LD_LIBRARY_PATH:/usr/local/lib/i386-linux-gnu
+  - make -C Build/linux/gmake config=release_x32
   - ~/.luarocks/bin/busted test/test_connection.lua
   - ~/.luarocks/bin/busted test/test_channels.lua
   - ~/.luarocks/bin/busted test/test_ack.lua
