@@ -30,7 +30,7 @@ before_script:
   - luarocks --local install busted
 
 script:
-  - export LD_LIBRARY_PATH=`pwd`/tmp_build/librabbitmq:$LD_LIBRARY_PATH:/usr/local/lib/i386-linux-gnu
+  - export LD_LIBRARY_PATH=`pwd`/tmp_build/librabbitmq #:$LD_LIBRARY_PATH:/usr/local/lib/i386-linux-gnu
   - make -C Build/linux/gmake config=release_x64
   - ~/.luarocks/bin/busted test/test_connection.lua
   - ~/.luarocks/bin/busted test/test_channels.lua
