@@ -12,30 +12,30 @@ endif
 
 ifeq ($(config),debug_x32)
   SimpleAmqpClient_config = debug_x32
-  SimpleAmqpClientTests_config = debug_x32
-  gtest_config = debug_x32
   luconejo_config = debug_x32
+  gtest_config = debug_x32
+  SimpleAmqpClientTests_config = debug_x32
 endif
 ifeq ($(config),debug_x64)
   SimpleAmqpClient_config = debug_x64
-  SimpleAmqpClientTests_config = debug_x64
-  gtest_config = debug_x64
   luconejo_config = debug_x64
+  gtest_config = debug_x64
+  SimpleAmqpClientTests_config = debug_x64
 endif
 ifeq ($(config),release_x32)
   SimpleAmqpClient_config = release_x32
-  SimpleAmqpClientTests_config = release_x32
-  gtest_config = release_x32
   luconejo_config = release_x32
+  gtest_config = release_x32
+  SimpleAmqpClientTests_config = release_x32
 endif
 ifeq ($(config),release_x64)
   SimpleAmqpClient_config = release_x64
-  SimpleAmqpClientTests_config = release_x64
-  gtest_config = release_x64
   luconejo_config = release_x64
+  gtest_config = release_x64
+  SimpleAmqpClientTests_config = release_x64
 endif
 
-PROJECTS := SimpleAmqpClient SimpleAmqpClientTests gtest luconejo
+PROJECTS := SimpleAmqpClient luconejo gtest SimpleAmqpClientTests
 
 .PHONY: all clean help $(PROJECTS) 
 
@@ -47,10 +47,10 @@ ifneq (,$(SimpleAmqpClient_config))
 	@${MAKE} --no-print-directory -C . -f SimpleAmqpClient.make config=$(SimpleAmqpClient_config)
 endif
 
-SimpleAmqpClientTests: SimpleAmqpClient gtest
-ifneq (,$(SimpleAmqpClientTests_config))
-	@echo "==== Building SimpleAmqpClientTests ($(SimpleAmqpClientTests_config)) ===="
-	@${MAKE} --no-print-directory -C . -f SimpleAmqpClientTests.make config=$(SimpleAmqpClientTests_config)
+luconejo: SimpleAmqpClient
+ifneq (,$(luconejo_config))
+	@echo "==== Building luconejo ($(luconejo_config)) ===="
+	@${MAKE} --no-print-directory -C . -f luconejo.make config=$(luconejo_config)
 endif
 
 gtest:
@@ -59,17 +59,17 @@ ifneq (,$(gtest_config))
 	@${MAKE} --no-print-directory -C . -f gtest.make config=$(gtest_config)
 endif
 
-luconejo: SimpleAmqpClient
-ifneq (,$(luconejo_config))
-	@echo "==== Building luconejo ($(luconejo_config)) ===="
-	@${MAKE} --no-print-directory -C . -f luconejo.make config=$(luconejo_config)
+SimpleAmqpClientTests: SimpleAmqpClient gtest
+ifneq (,$(SimpleAmqpClientTests_config))
+	@echo "==== Building SimpleAmqpClientTests ($(SimpleAmqpClientTests_config)) ===="
+	@${MAKE} --no-print-directory -C . -f SimpleAmqpClientTests.make config=$(SimpleAmqpClientTests_config)
 endif
 
 clean:
 	@${MAKE} --no-print-directory -C . -f SimpleAmqpClient.make clean
-	@${MAKE} --no-print-directory -C . -f SimpleAmqpClientTests.make clean
-	@${MAKE} --no-print-directory -C . -f gtest.make clean
 	@${MAKE} --no-print-directory -C . -f luconejo.make clean
+	@${MAKE} --no-print-directory -C . -f gtest.make clean
+	@${MAKE} --no-print-directory -C . -f SimpleAmqpClientTests.make clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -84,8 +84,8 @@ help:
 	@echo "   all (default)"
 	@echo "   clean"
 	@echo "   SimpleAmqpClient"
-	@echo "   SimpleAmqpClientTests"
-	@echo "   gtest"
 	@echo "   luconejo"
+	@echo "   gtest"
+	@echo "   SimpleAmqpClientTests"
 	@echo ""
 	@echo "For more information, see http://industriousone.com/premake/quick-start"

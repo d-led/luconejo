@@ -33,6 +33,8 @@ configuration 'windows'
 	libdirs 'C:/Program Files (x86)/rabbitmq-c/lib'
 configuration 'macosx'
 	includedirs { '/usr/local/include/lua5.1' }
+configuration 'linux'
+	libdirs { 'tmp_build/librabbitmq' }
 configuration '*'
 
 boost:set_libdirs()

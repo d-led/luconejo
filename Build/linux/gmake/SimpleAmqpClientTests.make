@@ -22,9 +22,9 @@ ifeq ($(config),debug_x32)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -Wl,--start-group ../../../bin/linux/gmake/x32/Debug/libSimpleAmqpClient.a ../../../bin/linux/gmake/x32/Debug/libgtest.a -Wl,--end-group -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
+  LIBS += ../../../bin/linux/gmake/x32/Debug/libSimpleAmqpClient.a ../../../bin/linux/gmake/x32/Debug/libgtest.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x32/Debug/libSimpleAmqpClient.a ../../../bin/linux/gmake/x32/Debug/libgtest.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../../../tmp_build/librabbitmq -m32
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -49,9 +49,9 @@ ifeq ($(config),debug_x64)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -Wl,--start-group ../../../bin/linux/gmake/x64/Debug/libSimpleAmqpClient.a ../../../bin/linux/gmake/x64/Debug/libgtest.a -Wl,--end-group -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
+  LIBS += ../../../bin/linux/gmake/x64/Debug/libSimpleAmqpClient.a ../../../bin/linux/gmake/x64/Debug/libgtest.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x64/Debug/libSimpleAmqpClient.a ../../../bin/linux/gmake/x64/Debug/libgtest.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../../../tmp_build/librabbitmq -m64
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -76,9 +76,9 @@ ifeq ($(config),release_x32)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -O2
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -Wl,--start-group ../../../bin/linux/gmake/x32/Release/libSimpleAmqpClient.a ../../../bin/linux/gmake/x32/Release/libgtest.a -Wl,--end-group -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
+  LIBS += ../../../bin/linux/gmake/x32/Release/libSimpleAmqpClient.a ../../../bin/linux/gmake/x32/Release/libgtest.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x32/Release/libSimpleAmqpClient.a ../../../bin/linux/gmake/x32/Release/libgtest.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -s
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../../../tmp_build/librabbitmq -m32 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -103,9 +103,9 @@ ifeq ($(config),release_x64)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -Wl,--start-group ../../../bin/linux/gmake/x64/Release/libSimpleAmqpClient.a ../../../bin/linux/gmake/x64/Release/libgtest.a -Wl,--end-group -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
+  LIBS += ../../../bin/linux/gmake/x64/Release/libSimpleAmqpClient.a ../../../bin/linux/gmake/x64/Release/libgtest.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x64/Release/libSimpleAmqpClient.a ../../../bin/linux/gmake/x64/Release/libgtest.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../../../tmp_build/librabbitmq -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef

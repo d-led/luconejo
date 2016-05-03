@@ -24,7 +24,7 @@ ifeq ($(config),debug_x32)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += ../../../bin/linux/gmake/x32/Debug/libSimpleAmqpClient.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x32/Debug/libSimpleAmqpClient.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -shared
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../../../tmp_build/librabbitmq -m32 -shared
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -51,7 +51,7 @@ ifeq ($(config),debug_x64)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += ../../../bin/linux/gmake/x64/Debug/libSimpleAmqpClient.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x64/Debug/libSimpleAmqpClient.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../../../tmp_build/librabbitmq -m64 -shared
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -78,7 +78,7 @@ ifeq ($(config),release_x32)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += ../../../bin/linux/gmake/x32/Release/libSimpleAmqpClient.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x32/Release/libSimpleAmqpClient.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -s -shared
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../../../tmp_build/librabbitmq -m32 -s -shared
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -105,7 +105,7 @@ ifeq ($(config),release_x64)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += ../../../bin/linux/gmake/x64/Release/libSimpleAmqpClient.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x64/Release/libSimpleAmqpClient.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s -shared
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../../../tmp_build/librabbitmq -m64 -s -shared
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
