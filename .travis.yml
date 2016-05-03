@@ -14,7 +14,6 @@ addons:
       - g++-5
       - g++-5-multilib
       - linux-libc-dev
-      - linux-libc-dev:i386
       - libboost1.55-all-dev
       - liblua5.1-0
       - lua5.1
@@ -32,7 +31,7 @@ before_script:
 
 script:
   - export LD_LIBRARY_PATH=`pwd`/tmp_build/librabbitmq:$LD_LIBRARY_PATH:/usr/local/lib/i386-linux-gnu
-  - make -C Build/linux/gmake config=release_x32
+  - make -C Build/linux/gmake config=release_x64
   - ~/.luarocks/bin/busted test/test_connection.lua
   - ~/.luarocks/bin/busted test/test_channels.lua
   - ~/.luarocks/bin/busted test/test_ack.lua
