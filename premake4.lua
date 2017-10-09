@@ -16,16 +16,17 @@ if OS == 'windows' then
 	includedirs 'C:/Program Files (x86)/rabbitmq-c/include'
 	defines { 'WIN32', '_WIN32' }
 	sac_library = make_shared_lib
-else	
+else
 	rabbitmq_lib = 'rabbitmq'
 	sac_library = make_static_lib
 end
 
-includedirs { 
+includedirs {
 	'./rabbitmq-c/librabbitmq',
 	'./SimpleAmqpClient/src',
 	'./LuaBridge-1.0.2',
-	'./SimpleAmqpClient/third-party/gtest-1.7.0'
+	'./googletest/googletest/include',
+	'./googletest/googletest/'
 }
 
 configuration 'windows'
@@ -101,7 +102,7 @@ configuration '*'
 --original tests--------------------
 make_static_lib( 'gtest',
 	{
-		'./SimpleAmqpClient/third-party/gtest-1.7.0/gtest/*.cc'
+		'./googletest/googletest/src/*.cc'
 	}
 )
 

@@ -7,3 +7,6 @@
 [submodule "rabbitmq-c"]
 	path = rabbitmq-c
 	url = https://github.com/alanxz/rabbitmq-c.git
+[submodule "googletest"]
+	path = googletest
+	url = https://github.com/google/googletest.git
