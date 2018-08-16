@@ -16,15 +16,15 @@ ifeq ($(config),debug_x32)
   TARGET = $(TARGETDIR)/luconejo.so
   OBJDIR = ../../../obj/linux/gmake/x32/Debug/luconejo
   DEFINES += -DBOOST_NO_VARIADIC_TEMPLATES -D_DEBUG
-  INCLUDES += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
+  INCLUDES += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../googletest/googletest/include -I../../../googletest/googletest -I/usr/include/lua5.1
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -g -fPIC
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -fPIC -g
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -fPIC -g
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += ../../../bin/linux/gmake/x32/Debug/libSimpleAmqpClient.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x32/Debug/libSimpleAmqpClient.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../../../tmp_build/librabbitmq -m32 -shared
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../../../tmp_build/librabbitmq -m32 -shared -Wl,-soname=luconejo.so
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -43,15 +43,15 @@ ifeq ($(config),debug_x64)
   TARGET = $(TARGETDIR)/luconejo.so
   OBJDIR = ../../../obj/linux/gmake/x64/Debug/luconejo
   DEFINES += -DBOOST_NO_VARIADIC_TEMPLATES -D_DEBUG
-  INCLUDES += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
+  INCLUDES += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../googletest/googletest/include -I../../../googletest/googletest -I/usr/include/lua5.1
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g -fPIC
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += ../../../bin/linux/gmake/x64/Debug/libSimpleAmqpClient.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x64/Debug/libSimpleAmqpClient.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../../../tmp_build/librabbitmq -m64 -shared
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../../../tmp_build/librabbitmq -m64 -shared -Wl,-soname=luconejo.so
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -70,15 +70,15 @@ ifeq ($(config),release_x32)
   TARGET = $(TARGETDIR)/luconejo.so
   OBJDIR = ../../../obj/linux/gmake/x32/Release/luconejo
   DEFINES += -DBOOST_NO_VARIADIC_TEMPLATES
-  INCLUDES += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
+  INCLUDES += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../googletest/googletest/include -I../../../googletest/googletest -I/usr/include/lua5.1
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -O2 -fPIC
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -O2 -fPIC
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += ../../../bin/linux/gmake/x32/Release/libSimpleAmqpClient.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x32/Release/libSimpleAmqpClient.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../../../tmp_build/librabbitmq -m32 -s -shared
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../../../tmp_build/librabbitmq -m32 -shared -Wl,-soname=luconejo.so -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -97,15 +97,15 @@ ifeq ($(config),release_x64)
   TARGET = $(TARGETDIR)/luconejo.so
   OBJDIR = ../../../obj/linux/gmake/x64/Release/luconejo
   DEFINES += -DBOOST_NO_VARIADIC_TEMPLATES
-  INCLUDES += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../SimpleAmqpClient/third-party/gtest-1.7.0 -I/usr/include/lua5.1
+  INCLUDES += -I../../../rabbitmq-c/librabbitmq -I../../../SimpleAmqpClient/src -I../../../LuaBridge-1.0.2 -I../../../googletest/googletest/include -I../../../googletest/googletest -I/usr/include/lua5.1
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += ../../../bin/linux/gmake/x64/Release/libSimpleAmqpClient.a -lrabbitmq -llua5.1 -lboost_system -lpthread -lboost_chrono
   LDDEPS += ../../../bin/linux/gmake/x64/Release/libSimpleAmqpClient.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../../../tmp_build/librabbitmq -m64 -s -shared
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../../../tmp_build/librabbitmq -m64 -shared -Wl,-soname=luconejo.so -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef

@@ -1,7 +1,15 @@
-mkdir tmp_build
-cd tmp_build
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+build_dir=tmp_build # if on vagrant, ~/tmp_build --> cp -r --dereference ~/tmp_build . (todo)
+origin="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+mkdir $build_dir || true
+cd $build_dir
+
 FLAG=-m`getconf LONG_BIT`
-cmake ../rabbitmq-c/ -DBUILD_TESTS=OFF -DENABLE_SSL_SUPPORT=OFF 
+
+cmake "$origin/rabbitmq-c/" -DBUILD_TESTS=OFF -DENABLE_SSL_SUPPORT=OFF
 #  -DCMAKE_C_FLAGS=$FLAG -DCMAKE_MODULE_LINKER_FLAGS=$FLAG -DCMAKE_SHARED_LINKER_FLAGS=$FLAG -DCMAKE_SHARED_LINKER_FLAGS=$FLAG -DCMAKE_EXE_LINKER_FLAGS=$FLAG
 make
 # make install

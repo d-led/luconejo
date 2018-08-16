@@ -5,7 +5,7 @@ connected_test = assert(require 'test.connected_test')
 
 describe("first channel", function()
 	local this = connected_test.create()
-	
+
 	it("should be able to create and delete exchanges", function ()
 		assert.True( this.channel:DeclareExchange("test_channel_exchange", luconejo.Channel.EXCHANGE_TYPE_FANOUT, false, false, true) )
 		assert.True( this.channel:DeleteExchange("test_channel_exchange") )
@@ -58,13 +58,13 @@ end)
 describe("consuming messages",function ()
 	local this = connected_test.create()
 
-	it("should consume a message sent within 1 second",function ()
+	it("should consume a message sent within 5 seconds",function () -- original: 1 second
 		local queue = this.channel:DeclareQueue("",false,false,true,true)
 
-		local consumer = this.channel:BasicConsume(queue, "", true, false, true, 1)
+		local consumer = this.channel:BasicConsume(queue, "", true, false, true, 5)
 		this.channel:BasicPublish("", queue, this.message,false,false)
 
-		local consumed_envelope = this.channel:BasicConsumeMessage(consumer, 1)
+		local consumed_envelope = this.channel:BasicConsumeMessage(consumer, 5)
 		assert.True( consumed_envelope.Valid )
 	end)
 

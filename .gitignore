@@ -112,3 +112,5 @@ packages/
 tmp_build
 *.lib
 *.dll
+.vagrant/
+.vs/
