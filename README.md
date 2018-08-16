@@ -5,7 +5,7 @@ a lua wrapper of the C++ RabbitMQ AMQP client library wrapper SimpleAmqpClient w
 
 [![Build Status](https://travis-ci.org/d-led/luconejo.png?branch=master)](https://travis-ci.org/d-led/luconejo)
 
-many features work, but just as the [SimpleAmqpClient](https://github.com/woldan/SimpleAmqpClient/tree/master/src) tests are failing, so are the wrapper tests.
+many features work, but just as the [SimpleAmqpClient](https://github.com/alanxz/SimpleAmqpClient/tree/master/src) tests are failing, so are the wrapper tests.
 
 - [status](#status)
 - [luconejo](#luconejo)
@@ -41,7 +41,7 @@ reading convention
 ------------------
 
 The api is mirroring the c++ api as closely as possible. Some overloads are split into multiple functions.
-To read the full documentation, please refer to the original documentation in [SimpleAmqpClient](https://github.com/woldan/SimpleAmqpClient/tree/master/src).
+To read the full documentation, please refer to the original documentation in [SimpleAmqpClient](https://github.com/alanxz/SimpleAmqpClient/tree/master/src).
 The full binding can be seen at a glance in [luconejo_lib.cpp -> register_luconejo](src/luconejo_lib.cpp)
 See the [tests](test) for the API usage examples
 
@@ -208,10 +208,10 @@ all dependent libraries are built from source
  - SimpleAmqpClient
  - LuaBridge
  - Premake for generating makefiles and solutions
- 
+
  testing
  =======
- 
+
   - start RabbitMQ
   - `> premake/premake4 test`
 
